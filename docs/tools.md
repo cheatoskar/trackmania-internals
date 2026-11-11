@@ -75,7 +75,6 @@ My own projects around the classic games, listed separately so they are not mist
 |---|---|---|---|
 | [DeltaZero](https://github.com/cheatoskar/DeltaZero) | Python; MIT | 2026-10-07 | autonomous driving AI for TMNF: imitation learning, headless physics on [TMNF-C](https://github.com/adonis-singh/TMNF-C), vectorised PPO |
 | [TMX-Downloader](https://github.com/cheatoskar/TMX-Downloader) | JavaScript; MIT | 2026-10-07 | bulk download of tracks from all TMX exchanges, bundled as a zip; respect the [TMX API](../tmx/api.md) limits |
-| [TMTrackNN2](https://github.com/cheatoskar/TMTrackNN2) | Python; GPL-3.0 | not published yet | neural map generator for TMNF Stadium (route, structure and design models, GBX writer with learned block flags), rebuilt from donadigo's [TMTrackNN](https://github.com/donadigo/TMTrackNN); notes in [map-generation.md](map-generation.md) |
 | [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) | TypeScript; licence not detected by GitHub (check the repo) | 2026-10-07 | **experimental, for fun:** an MCP interface for TMF maps, so an AI assistant can read and edit maps through tools. Not a stable tool. |
 
 The fvlab patches on ForeverValidator and the search scripts are in this repository: [tools/fvlab/](../tools/fvlab/README.md), [scripts/tas/](../scripts/tas/).

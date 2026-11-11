@@ -113,6 +113,16 @@ Keep the server on `127.0.0.1`. Use project-local registration if your client su
 
 The same pattern works for other domains: [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) (experimental, my own) gives an assistant tools to read and edit TMF maps instead of letting it guess the GBX format. For physics and TAS questions, let it run the offline tools in [tools/fvlab/](../tools/fvlab/README.md) and [scripts/tas/](../scripts/tas/) rather than reasoning about the physics from memory; [DeltaZero](https://github.com/cheatoskar/DeltaZero) shows a headless-physics setup for driving AI.
 
+### Bigger projects: one orchestrator, several helpers
+
+For a mod with several parts (hooks, UI, tests, docs) one long chat gets slow and forgets details. What worked for me:
+
+- **One orchestrator session** on the strongest model (in Claude Code: Opus). It keeps the plan, reads the reports and decides; it does little editing itself.
+- **Helpers per bounded task** on a cheaper model (Sonnet; Haiku for tiny, exact edits): "find the race-end address in build X and verify the prologue", "write the settings page", "update the docs". Give each one the files to read, the goal, the checks to run and what not to touch. The orchestrator reviews every result; helpers report confidently even when wrong.
+- **Parallel helpers only on separate files**, ideally each in its own git worktree, and merge through the orchestrator. Two helpers editing the same file is the usual way to lose work.
+- **Several orchestrators** only for unrelated workstreams (e.g. one for the mod, one for a website), each with its own repository or worktree. They do not share memory: hand over through files in the repo (a plan, a changelog), not through chat.
+- **Watch the cost and your machine.** Each helper is a full session; builds and analysis runs from several helpers at once can make the PC unusable. Bundle related tasks into one helper instead of spawning many.
+
 ### Good practices
 
 - **One change at a time.** One hook, one test, one commit. Small steps make a crash attributable.

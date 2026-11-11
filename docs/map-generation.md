@@ -4,13 +4,11 @@ What I learned building a neural map generator for TrackMania Nations Forever: h
 Stadium map can be represented for a model, what worked and what failed, how to measure
 generated maps, and how to write the result as a `.Challenge.Gbx`.
 
-The code is a separate repository, **[TMTrackNN2](https://github.com/cheatoskar/TMTrackNN2)**
-(GPL-3.0), a rebuild of donadigo's [TMTrackNN](https://github.com/donadigo/TMTrackNN)
-(GPL-3.0). Its map writer is derived from donadigo's GPL-3.0 code, so it is **not** copied
-into this repository's MIT `scripts/`; the format facts it relies on are below.
+My generator is a private rebuild of donadigo's [TMTrackNN](https://github.com/donadigo/TMTrackNN)
+(GPL-3.0) and is not published. Its map writer is derived from donadigo's GPL-3.0 code, so no
+code from it is in this repository; this page keeps only the findings and the format facts.
 
-Source key: `tmtracknn2` = that repository and its docs (`docs/V3.md`, `docs/DESIGN_V2.md`,
-`docs/HISTORY.md`); `dona` = donadigo's TMTrackNN; `[game]` = checked by driving or opening
+Source key: `tmtracknn2` = my own generator experiments and their notes (unpublished); `dona` = donadigo's TMTrackNN; `[game]` = checked by driving or opening
 the map in TMNF. Numbers are measured unless marked otherwise.
 
 ## Data
@@ -175,8 +173,6 @@ building a file from scratch. Container and LZO facts: [formats/gbx.md](../forma
 
 ## Related
 
-* [TMTrackNN2](https://github.com/cheatoskar/TMTrackNN2): the generator, training
-  pipeline, writer and full measurements (GPL-3.0).
 * [TMTrackNN](https://github.com/donadigo/TMTrackNN) and
   [pygbx](https://github.com/donadigo/pygbx) by donadigo (GPL-3.0).
 * [docs/tools.md](tools.md) for GBX libraries (GBX.NET can also write maps).

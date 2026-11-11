@@ -12,7 +12,7 @@ The notes were compiled in November 2026 from the author's own reverse-engineeri
 | [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (fork of randomizer-anywhere) | TMF/2006 dedicated server, XML-RPC, TMX API usage |
 | [DeltaZero](https://github.com/cheatoskar/DeltaZero) | ghost/replay parsing, TMInterface integration |
 | [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS) (fork of TMFOXR) | VR mod notes |
-| [TMTrackNN2](https://github.com/cheatoskar/TMTrackNN2) (rebuild of TMTrackNN; not published yet) | map generation, map writing, block flags, dataset quirks (`tmtracknn2` in [docs/map-generation.md](docs/map-generation.md)) |
+| My own map generator experiments (rebuild of TMTrackNN; unpublished) | map generation, map writing, block flags, dataset quirks (`tmtracknn2` in [docs/map-generation.md](docs/map-generation.md)) |
 
 Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-model6.md`, `bugslide.md`), the TM Horizon launcher, the 100% TMX website code, Ghidra workspace notes, ESWC replay RE notes.
 
