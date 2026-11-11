@@ -40,65 +40,16 @@ Optional, but useful for assistants and for fast manual queries. Setup in short 
 - The server listens on the local machine only. Check it with `curl http://127.0.0.1:8089/check_connection`, then register it in your MCP client (a bridge script ships with the plugin).
 - A server started from a background shell may exit at once (stdin closed); start it as a detached process.
 
-## 4. A minimal skeleton
+## 4. Start from a template
 
-Illustrative only, MIT, 32-bit, MSVC. It checks the build, checks the prologue bytes, then installs a 5-byte inline hook with a trampoline. `kExpectedStamp`, `kTarget` and `kPrologue` are placeholders you fill from the tables; the example does not name a real function.
+[templates/](../templates/README.md) holds two mods that compile (MSVC, x86) and pass a self-test without a game:
 
-```cpp
-// mod.cpp - build as a 32-bit DLL. MIT.
-#include <windows.h>
-#include <cstring>
+- [tmloader-plugin](../templates/tmloader-plugin/) for TMNF/TMUF through TMLoader 2.12.0 (exports `_DllMain@12`, product folder with `description.yaml`);
+- [dinput8-proxy](../templates/dinput8-proxy/) for ESWC 1.80 (unofficial build), Sunrise and TMNF/TMUF standalone (forwards all six dinput8 exports, chain-loads `dinput8.chain.dll`).
 
-static const DWORD kExpectedStamp = 0;        // PE timestamp of the supported exe (see README)
-static const DWORD kTarget        = 0;        // link-time VA of the function
-static const BYTE  kPrologue[5]   = {0};      // expected first bytes (whole instructions)
+Both identify the exe by PE timestamp and file size against a table taken from the [Coverage table](../README.md#coverage), read one known prologue at its rebased address and refuse to do anything if it differs, log to a file next to the DLL, and install one harmless example hook (a frame counter on `IDirect3DDevice9::Present`). The shared [hook helpers](../templates/common/hook.h) cover vtable/IAT slots and inline hooks with an exact prologue check and a trampoline. Build with `templates\build.cmd` or CMake; install only into a test setup ([templates/README.md](../templates/README.md#install-for-a-test)).
 
-typedef int (__cdecl *Fn)(int);
-static Fn g_orig = nullptr;
-
-static int __cdecl Hooked(int a) {
-    // your code; call through to the original
-    return g_orig ? g_orig(a) : 0;
-}
-
-static bool Install() {
-    BYTE* base = (BYTE*)GetModuleHandleW(nullptr);
-    auto nt = (IMAGE_NT_HEADERS*)(base + ((IMAGE_DOS_HEADER*)base)->e_lfanew);
-    if (nt->FileHeader.TimeDateStamp != kExpectedStamp) return false;   // unknown build: do nothing
-
-    BYTE* target = base - 0x400000 + kTarget;                           // rebase
-    if (memcmp(target, kPrologue, 5) != 0) return false;                // prologue differs: do nothing
-
-    // trampoline: copied prologue + jump back
-    BYTE* tramp = (BYTE*)VirtualAlloc(nullptr, 32, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    if (!tramp) return false;
-    memcpy(tramp, target, 5);
-    tramp[5] = 0xE9;
-    *(DWORD*)(tramp + 6) = (DWORD)((target + 5) - (tramp + 10));
-    g_orig = (Fn)tramp;
-
-    DWORD old;
-    VirtualProtect(target, 5, PAGE_EXECUTE_READWRITE, &old);
-    target[0] = 0xE9;
-    *(DWORD*)(target + 1) = (DWORD)((BYTE*)Hooked - (target + 5));
-    VirtualProtect(target, 5, old, &old);
-    FlushInstructionCache(GetCurrentProcess(), target, 5);
-    return true;
-}
-
-static DWORD WINAPI Boot(LPVOID) { Install(); return 0; }
-
-// TMLoader needs the export name _DllMain@12 (export it with a .def file or /EXPORT).
-extern "C" BOOL WINAPI DllMain(HINSTANCE h, DWORD reason, LPVOID) {
-    if (reason == DLL_PROCESS_ATTACH) {
-        DisableThreadLibraryCalls(h);
-        CloseHandle(CreateThread(nullptr, 0, Boot, nullptr, 0, nullptr));  // never work under the loader lock
-    }
-    return TRUE;
-}
-```
-
-Notes: the 5-byte copy is only valid if the first instructions end exactly at byte 5 and contain no relative operands; otherwise copy up to the next instruction boundary (and patch with NOP padding). Guard calls into the game with `__try/__except`. A proxy DLL additionally needs the forwarding exports of the DLL it replaces; start `Install` on the first real call (not in `DllMain`).
+Notes for your own inline hooks: copy whole instructions only, at least 5 bytes, with no relative operands (`call`/`jmp`/`jcc` rel); compare absolute operands against their rebased value (the SEH handler in `6a ff 68 <handler>`). Guard calls into the game with `__try/__except`. Start work on a thread, never in `DllMain`.
 
 ## 5. Test safely
 
@@ -115,9 +66,50 @@ An assistant is good at the grind: reading decompiled functions, writing hook bo
 ### Setup
 
 1. Install Ghidra and import a copy of your exe ([tools/ghidra.md](../tools/ghidra.md)).
-2. Start a GhidraMCP server (above) and register it in the assistant's MCP configuration under any name. Check your client's documentation for the current syntax. Tools appear only in sessions started after registration.
+2. Optional: start a GhidraMCP server (above) and register it in the assistant's MCP configuration under any name (see below). Tools appear only in sessions started after registration.
 3. Open the assistant in your mod's repository, with a checkout of this repository next to it (or added to the session as a second folder).
-4. Give it a short instruction file in your repo (for Claude Code: `CLAUDE.md`) that says: which game and exact build (PE timestamp, hash), that addresses are VAs of that build, where the tables are (`README.md`, the game's `engine-hooks.md` or `addresses.md`), and the rules below.
+4. Give it an instruction file in your repo (for Claude Code: `CLAUDE.md`). Start from [templates/CLAUDE.md.template](../templates/CLAUDE.md.template): game and exact build (PE timestamp, hash), that addresses are VAs of that build, where the tables are, and the rules below.
+
+#### Setup prompt
+
+Copy this into a new session in an empty folder for your mod:
+
+```text
+Clone https://github.com/cheatoskar/trackmania-internals next to this folder (../trackmania-internals).
+Read its README.md and templates/README.md. Then ask me which game I have and run
+`python ../trackmania-internals/scripts/re/pe_info.py <path to my exe>` on the exe I name, and
+compare timestamp, size and hash with the Coverage table; stop if the build is not listed.
+Copy the templates folder into this folder and keep the matching template (tmloader-plugin for
+TMNF/TMUF with TMLoader, dinput8-proxy otherwise) plus common/, tests/, build.cmd and CMakeLists.txt;
+remove the other template and its lines in build.cmd and CMakeLists.txt. Create CLAUDE.md from
+CLAUDE.md.template with my game and exact build filled in, build with build.cmd (x86) and run the
+self-test.
+Stop before installing anything: tell me which files to copy where, and I do it myself on a test copy.
+Do not run the game.
+```
+
+#### Registering GhidraMCP
+
+[GhidraMCP](https://github.com/LaurieWired/GhidraMCP) consists of a Ghidra plugin (an HTTP server on the local machine) and a Python bridge script that speaks MCP. Register the bridge in your client; paths and the port depend on the plugin version, so check its README. For Claude Code:
+
+```bash
+claude mcp add ghidra -- python <path-to>/bridge_mcp_ghidra.py --ghidra-server http://127.0.0.1:<port>/
+```
+
+or in a JSON MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "ghidra": {
+      "command": "python",
+      "args": ["<path-to>/bridge_mcp_ghidra.py", "--ghidra-server", "http://127.0.0.1:<port>/"]
+    }
+  }
+}
+```
+
+Keep the server on `127.0.0.1`. Use project-local registration if your client supports it, so other projects do not see the Ghidra tools, and do not commit a configuration that contains your own paths.
 
 ### Good practices
 

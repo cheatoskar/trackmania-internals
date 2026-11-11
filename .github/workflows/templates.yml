@@ -1,0 +1,35 @@
+# Builds the mod templates (32-bit MSVC) with build.cmd and with CMake, and runs the self-test.
+# No secrets, no game files.
+name: templates
+
+on:
+  push:
+    paths:
+      - "templates/**"
+      - ".github/workflows/templates.yml"
+  pull_request:
+    paths:
+      - "templates/**"
+      - ".github/workflows/templates.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: build.cmd (finds vcvars32.bat through vswhere) + self-test
+        shell: cmd
+        run: templates\build.cmd
+
+      - name: CMake, Win32
+        shell: cmd
+        run: |
+          cmake -S templates -B templates\build-cmake -A Win32 || exit /b 1
+          cmake --build templates\build-cmake --config Release || exit /b 1
+          templates\build-cmake\Release\selftest.exe templates\build-cmake\Release\TemplatePlugin.dll templates\build-cmake\Release\dinput8.dll
+

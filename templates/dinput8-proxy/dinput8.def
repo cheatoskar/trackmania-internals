@@ -1,0 +1,9 @@
+; The six exports of the system dinput8.dll, each forwarded by proxy.cpp. MIT, see LICENSE-MIT.
+LIBRARY dinput8
+EXPORTS
+    DirectInput8Create = Proxy_DirectInput8Create
+    DllCanUnloadNow = Proxy_DllCanUnloadNow PRIVATE
+    DllGetClassObject = Proxy_DllGetClassObject PRIVATE
+    DllRegisterServer = Proxy_DllRegisterServer PRIVATE
+    DllUnregisterServer = Proxy_DllUnregisterServer PRIVATE
+    GetdfDIJoystick = Proxy_GetdfDIJoystick

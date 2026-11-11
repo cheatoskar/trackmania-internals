@@ -7,6 +7,8 @@ Everything here is **knowledge, not game content**: no executables, assets, maps
 ## Start here
 
 - **Building a mod?** [docs/building-mods.md](docs/building-mods.md): pick the exact exe, choose a hook route, find and verify addresses, test safely, and how to use an AI coding assistant with Ghidra.
+- **Starting a mod with an AI assistant?** Paste the [setup prompt](docs/building-mods.md#setup-prompt) into Claude Code (or another assistant) in an empty folder: it clones this repository next to it, checks your exe, copies a [template](templates/README.md), fills in a `CLAUDE.md` and builds, then stops before installing anything.
+- **Want code that compiles?** [templates/](templates/README.md): a TMLoader plugin and a dinput8 proxy with build check, prologue check, log and one harmless example hook.
 - **Looking for tools?** [docs/tools.md](docs/tools.md): checked links for GBX parsing, reverse engineering, TAS/physics, loaders, TMX and servers.
 - **Need an address?** Check your exe in the [Coverage](#coverage) table, then open that game's page under [Navigation](#navigation).
 
@@ -22,6 +24,8 @@ Everything here is **knowledge, not game content**: no executables, assets, maps
 | ManiaPlanet / TrackMania 2 | `ManiaPlanet.exe` (x64) | last build 2019-11-19, `5dd42b7c`, SHA-256 `4af0e34a33b858c8e379e916c1e4f09c38f5744e0e8e207ae6648b8543e86b2b` | RVAs, class ids, D3D11 constant buffers, reflection table layout | light |
 | TMF dedicated server | `TrackmaniaServer` 2011-02-21 | — | XML-RPC (GBXRemote), limits, quirks, logs | medium |
 | 2006 dedicated server (TMN/TMS/TMO) | `TrackManiaServer` 2006-05-30 | zip SHA-256 `28d79550fdd18623c47d3a428af5ce8e150402b8c4c5fa0b45d3efa4e6bf783d` | command line, callbacks, available methods | medium |
+
+TMLoader 2.12.0 runs its own `TmForever.exe` for Nations and United (10,685,290 bytes, a different SHA-256 for the `2.12.0` and `2.12.0-compat` profiles): same PE timestamp `4d431494` as TMNF, and its `.text` section is byte-identical to TMNF 2.11.26 (compared 2026-11-11), so the TMNF addresses apply, rebased. Tell it apart from the standalone TMNF exe by file size.
 
 ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...`) and the original with the Win10 patch (`38121332...`) differ from the unofficial build in thousands of places, so the ESWC addresses only apply to `983bd127...`. TMNF and TMUF share the exe name and version string; tell them apart by PE timestamp or hash. [scripts/re/pe_info.py](scripts/re/pe_info.py) prints all of these for your copy.
 
@@ -44,6 +48,7 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 | [tmx/](tmx/api.md) | TMX endpoints, fields, filters, silent-ignore traps, paging |
 | [tools/](tools/) | [ghidra.md](tools/ghidra.md) (headless + MCP setup, timings), [scripts.md](tools/scripts.md) (inventory) |
 | [scripts/](scripts/) | helper scripts: `ghidra/`, `re/`, `gbx/`, `physics/` |
+| [templates/](templates/README.md) | mod templates that compile: TMLoader plugin, dinput8 proxy, shared hook/log/build-check code, `CLAUDE.md` template |
 | [data/](data/README.md) | engine reflection tables (TMNF, ESWC, Sunrise), the TMNF/TMUF symbols the notes use, Model6 call/constant index |
 | [gotchas.md](gotchas.md) | Windows/encoding, Ghidra, loader lock, testing and TMX traps |
 | [contradictions.md](contradictions.md) | places where sources disagree, and which side holds |
@@ -78,7 +83,7 @@ Issues and pull requests are welcome. Every address needs the game, the exact bu
 ## Licence
 
 - **Text and data** (all Markdown files, `data/`): [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). Credit "trackmania-internals contributors" with a link to this repository.
-- **Code** in `scripts/`: [MIT](LICENSE-MIT), unless a file header names another licence.
+- **Code** in `scripts/` and `templates/` (the template sources, build files, `CLAUDE.md.template` and the workflow that builds them): [MIT](LICENSE-MIT), unless a file header names another licence.
 - The games, their names and all game content belong to their owners and are not covered by either licence.
 
 ## Credits

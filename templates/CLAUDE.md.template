@@ -1,0 +1,46 @@
+# <Mod name>
+
+<!-- Instructions for an AI coding assistant (Claude Code reads CLAUDE.md). Copy this file into your
+     mod repository as CLAUDE.md and replace every <...>. Delete these comments. MIT licence. -->
+
+<One or two sentences: what the mod does and what it must never do.>
+
+## Game and exe
+
+- Game: <TMNF | TMUF | TMN ESWC unofficial 1.80 | TM Sunrise Win10 repack>
+- Exe: `<TmForever.exe | TmNationsESWC.exe | TmSunrise.exe>`, PE timestamp `<0x........>`, <size> bytes, SHA-256 `<...>` (from `python scripts/re/pe_info.py <exe>` in trackmania-internals).
+- Loader: <TMLoader 2.12.0 plugin | dinput8 proxy in a test copy of the game folder>
+- Template: copied from trackmania-internals `templates/<tmloader-plugin | dinput8-proxy>` at commit `<hash>`.
+
+This is the ONLY build the mod supports. Every address in this repository is a link-time VA of exactly this build (image base `0x00400000`). In code, always use `module_base - 0x400000 + VA`; never use a VA directly. If the exe does not match `common/builds.h`, the mod does nothing.
+
+## Where the knowledge is
+
+A checkout of trackmania-internals lies next to this repository: `../trackmania-internals`.
+
+- Exe identification and address conventions: `../trackmania-internals/README.md` (Coverage, Using the addresses).
+- Address tables for this game: <`games/tmnf/engine-hooks.md`, `games/tmnf/game-state-offsets.md` | `games/tmn-eswc/addresses.md`, `games/tmn-eswc/engine-hooks.md` | `games/tm-sunrise/README.md`, `games/tm-sunrise/race-events.md`>
+- Hooking routes and loaders: `modding/loaders-and-hooks.md`; engine reflection: `modding/reflection.md`, `data/reflection/`.
+- Process and pitfalls: `docs/building-mods.md`, `gotchas.md`, `contradictions.md`.
+- Template usage: `templates/README.md`.
+
+Ghidra: <how to reach it, e.g. "MCP server `ghidra` serves the project with this exe" | "no MCP; ask me to look things up">.
+
+## Rules
+
+1. **Verify every address in Ghidra before using it.** Name the source of each address (table row, reflection entry or Ghidra query) and show the first bytes of the function. "I think it is at ..." is not enough; never invent an address, offset or function name.
+2. **Prologue check before every hook.** Hooks go through `hookInline` (exact bytes) or `hookSlot` (vtable/import slot after checking its current value). A mismatch is a logged no-op, never a crash.
+3. **Read-only on the game** <for TMNF/TMUF: always>. No writes to game state, input, physics, camera or replays. Competition Patch, TMUnlimiter and TMInterface must keep working; never work around them.
+4. **TMX rules** (`modding/tmx-rules-for-mods.md`): no driving aids, no ideal/brake lines, no checkpoint/trigger display, no camera or MediaTracker disabling.
+5. **Never run the game online, never connect to servers, never log in.** I run the game myself on an offline test copy. Do not start the game unless I ask.
+6. **One change at a time.** One hook or feature, build, I test, commit. Do not stack untested changes.
+7. **Stop before installing anything** into a game folder, the TMLoader database or a profile; tell me what to copy where.
+8. **No secrets and no personal data** in code, notes, logs or commits: no tokens, keys, account names, e-mail addresses or personal paths.
+9. **No game files in the repository**: no exes, DLLs, packs, maps, replays, Ghidra projects or decompiled code.
+10. Restate the game, the build and these rules when a session gets long.
+
+## Build and test
+
+- Build: `build.cmd` (x86 MSVC; `VCVARS` may point to `vcvars32.bat`), output in `build\`.
+- Self-test: `build\selftest.exe` runs without the game.
+- In-game check: the log next to the DLL (`<log name>`) shows the build, the check site and the hooks.

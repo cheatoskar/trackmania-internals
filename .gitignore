@@ -39,3 +39,10 @@ node_modules/
 .idea/
 Thumbs.db
 .DS_Store
+# template build output
+templates/build/
+templates/build-cmake/
+*.obj
+*.lib
+*.exp
+*.ilk

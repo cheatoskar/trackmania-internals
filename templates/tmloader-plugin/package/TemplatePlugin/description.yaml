@@ -1,0 +1,5 @@
+name: TemplatePlugin
+author: your-name
+type: modification
+homepage: 'https://github.com/your-name/your-mod'
+description: 'Template mod: identifies the exe and logs the frame rate. Does nothing else.'
