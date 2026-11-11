@@ -107,3 +107,13 @@ I read these to learn what the community scores; nothing was copied.
 2. The probe logs with `ctx=0` during validation and writes the file at the end.
 3. For a real-game log, extract the inputs (`dump_inputs name.txt`), `load` them and drive the map for a `ctx=1` log.
 4. Compare the two logs tick by tick with the simulation's trace.
+
+## TMNF-C (client-free physics)
+
+[TMNF-C](https://github.com/adonis-singh/TMNF-C) (MIT) simulates TMNF without a game client, about 120k ticks/s per core against about 2.5k in the game.
+
+| Fact | Source | Status |
+|---|---|---|
+| A local Windows build reproduced exact in-game re-simulations (0.000000 m); a vehicle snapshot captured on one map, re-bound to another map's track and respawned at its start, was exact on two other maps | DeltaZero notes (2026-09-26) | verified |
+| Its offline track builder can order block entries differently from the game: one map failed with the built track but was exact with the track dumped from the running game. Prefer the in-game dump | DeltaZero notes | verified |
+| Captures from the running game need fixed addresses: TMLoader's `2.12.0-compat` profile, not the relocated default ([README](../README.md#using-the-addresses)) | DeltaZero notes | verified |

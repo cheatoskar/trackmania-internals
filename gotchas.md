@@ -1,4 +1,4 @@
-# Gotchas (Windows, encoding, tooling, process)
+# Gotchas (Windows, encoding, tooling, servers, TMX, process)
 
 Recurring traps from earlier work. Status: verified = happened and was fixed/confirmed; unverified = reported, not re-checked. Sources named `own notes`, project names (TMVS = TM Vibrant Shaders, Bingo plugin, DeltaZero, tm-physics-re, server controller) refer to the author's own projects; file names are kept for provenance.
 
@@ -31,7 +31,7 @@ Recurring traps from earlier work. Status: verified = happened and was fixed/con
 | Starting TMNF unattended (`/file=<replay>`, `TMLoader.exe run TmForever default "/file=..."`) stalls in login/profile dialogs | do not run the game unattended; ask the player for captures/logs | own notes | verified |
 | Several sessions install into the same TMLoader product folder (`%LOCALAPPDATA%\TMLoader\database\TmForever\products\<mod>\<ver>\`); a test may run another session's DLL | check the mod log for build-specific lines and the installed DLL's md5 before trusting feedback | own notes | verified |
 | One change per in-game test for lighting/tone changes; stacked changes cannot be told apart | gate behind settings, compare captures offline first | own notes | verified |
-| Normal (ASLR) TMLoader profile breaks fixed-address memory readers | use a no-ASLR compat profile for captures (DeltaZero used profile `TMNFC`, 2.12.0-compat) | own notes | unverified |
+| Normal (ASLR) TMLoader profile breaks fixed-address memory readers | use a no-ASLR compat profile for captures (DeltaZero used profile `TMNFC`, 2.12.0-compat); see [README](README.md#using-the-addresses) | own notes; DeltaZero notes | verified |
 | Old ESWC Windows dedicated server fails online with "http error 12157" (old TLS stack) | test online behaviour on Linux | own notes | verified |
 | Local test server vs running client: client uses UDP 2350, so a local server must take 2351 | set ports in config | own notes | verified |
 
@@ -97,3 +97,105 @@ Recurring traps from earlier work. Status: verified = happened and was fixed/con
 | TMX `routes=0,1,2,3` -> 500; `primarytype` on `/trackrandom` -> 404 | server controller presets | verified |
 | TMX dates have no `Z` but are UTC | own TMX notes | verified |
 | 2006 server: `/servername` ignored, needs `/internet` and `/nodaemon` | server controller ServerSetup.cs | verified |
+
+## Running dedicated servers
+
+One line each; the linked page has the details and sources.
+
+| Trap | Fix | Details | Status |
+|---|---|---|---|
+| Logging in to the game with the server's account: the server is refused ("already connected (from a different ip)") | separate server account, never played with | [operations](server/operations.md#server-account-and-config) | verified |
+| Wrong server-account password: the dedicated exits and systemd restarts it forever | stop the unit, fix, start; `RestartPreventExitStatus` for config errors | [operations](server/operations.md#server-account-and-config) | verified |
+| Port opened in the cloud firewall but not in the VM's own firewall (or the other way round) | open game and P2P port, TCP and UDP, in both | [operations](server/operations.md#ports-and-firewall) | verified |
+| LAN server invisible: bound to a VPN/virtual/link-local adapter, or game port outside 2350-2359 (ESWC 2350-2369, TMS/TMO 2350 only) | `/bindip=<LAN address>`, port in range | [operations](server/operations.md#i-cannot-see-the-server) | verified |
+| TMUF server with an empty `<packmask>` is invisible to TMNF players | `nations` if TMNF players should join | [operations](server/operations.md#server-account-and-config) | verified |
+| Local Windows test in internet mode: registration fails, the dedicated dies after 10-15 s | LAN mode for local tests | [operations](server/operations.md#i-cannot-see-the-server) | verified |
+| `connection_uploadrate` default 512 kbit/s is shared by all players, who download every new map from the server | raise it (10240 used) | [operations](server/operations.md#server-account-and-config) | inferred |
+| `use_changing_validation_seed` on: press-forward lines drift per player, block-mixed starts clip under the start block | set it False | [operations](server/operations.md#server-account-and-config) | verified |
+| The Linux TMF dedicated forks into the background; the parent never sees it die | systemd `KillMode=control-group`, watch the XML-RPC socket | [operations](server/operations.md#hosting) | verified |
+| Two servers on one host found by process name: each controller measured the other's process | track the PID you started | [operations](server/operations.md#hosting) | verified |
+| Restarting with players on drops all of them | deploy, update and reboot only after several empty polls | [operations](server/operations.md#restarts-and-updates-without-kicking-players) | verified |
+| A dead controller's last `status.json` is still served and looks healthy | trust only a fresh timestamp (< 45 s, newer than the restart) | [operations](server/operations.md#restarts-and-updates-without-kicking-players) | verified |
+| Deploy staged in `/tmp`: a reboot during the wait emptied it and the script still said "DEPLOYED" | stage on persistent disk, check every step | [operations](server/operations.md#restarts-and-updates-without-kicking-players) | verified |
+| Overwriting the DLLs of a running process in place | replace files (`cp --remove-destination`) | [operations](server/operations.md#restarts-and-updates-without-kicking-players) | verified |
+| Cloning an instance copied the first one's `.bak` files; the new controller loaded them as its own leaderboard | never copy `.bak`/state files | [operations](server/operations.md#restarts-and-updates-without-kicking-players) | verified |
+| `tr < /dev/urandom \| head -c 20` under `set -euo pipefail` ends a setup script silently (SIGPIPE) | `openssl rand` | [operations](server/operations.md#restarts-and-updates-without-kicking-players) | verified |
+| Server zip fetched over plain HTTP and executed | pin its SHA-256 | [operations](server/operations.md#hosting) | verified |
+| Ladder anti-cheat bans legitimate RPG/trial/stunt finishers ("Time incoherence") | ladder inactive where possible, `CleanBanList` at start | [operations](server/operations.md#players-votes-ladder) | verified |
+| `GetPlayerList(2, 0)` returns at most 2 players | ask for 200 | [operations](server/operations.md#players-votes-ladder) | verified |
+| A config that fails to parse made the controller run on defaults: empty admin list = everyone is admin | treat config errors as fatal (exit 78) | [operations](server/operations.md#players-votes-ladder) | verified |
+| Server name with `$` codes reused as folder name and on the web page | separate plain name and display name; 2006 server: max 25 chars incl. codes, no `$o` | [operations](server/operations.md#server-account-and-config), [old-2006-server](server/old-2006-server.md) | verified |
+| ConsoleLogs with `/verbose_rpc` (15-31 MB per run) and GameLog are never rotated | prune at start | [operations](server/operations.md#logs-and-disk) | verified |
+| Player counts from open TCP connections are too high (ghost sockets) | count connects minus disconnects in the log | [xmlrpc-dedicated](server/xmlrpc-dedicated.md#behaviour-quirks) | verified |
+
+## Server controller logic (XML-RPC)
+
+| Trap | Fix | Details | Status |
+|---|---|---|---|
+| One slow callback handler freezes all callbacks (chat, checkpoints, finishes) while requests still work, so a status page looks healthy | network work off the callback loop; bound every call (10 s) and every handler | [xmlrpc-dedicated](server/xmlrpc-dedicated.md#limits-and-timing) | verified |
+| An unhandled exception in one handler ends the dispatch loop for good | try/catch around every handler | [manialinks](server/manialinks.md#what-broke-and-the-fix) | verified |
+| Unbounded HTTP retries to TMX kept one request alive for minutes: controller deaf for 19 minutes | 2 retries, 10 s each, 40 s total | [operations](server/operations.md#maps-from-tmx) | verified |
+| `ChallengeRestart` right after `NextChallenge` cancels the switch | `InsertChallenge` + `NextChallenge` only | [operations](server/operations.md#maps-from-tmx) | verified |
+| Retrying `ChallengeRestart` on "Change in progress" reloads the old map | retry only `NextChallenge` | [operations](server/operations.md#maps-from-tmx) | verified |
+| Two finishes at once -> two map switches (81x "Change in progress") | one switch per map, claimed by the first finish | [operations](server/operations.md#maps-from-tmx) | verified |
+| Two map-changing calls back to back: the second is dropped silently | one call, then wait for `BeginRace` | [operations](server/operations.md#maps-from-tmx) | verified |
+| `BeginRace` never fires for a map that loaded before anyone connected | `GetCurrentChallengeInfo` on demand | [manialinks](server/manialinks.md#size-refresh-load) | verified |
+| The server's selection only grows, so it rotates back to played maps when a time limit ends | remove the previous map on `BeginRace`; identify the running map by its file name | [operations](server/operations.md#maps-from-tmx) | verified |
+| `NbCheckpoints` and the checkpoint callback count the finish line | normalise once, clamp | [xmlrpc-dedicated](server/xmlrpc-dedicated.md#behaviour-quirks) | verified |
+| Idle players on an unlimited time limit send no callbacks: "silence = dead stream" reconnected every 5 minutes | use an independent witness (ranking, map name from a poll) | [contradictions](contradictions.md) #27 | verified |
+| One vote at a time; the game's vote text says "type /yes", which a controller's `/yes` never sees | check `GetCurrentCallVote` first | [operations](server/operations.md#players-votes-ladder) | verified |
+| `GetChatCommandList` does not exist on TMF | keep your own command list | [xmlrpc-dedicated](server/xmlrpc-dedicated.md#behaviour-quirks) | verified |
+| 2006 server: does send `PlayerFinish`; together with a ranking poll every finish counted twice | de-dupe by (login, time) per map | [old-2006-server](server/old-2006-server.md#callbacks-and-polling) | verified |
+| 2006 server: `NextChallenge` answers OK during Synchronization and then stays on the map | wait for status Play (4) | [old-2006-server](server/old-2006-server.md#callbacks-and-polling) | verified |
+| Player nicknames in Discord/web output: `@everyone` pinged a whole server, `$l` links came along | strip codes and links, disable mentions | [operations](server/operations.md#players-votes-ladder) | verified |
+| Non-atomic writes (`File.WriteAllTextAsync`) lost the leaderboard on a kill | temp file + rename, keep `.bak` | [operations](server/operations.md#logs-and-disk) | verified |
+
+## ManiaLinks
+
+| Trap | Fix | Details | Status |
+|---|---|---|---|
+| Decimal comma from the host locale broke `posn`/`sizen` | invariant number formatting | [manialinks](server/manialinks.md#encoding-and-escaping-traps) | verified |
+| `SendHideManialinkPageToId` with the page's string id -> "Value of type STRING supplied where type INT was expected" | hide one page by sending an empty page with the same id | [manialinks](server/manialinks.md#sending-and-hiding) | verified |
+| `SendHideManialinkPage` hides every page of every player, always-on panels included | empty page with the same id | [manialinks](server/manialinks.md#sending-and-hiding) | verified |
+| Players who connect later do not get pages broadcast before | resend the current widgets on `PlayerConnect` | [manialinks](server/manialinks.md#sending-and-hiding) | verified |
+| `...ToLogin` to a player who just left throws "Login unknown" | catch it; never let it abort game logic | [manialinks](server/manialinks.md#sending-and-hiding) | verified |
+| Action ids of two generated lists 10 apart: the 11th entry of one was read as a click in the other | id ranges 100 apart | [manialinks](server/manialinks.md#clicks-actions-and-answers) | verified |
+| Text cut by character count overflows panels (wide lookalike and CJK glyphs) | cut by estimated width, never inside a `$` code | [manialinks](server/manialinks.md#layout) | verified |
+| Coordinates outside about +-64 / +-48, or `pos`/`size` instead of `posn`/`sizen`: the element is just not visible | stay inside the area, use `posn`/`sizen` | [manialinks](server/manialinks.md#layout) | verified |
+| The 2006 server (ESWC/TMS/TMO) has no ManiaLinks; `$l` chat links show as text | feature-detect with `system.listMethods`, chat-only UI, plain URLs | [manialinks](server/manialinks.md#which-servers-have-manialinks) | verified |
+
+## TMX and maps
+
+| Trap | Fix | Details | Status |
+|---|---|---|---|
+| `difficulty=4` (Lunatic) -> 404 on every call | Lunatic is 3 (0 Beginner .. 3 Lunatic) | [tmx/api](tmx/api.md#fields) | verified |
+| Author fields `Username`, `Author`, `AuthorLogin` -> 400 | `Uploader.Name` (undocumented dot path) | [tmx/api](tmx/api.md#fields) | verified |
+| Result field `Environment` is 1-based, the `environment=` filter 0-based | subtract 1 | [tmx/api](tmx/api.md#fields) | verified |
+| TMX `Routes`/Multilap tag disagrees with the map's `LapRace`/`NbLaps` | read the map | [tmx/api](tmx/api.md#filters-and-silent-ignore-traps) | verified |
+| `/trackrandom` draws unevenly with replacement | list the pool, draw each map once per round | [operations](server/operations.md#maps-from-tmx) | verified |
+| .NET decodes the Content-Disposition file name as Latin-1: two different byte strings on disk and in MatchSettings -> "Track unknown" at boot | ASCII-only file names | [formats/gbx](formats/gbx.md#file-names-and-encoding-traps) | verified |
+| An error page saved as `.Challenge.Gbx` | check HTTP status, `GBX` magic, size cap | [operations](server/operations.md#maps-from-tmx) | verified |
+| "Track not complete" from `InsertChallenge` = map never validated | skip it for good | [operations](server/operations.md#maps-from-tmx) | verified |
+| `inunlimiter=0` is uploader-declared: an Unlimiter map got through and locked vanilla players out for over 2 hours | skip list the controller re-reads while running | [operations](server/operations.md#maps-from-tmx) | verified |
+| Custom-block maps crash every client (logs: many joins, 0 checkpoints) | same skip list | [operations](server/operations.md#maps-from-tmx) | verified |
+| TMX ids are per exchange (tmnf vs tmuf) | never share caches or skip lists between exchanges | [operations](server/operations.md#maps-from-tmx) | verified |
+| Client-saved online ESWC replays are always `validable=0` (one ghost per participant plus the server account); "Save previous replay" never gives a TMX-valid file. Never edit the flag | drive and save offline in Solo | [formats/replay-validable-eswc](formats/replay-validable-eswc.md) | verified |
+| The 2006 server's `GetValidationReplay` returns data without a GBX header: TMX cannot read it | - | [old-2006-server](server/old-2006-server.md#methods-live-check-2026-11-09) | verified |
+| GBX.NET 2.4.3 `ParseHeaderNode` never fills EventsDuration; `Time` can be null | read the full replay | [formats/gbx](formats/gbx.md#replay-cgamectnreplayrecord) | verified |
+| Driving aids (minimap highlights, ideal/brake line, pausing outside the replay editor) are against TMX rules even offline | check before building | [tmx-rules-for-mods](modding/tmx-rules-for-mods.md) | verified |
+
+## Game client, caches, rendering mods
+
+| Trap | Fix | Details | Status |
+|---|---|---|---|
+| TMNF/TMUF write their file index cache (FidCache) only on a clean exit; after a crash, a kill or a TMNF<->TMUF switch the next start rescans everything | exit cleanly; expect a slow first start | [game-control](modding/game-control.md#starting-the-game-from-outside-and-its-caches) | verified |
+| ESWC and Sunrise exes have no `/file=` switch | copy the map into a scanned folder, then start or drive the menu | [game-control](modding/game-control.md#starting-the-game-from-outside-and-its-caches) | verified |
+| The lightmap cache (`ProgramData\TrackMania\Cache\*.LightMap.zip`) is keyed without the light: a mod that changes the light gets the old bake | bypass the cache while active | [rendering](rendering/tmnf-d3d9.md#findings-from-test-rounds-own-notes) | verified |
+| Guessing lamps from the 8-bit image overexposes night maps (floodlit areas are flat 255) | take the engine's own light draws plus a float target | [rendering](rendering/tmnf-d3d9.md#findings-from-test-rounds-own-notes) | verified |
+| Car position from screen-space depth samples jumps and flickers | engine's interpolated vehicle location | [rendering](rendering/tmnf-d3d9.md#findings-from-test-rounds-own-notes) | verified |
+| Parallel shader branches claimed the same pixel-shader constant register (`c47`) | register table, check on every merge | [rendering](rendering/tmnf-d3d9.md#findings-from-test-rounds-own-notes) | verified |
+| Process-loopback audio capture silent after Stop/Reset/Start | fresh capture client per run | [rendering](rendering/tmnf-d3d9.md#findings-from-test-rounds-own-notes) | verified |
+| Static `d3d9.dll` import in a mod DLL -> 0xc000007b on TMUF | load the system d3d9 by full path at runtime | [loaders-and-hooks](modding/loaders-and-hooks.md#from-the-renderingphysics-side-tm-vibrant-shaders-tmfoxr-tmnf-c-tminterface) | verified (cause inferred) |
+| ManiaPlanet's back buffer is sRGB: an overlay drawn into it comes out too bright | own UNORM layer | [rendering](rendering/tmnf-d3d9.md#maniaplanet-port-notes-own-notes) | verified |
+| Proxy DLLs for games installed under `Program Files` need admin rights to copy | install through a setup that asks for elevation, or install the game elsewhere | [loaders-and-hooks](modding/loaders-and-hooks.md#from-the-renderingphysics-side-tm-vibrant-shaders-tmfoxr-tmnf-c-tminterface) | verified |
+| TMNF-C's offline track builder can order blocks differently from the game: a map that should reproduce does not | use the track dumped from the running game | [tas/tools](tas/tools.md#tmnf-c-client-free-physics) | verified |

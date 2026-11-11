@@ -57,6 +57,10 @@ TM2 modpack/Hide-car/overlap notes: OverlapFix not buildable in TM2 without a dr
 | After the replay editor, materials are reloaded without the map-load hook and addresses are reused: per-address material caches go stale (dirt reflections) | own notes | verified |
 | Lighting/tone changes: one change per in-game test; compare offline captures against the last confirmed shader | own notes | verified |
 | Minimap from block meshes: block +0x30 mobil -> item -> solid/corpus -> CPlugTree -> visual keeper | own notes | verified (used in code) |
+| Pixel-shader constant registers are a shared resource: three feature branches developed in parallel all claimed `c47`. Keep a register table and check it on every merge | own notes | verified |
+| Car position guessed from a few depth samples in screen space (neon trail) flickered and jumped in curves; the engine's interpolated vehicle location (`CSceneMobil` vtable slot 32, see [engine-hooks.md](../games/tmnf/engine-hooks.md)) fixed it | own notes | verified (player-confirmed) |
+| Video export sound via Windows process-loopback capture: after Stop/Reset/Start the same capture client delivered only silence; create a fresh client per export | own notes | verified |
+| A mod DLL that imports `d3d9.dll` statically failed with 0xc000007b on TMUF (seen with a standalone clip recorder); proxies must load the system d3d9 by full path at runtime ([loaders-and-hooks.md](../modding/loaders-and-hooks.md)) | own notes | verified (observed), cause inferred |
 
 ## ManiaPlanet port notes (own notes)
 

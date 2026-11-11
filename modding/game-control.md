@@ -59,3 +59,12 @@ registry, `CTrackMania` members, menu methods and candidate app globals, so one 
 TmForever.exe started by TMLoader 2.12.0 loads at a random base (ASLR); the 2.12.0-compat mode and the plain
 exes load at 0x400000. All link addresses in the table move by (module base - 0x400000); struct offsets do not.
 gamectl/reflect apply this.
+
+## Starting the game from outside, and its caches
+
+| Fact | Source | Status |
+|---|---|---|
+| TMNF/TMUF take `/file=<path>` (map or replay) on the command line; the ESWC and Sunrise exes have no such switch (the string `/file` in them is only XML `</file>`): copy the map into a scanned folder and start the game, or drive the menu as above | own launcher project (private) | verified (exe strings) |
+| Starting the game unattended with `/file=` still stops in the login/profile dialogs; nothing gets played without a person at the keyboard | own notes | verified |
+| TMNF/TMUF save their file index cache (FidCache) only on a clean exit. After a crash or a killed process, or after switching between TMNF and TMUF (both use `Documents\TrackMania`), the next start rescans everything and takes much longer | own launcher project (private) | verified (observed) |
+| Very large replay folders (12k replays in one install) were linked to stalls at start and on folder refresh; moving old replays to an archive folder is the planned fix | own launcher project (private) | unverified |

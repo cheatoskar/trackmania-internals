@@ -1,6 +1,6 @@
 # TMF dedicated server and XML-RPC (GBXRemote)
 
-Covers the TMF dedicated server (`TrackmaniaServer_2011-02-21`, used for TMNF and TMUF) as driven by a server controller (own fork of BigBang1112/randomizer-anywhere, C#, ManiaAPI.XmlRpc). The 2006 server is in [old-2006-server.md](old-2006-server.md).
+Covers the TMF dedicated server (`TrackmaniaServer_2011-02-21`, used for TMNF and TMUF) as driven by a server controller (own fork of BigBang1112/randomizer-anywhere, C#, ManiaAPI.XmlRpc). The 2006 server is in [old-2006-server.md](old-2006-server.md). ManiaLinks (controller UI) are in [manialinks.md](manialinks.md), running servers in practice in [operations.md](operations.md).
 
 Source keys: `100-TMX-Server` and bare `*.cs` names = [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (fork of randomizer-anywhere; line numbers refer to it); `website` = the author's website code (private); `ANALYSE` = own server analysis report; `mem:<note>` = own operating notes.
 

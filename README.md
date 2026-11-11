@@ -11,6 +11,7 @@ Everything here is **knowledge, not game content**: no executables, assets, maps
 - **Want code that compiles?** [templates/](templates/README.md): a TMLoader plugin and a dinput8 proxy with build check, prologue check, log and one harmless example hook.
 - **Looking for tools?** [docs/tools.md](docs/tools.md): checked links for GBX parsing, reverse engineering, TAS/physics, loaders, TMX and servers.
 - **Generating maps with machine learning?** [docs/map-generation.md](docs/map-generation.md): how Stadium maps are represented for a model, what worked and failed, quality metrics, and how to write a `.Challenge.Gbx` (block flags, password chunk, author time).
+- **Running a server?** [server/operations.md](server/operations.md) (setup, visibility, updates, maps) and [server/manialinks.md](server/manialinks.md) (in-game UI from a controller).
 - **Need an address?** Check your exe in the [Coverage](#coverage) table, then open that game's page under [Navigation](#navigation).
 
 ## Coverage
@@ -23,7 +24,7 @@ Everything here is **knowledge, not game content**: no executables, assets, maps
 | TrackMania Sunrise (Win10 community repack) | `TmSunrise.exe` | `5cc8f0cf`, 7,904,768 bytes, SHA-256 `e59dfc7eaa5314e85b2b0df6f40ef7ba01a23bd5a9525f84407f5dff301df4fe` | race events, play-a-map path, input engine, reflection | light (static only, not run) |
 | TrackMania Original (Online Patch v2 community exe) | `TMORIGINAL.EXE` | `5d337477` (2019-07-20), 7,883,264 bytes, SHA-256 `75e129d769f4595ddde54a8ef484162915bc2bf998c1a2139cc963294fe8175e`; GreffMASTER's Online Patch v2 (2023) made from the community build without StarForce | exe identification, imports (dgVoodoo d3d9, m4d.dll), race events, play-a-map path, input port, reflection compared with Sunrise | light (static only, not run) |
 | ManiaPlanet / TrackMania 2 | `ManiaPlanet.exe` (x64) | last build 2019-11-19, `5dd42b7c`, SHA-256 `4af0e34a33b858c8e379e916c1e4f09c38f5744e0e8e207ae6648b8543e86b2b` | RVAs, class ids, D3D11 constant buffers, reflection table layout | light |
-| TMF dedicated server | `TrackmaniaServer` 2011-02-21 | — | XML-RPC (GBXRemote), limits, quirks, logs | medium |
+| TMF dedicated server | `TrackmaniaServer` 2011-02-21 | — | XML-RPC (GBXRemote), limits, quirks, logs, ManiaLinks, running servers in practice (ports, visibility, deploys without kicking players, TMX map handling) | medium (three public servers, three months) |
 | 2006 dedicated server (TMN/TMS/TMO) | `TrackManiaServer` 2006-05-30 | zip SHA-256 `28d79550fdd18623c47d3a428af5ce8e150402b8c4c5fa0b45d3efa4e6bf783d` | command line, callbacks, available methods | medium |
 
 TMLoader 2.12.0 runs its own `TmForever.exe` for Nations and United (10,685,290 bytes, a different SHA-256 for the `2.12.0` and `2.12.0-compat` profiles): same PE timestamp `4d431494` as TMNF, and its `.text` section is byte-identical to TMNF 2.11.26 (compared 2026-11-11), so the TMNF addresses apply, rebased. Tell it apart from the standalone TMNF exe by file size.
@@ -46,13 +47,13 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 | [tas/](tas/README.md) | offline TAS research: staged short-window searches, objectives, how searches "cheat" and how to verify hits, tools (ForeverValidator, TMInterface) |
 | [rendering/](rendering/tmnf-d3d9.md) | D3D9 pipeline facts, lighting/moon/lightmap cache, ManiaPlanet port notes |
 | [modding/](modding/) | [loaders-and-hooks.md](modding/loaders-and-hooks.md) (TMLoader, dinput8/d3d9/d3d11 proxies, inline/IAT/vtable hooks), [reflection.md](modding/reflection.md), [game-control.md](modding/game-control.md), [tmx-rules-for-mods.md](modding/tmx-rules-for-mods.md), [vr-tmfoxr.md](modding/vr-tmfoxr.md) |
-| [server/](server/) | [xmlrpc-dedicated.md](server/xmlrpc-dedicated.md), [old-2006-server.md](server/old-2006-server.md), [masterserver.md](server/masterserver.md) (compatibility facts only) |
+| [server/](server/) | [xmlrpc-dedicated.md](server/xmlrpc-dedicated.md), [manialinks.md](server/manialinks.md) (controller UI: send/hide, clicks, layout, escaping), [operations.md](server/operations.md) (running servers: account, ports, "cannot see server", hosting, updates without kicking players, TMX maps, logs), [old-2006-server.md](server/old-2006-server.md), [masterserver.md](server/masterserver.md) (compatibility facts only) |
 | [tmx/](tmx/api.md) | TMX endpoints, fields, filters, silent-ignore traps, paging |
 | [tools/](tools/) | [ghidra.md](tools/ghidra.md) (headless + MCP setup, timings), [scripts.md](tools/scripts.md) (inventory), [fvlab/](tools/fvlab/README.md) (traces and search tool: patch series on ForeverValidator) |
 | [scripts/](scripts/) | helper scripts: `ghidra/`, `re/`, `gbx/`, `physics/` (trace analysis), `tas/` (fvlab searches, map and trick analysis) |
 | [templates/](templates/README.md) | mod templates that compile: TMLoader plugin, dinput8 proxy, shared hook/log/build-check code, `CLAUDE.md` template |
 | [data/](data/README.md) | engine reflection tables (TMNF, ESWC, Sunrise), the TMNF/TMUF symbols the notes use, Model6 call/constant index |
-| [gotchas.md](gotchas.md) | Windows/encoding, Ghidra, loader lock, testing and TMX traps |
+| [gotchas.md](gotchas.md) | one-line traps with links: Windows/encoding, Ghidra, loader lock, testing, dedicated servers, controller logic, ManiaLinks, TMX and maps, game caches, rendering mods |
 | [contradictions.md](contradictions.md) | places where sources disagree, and which side holds |
 
 ## Using the addresses
