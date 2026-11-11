@@ -11,21 +11,22 @@ The notes were compiled in November 2026 from the author's own reverse-engineeri
 | [100-TMX-Bingo-Plugin](https://github.com/cheatoskar/100-TMX-Bingo-Plugin) | TMNF state offsets, pointer chains, D3D9 overlay hook, TMLoader mod contract |
 | [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (fork of randomizer-anywhere) | TMF/2006 dedicated server, XML-RPC, ManiaLinks, server operations (code, commit messages, IDEAS.md), TMX API usage |
 | [nostalgic-completionist](https://github.com/cheatoskar/nostalgic-completionist) (own fork, for the 100% TMX project) | old-game (TMN/TMS/TMO) LAN driving, GBX tool notes |
-| [DeltaZero](https://github.com/cheatoskar/DeltaZero) | ghost/replay parsing, TMInterface integration |
+| [DeltaZero](https://github.com/cheatoskar/DeltaZero) | ghost/replay parsing, TMInterface integration, TMNF-C Windows port (`tmnfc_port/`: patch, shims, lenient builder, start pose, routes) and its measurements ([physics/tmnf-c.md](physics/tmnf-c.md)) |
 | [TMX-Downloader](https://github.com/cheatoskar/TMX-Downloader) | bulk TMX download (see docs/tools.md) |
 | [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) | experimental MCP interface for TMF maps (see docs/tools.md) |
-| [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS) (fork of TMFOXR) | VR mod notes |
+| [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS) (fork of TMFOXR) | VR mod notes, device hand-over (upstream PR #27) and later VR fixes ([rendering/vr-openxr.md](rendering/vr-openxr.md)) |
 | Own measurements (map generation, map writing, block flags) | dataset quirks, representation, route order, ports, flags, map writing (`own` in [docs/map-generation.md](docs/map-generation.md)) |
 
-Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-model6.md`, `bugslide.md`), an own launcher project, the 100% TMX website code, Ghidra workspace notes, ESWC replay RE notes.
+Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-model6.md`, `bugslide.md`), DeltaZero's working notes (`dz-notes`), VR patches not yet offered upstream (`xr-own`), an own launcher project, the 100% TMX website code, Ghidra workspace notes, ESWC replay RE notes.
 
 ## Community projects and documentation
 
 | Source | Licence | Used for |
 |---|---|---|
-| [TMNF-C](https://github.com/adonis-singh/TMNF-C) | MIT | TMNF physics addresses and annotations, Ghidra pipeline |
+| [TMNF-C](https://github.com/adonis-singh/TMNF-C) by adonis-singh | MIT | TMNF physics addresses and annotations, Ghidra pipeline, tracer/golden-trace method, snapshot formats, x87 precision model (commit `eb6be04`) |
 | [ForeverValidator](https://github.com/Skycrafter-dev/ForeverValidator) | MIT | physics cross-checks (substeps, caps, car file values) |
-| [TrackManiaForeverOpenXR](https://github.com/jiink/TrackManiaForeverOpenXR) (TMFOXR) | MIT | VR mod, TMUF layouts, LAA patch |
+| [TrackManiaForeverOpenXR](https://github.com/jiink/TrackManiaForeverOpenXR) (TMFOXR) by jiink; device hand-over by [wial663](https://github.com/wial663) | MIT | VR mod, TMUF layouts, LAA patch, D3D9-to-OpenXR stereo method, projection handling |
+| [Linesight](https://github.com/Linesight-RL/linesight) | see repo | its `Python_Link.as` TMInterface plugin is the socket bridge TMNF-C's capture tools use (not included here) |
 | [TwinkieForever](https://github.com/TwinkieTweaks/TwinkieForever) (Twinkie) | MIT | published TMNF offsets reused by the Bingo plugin |
 | [tmnf-plugins](https://github.com/Delorean12DMC/tmnf-plugins) | GPL-3.0 | public copy of `TmForever.map` (TMNF 4d431494); only names/addresses derived from it are used here, the file itself is not included |
 | [randomizer-anywhere](https://github.com/BigBang1112/randomizer-anywhere), [nostalgic-completionist](https://github.com/BigBang1112/nostalgic-completionist) | AGPL-3.0 / MIT | server controller base, old-game LAN driving |
