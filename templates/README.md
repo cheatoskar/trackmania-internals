@@ -122,4 +122,4 @@ The log is the proof. A good start looks like this (times, base and vtable addre
 
 ## Licence
 
-The templates are MIT ([LICENSE-MIT](../LICENSE-MIT)). The forwarding and chain-load code of the dinput8 proxy is adapted from the Horizon Legacy Loader (MIT, same author).
+The templates are MIT ([LICENSE-MIT](../LICENSE-MIT)). The forwarding and chain-load code of the dinput8 proxy is adapted from the author's own dinput8 loader (MIT, same author).

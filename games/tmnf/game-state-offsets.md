@@ -4,7 +4,7 @@ Exe: TMNF `TmForever.exe` 2.11.26, PE timestamp 4d431494. RVAs are relative to t
 
 Caution: the plugin's own build key is `4d431494-00a62000`, i.e. SizeOfImage 0xa62000 as seen at runtime, while the file on disk says 0xa2b000 (both measured). The plugin reads the loaded image; whether TMLoader changes the header in memory is unverified.
 
-Source keys (short names for own project sources, not part of this repo): `S` = server controller of a TMNF/TMUF randomizer server project; `W` = its website; `P` = 100 TMX Bingo plugin (own TMLoader mod); `H` = TM Horizon launcher (own); `A`/`T` = ESWC autosave tool; `R` = own RE tools (ESWC); `N` = a GBX tool fork; `M` = own RE notes. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
+Source keys (short names for own project sources, not part of this repo): `S` = server controller of a TMNF/TMUF randomizer server project; `W` = its website; `P` = 100 TMX Bingo plugin (own TMLoader mod); `H` = own launcher project; `A`/`T` = ESWC autosave tool; `R` = own RE tools (ESWC); `N` = a GBX tool fork; `M` = own RE notes. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
 
 ## In-game state offsets (read by 100 TMX Bingo plugin)
 

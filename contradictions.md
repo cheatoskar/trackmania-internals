@@ -1,6 +1,6 @@
 # Contradictions and corrections
 
-Places where sources disagree. "Resolved" says which side holds and why; "open" means nobody has checked. Row numbers are stable (gaps are rows that were removed). Source names such as `100_server`, `100_website`, `RandomizerGame.cs`, TM Horizon, TMVS refer to the author's own projects; line numbers are kept for provenance.
+Places where sources disagree. "Resolved" says which side holds and why; "open" means nobody has checked. Row numbers are stable (gaps are rows that were removed). Source names such as `100_server`, `100_website`, `RandomizerGame.cs`, own launcher, TMVS refer to the author's own projects; line numbers are kept for provenance.
 
 | # | Topic | Statement A | Statement B | State |
 |---|---|---|---|---|
@@ -16,9 +16,9 @@ Places where sources disagree. "Resolved" says which side holds and why; "open" 
 | 10 | Ladder mode on the dedicated servers | ServerSetup.cs forces `ladder_mode inactive` for the 2006 server (anti-cheat bans) | 100_website docs: set inactive, then reverted to `forced`; `SetLadderMode` on TMN -> "can't be changed" (always forced) | open for TMNF/TMUF live state; for TMN the game forces it |
 | 11 | Retry of `ChallengeRestart` | RandomizerGame.cs: `CallWithTransitionRetryAsync("ChallengeRestart")` (10 s window, 700 ms gaps) | 100_website docs: single best-effort call, "retrying broke skipping"; retries only for NextChallenge | open: docs older than code, or code regressed |
 | 12 | Callback-health formula | server analysis (A1): `lastPolledMapChangedAt - currentMapStartedAt < 120 s` false-alarmed 39x | 100_website docs: "false-positive-free" | resolved for A (later measurement) |
-| 13 | Autosaves folder | 100_website docs: `<Documents>/TmForever/Tracks/Replays/Autosaves` | TM Horizon scan.rs, TMVS logs: `<Documents>\TrackMania\...` | open (probably `TrackMania`; `TmForever` unverified) |
-| 14 | ESWC TMX download folder | TM Horizon launcher tmx.ts: `<Documents>\TrackMania\Tracks\Challenges\Downloaded` | TM Horizon maps.rs: `<game>\GameData\Tracks\Challenges\Downloaded` | open; maps.rs matches the eswc-autosave convention (`GameData\Tracks\Replays`) |
-| 15 | TMX track image index | 100_website: `/trackshow/<id>/image/0` | TM Horizon: `/trackshow/<id>/image/1` | open (meaning of 0 vs 1 not documented) |
+| 13 | Autosaves folder | 100_website docs: `<Documents>/TmForever/Tracks/Replays/Autosaves` | own launcher (scan.rs), TMVS logs: `<Documents>\TrackMania\...` | open (probably `TrackMania`; `TmForever` unverified) |
+| 14 | ESWC TMX download folder | own launcher (tmx.ts): `<Documents>\TrackMania\Tracks\Challenges\Downloaded` | own launcher (maps.rs): `<game>\GameData\Tracks\Challenges\Downloaded` | open; maps.rs matches the eswc-autosave convention (`GameData\Tracks\Replays`) |
+| 15 | TMX track image index | 100_website: `/trackshow/<id>/image/0` | own launcher: `/trackshow/<id>/image/1` | open (meaning of 0 vs 1 not documented) |
 | 18 | Bingo plugin checkpoint field | baseProfile `playerCheckpoints = 0x330` "checkpoints passed" | game.cpp:814-823: 0x330 lap CP count, 0x334 CP count, 0x2E4 current CP | resolved for the later comment (field name stale) |
 | 19 | `GameHdr` default in TM Vibrant Shaders | main checkout LIGHTING.md: off by default | notes/LIGHTING.md + own notes: on by default since 1.4.0 (EngineLights needs it) | resolved: on (main checkout copy is older) |
 | 20 | eswc-autosave TMX copy release | build/notes.md (v1.0.1): compiled out until TMX answers | README v1.1.0 + memory: released 2026-11-10 after TMX approval | resolved: v1.1.0 includes it |

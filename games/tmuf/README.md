@@ -7,7 +7,7 @@ Exe `TmForever.exe` (same file name as TMNF), PE timestamp 4b9e8add, 10,493,952 
 - TMNF->TMUF address delta is NOT constant (viewport slots -0x280, CHmsDyna -0x130, others +-0x10..0x1f0); a "-0x500" rule of thumb in one physics note is unverified.
 - Telling TMNF and TMUF apart: PE timestamp; or `Nadeo.ini` (`WindowTitle=trackmania united` -> TMUF); folder names are unreliable.
 
-Source keys (short names for own project sources, not part of this repo): `S` = server controller of a TMNF/TMUF randomizer server project; `W` = its website; `P` = 100 TMX Bingo plugin (own TMLoader mod); `H` = TM Horizon launcher (own); `A`/`T` = ESWC autosave tool; `R` = own RE tools (ESWC); `N` = a GBX tool fork; `M` = own RE notes. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
+Source keys (short names for own project sources, not part of this repo): `S` = server controller of a TMNF/TMUF randomizer server project; `W` = its website; `P` = 100 TMX Bingo plugin (own TMLoader mod); `H` = own launcher project; `A`/`T` = ESWC autosave tool; `R` = own RE tools (ESWC); `N` = a GBX tool fork; `M` = own RE notes. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
 
 | Fact | Value | Source | Status |
 |---|---|---|---|

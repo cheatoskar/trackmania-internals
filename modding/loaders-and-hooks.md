@@ -2,9 +2,9 @@
 
 How mods get into TMNF/TMUF, ESWC and ManiaPlanet, and the hooking patterns that worked. Rules from TMX moderators: [tmx-rules-for-mods.md](tmx-rules-for-mods.md). VR mod: [vr-tmfoxr.md](vr-tmfoxr.md).
 
-## From the server/TMX/ESWC side (eswc-autosave, 100 TMX Bingo plugin, TM Horizon)
+## From the server/TMX/ESWC side (eswc-autosave, 100 TMX Bingo plugin, own launcher)
 
-Source keys (all the author's own projects unless noted; paths are inside those projects): `W` = own website code; `P` = 100 TMX Bingo plugin (a TMLoader mod); `H` = TM Horizon launcher; `A` = eswc-autosave mod. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
+Source keys (all the author's own projects unless noted; paths are inside those projects): `W` = own website code; `P` = 100 TMX Bingo plugin (a TMLoader mod); `H` = own launcher project; `A` = eswc-autosave mod. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
 
 | Topic | Fact | Source | Status |
 |---|---|---|---|

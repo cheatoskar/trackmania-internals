@@ -14,7 +14,7 @@ The notes were compiled in November 2026 from the author's own reverse-engineeri
 | [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS) (fork of TMFOXR) | VR mod notes |
 | Own measurements (map generation, map writing, block flags) | dataset quirks, representation, route order, ports, flags, map writing (`own` in [docs/map-generation.md](docs/map-generation.md)) |
 
-Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-model6.md`, `bugslide.md`), the TM Horizon launcher, the 100% TMX website code, Ghidra workspace notes, ESWC replay RE notes.
+Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-model6.md`, `bugslide.md`), an own launcher project, the 100% TMX website code, Ghidra workspace notes, ESWC replay RE notes.
 
 ## Community projects and documentation
 

@@ -2,7 +2,7 @@
 
 Exchanges: `tmnf.exchange`, `tmuf.exchange`, `nations.tm-exchange.com`, `sunrise.tm-exchange.com`, `original.tm-exchange.com` (TMF-era API, `/api/tracks`); ManiaPlanet era: `tm.mania.exchange`, `sm.mania.exchange`, `trackmania.exchange` (`/api/maps`). Docs: api2.mania.exchange; method list api.mania.exchange/api/methods.
 
-Source keys (the author's own projects; file names and line numbers kept for provenance): `srv` = server controller (`TmxRules.cs`, `Presets/*.toml`, `IDEAS.md`); `web` = website TMX client (`tmx-api.ts`, `tmx-uid.ts`, docs); `hub` = TM Horizon launcher (`tmx.ts`, `tmx.rs`); `nc` = own Nostalgic Completionist fork; `plugin` = 100 TMX Bingo plugin (`worker.cpp`). `curl` = manual request on the given date.
+Source keys (the author's own projects; file names and line numbers kept for provenance): `srv` = server controller (`TmxRules.cs`, `Presets/*.toml`, `IDEAS.md`); `web` = website TMX client (`tmx-api.ts`, `tmx-uid.ts`, docs); `hub` = own launcher project (`tmx.ts`, `tmx.rs`); `nc` = own Nostalgic Completionist fork; `plugin` = 100 TMX Bingo plugin (`worker.cpp`). `curl` = manual request on the given date.
 
 ## Endpoints
 

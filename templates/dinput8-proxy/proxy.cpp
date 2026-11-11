@@ -1,6 +1,6 @@
 // proxy.cpp - dinput8.dll proxy entry. MIT, see LICENSE-MIT.
-// The forwarding and chain-load part is adapted from the Horizon Legacy Loader (horizon-host,
-// MIT, Copyright (c) 2026 cheatoskar).
+// The forwarding and chain-load part is adapted from the author's own dinput8 loader
+// (MIT, Copyright (c) 2026 cheatoskar).
 //
 // The classic games load dinput8.dll from their own folder before the system one (TMNF/TMUF and
 // ESWC import it statically; Sunrise loads it by name). This DLL:

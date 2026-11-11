@@ -1,7 +1,7 @@
 # Game control: start a map file in solo, leave the race (ESWC, Sunrise, TMNF, TMUF)
 
 What a mod needs to start a local `.Challenge.Gbx` in solo from the main menu and to leave a solo race, without
-hooks or patches. Implemented in the author's gamectl module (used by the TM Horizon launcher). Status:
+hooks or patches. Implemented in the author's gamectl module. Status:
 **statically derived, in-game test pending** (2026-11-11). Update this page when the harness has run.
 
 ## Path
