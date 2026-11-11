@@ -1,0 +1,20 @@
+# TrackMania Forever OpenXR (TMFOXR) - VR mod
+
+Upstream jiink/TrackManiaForeverOpenXR (its README says the code is fully LLM-generated). A hand-over with TM Vibrant Shaders (setting `AttachVibrantShaders`) was contributed as a third-party pull request.
+
+Source keys (short names for own project sources, not part of this repo): `tmvs` = TM Vibrant Shaders mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = own DeltaZero project; `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
+
+| fact | value | status |
+|---|---|---|
+| targets | 32-bit Steam TMUF (also TMNF per README); OpenXR via dynamically loaded Win32 `openxr_loader.dll` (Khronos 1.1.62, requests OpenXR API 1.0); needs `XR_KHR_D3D11_enable`; runtime from `HKLM\SOFTWARE\WOW6432Node\Khronos\OpenXR\1\ActiveRuntime`; Virtual Desktop via VDXR | verified (doc) |
+| loading | d3d9.dll proxy next to TmForever.exe (`d3d9.before-tmfoxr.dll` backup), or TMLoader product; TMFOXR.dll redirects the managed game's d3d9 imports via IAT patch (tests\tmloader_iat_smoke.cpp); TMLoader 2.12.0 and 2.12.0-compat layouts | verified (code) |
+| D3D9 hooking | device vtable patched: indexes 16..94 (VirtualProtect of `&table[16]`, 79 entries): Reset=16, Present=17, ... SetVertexShaderConstantF=94; `GetAvailableTextureMem` index 4 (video memory report clamp 2048 MB via VideoMemoryMB=2048, also IDirectDraw7 vtable index 23 GetAvailableVidMem) | verified (code lines 4290-4496) |
+| stereo method | replays TrackMania's D3D9 scene draws twice (one per eye) into private D3D9 eye surfaces, reads back through system memory, uploads to D3D11 OpenXR swapchains (legacy D3D9 device cannot use D3D9Ex sharing); `D3D9On12=1` keeps eye surfaces on GPU; menus/HUD captured to a world-locked virtual screen 2 m in front; `MirrorEyeToDesktop` removes third render | verified (doc) |
+| camera matrices | takes game View/Projection from SetTransform; vertex shaders identified by disassembly (`dp4 oPos.x`, `m4x4`/`m4x*` search at lines 3552-3579) and constant base register cached (`ShaderPositionInfo{shader, baseRegister}`, 256-entry perspective matrix candidates); head pose multiplied into the combined matrix per eye | verified (code) |
+| frustum culling | optional FrustumCullingFix hooks `ComputeClippingPlanes` call sites and the RenderTree visibility branch (RVAs in games/tmuf table) | verified |
+| vehicle hide | hooks CTrackMania vtable slot RVA 0x0073E0F8 (VehicleSetVisibility) to keep the car visible in camera 3 (cockpit) | verified |
+| game settings required | fullscreen off, antialiasing none (detected: warning, VR not initialised) | verified (doc) |
+| LAA | offers to set LARGE_ADDRESS_AWARE on TmForever.exe, backup `TmForever.exe.TMFOXR-backup` (large_address_aware.cpp, 212 lines) | verified |
+| cockpit offsets (camera 3), metres, camera-local right/up/forward | Stadium (-0.05,-0.45,-0.65), Island (-0.43,-0.55,-0.75), Desert (-0.43,-0.09,-0.60), Rally (-0.43,-0.24,-0.40), Bay (-0.47,-0.14,-0.60), Coast (-0.43,-0.41,-0.98), Snow (-0.43,0.20,-0.71); CockpitNearClip 0.2; HorizonLock 1, release 35..70 deg | verified (TMFOXR.defaults.ini) |
+| interplay with TMVS | `AttachVibrantShaders=1`: hands TMVS the game's D3D device (otherwise TMVS cannot see it); 2 = TMVS shades the eyes; TMVS VR fixes in tmvs[dirtrefl] (CHANGELOG: Game HDR / Render scale stay off while the VR mod draws the eyes; sky found by depth relative to projection; offered via PR to jiink) | verified (docs) |
+| files | settings Documents\TrackMania\TMFOXR.ini, log TMFOXR.log, panel key F10 | verified |

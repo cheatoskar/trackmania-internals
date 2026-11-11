@@ -1,0 +1,41 @@
+# Never commit game files: binaries, Ghidra databases, memory dumps, maps, replays,
+# packs, symbol maps or decompiler output (copyright; replays carry other players' names).
+*.exe
+*.EXE
+*.dll
+*.DLL
+*.sys
+*.gbx
+*.Gbx
+*.GBX
+*.pak
+*.Pack.Gbx
+*.map
+*.pdb
+*.gpr
+*.rep/
+*.rep
+*.gzf
+*.lock
+*.lock~
+*.dmp
+*.mdmp
+*.bin
+*.tmcap
+*.zip
+*.7z
+*.rar
+# decompiler / trace output
+decomp/
+out/
+traces/
+# local scratch and tooling
+local/
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
