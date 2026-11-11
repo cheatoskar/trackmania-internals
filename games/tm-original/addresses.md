@@ -40,7 +40,12 @@ All thiscall unless noted. Prologue = first bytes, identical to the Sunrise func
 | 0x0085d1a0 | `CGameCtnChallengeInfo::Build` | 0x0085ede0 | | port, atlas | inferred |
 | 0x0081aca0 | `CGameCtnApp::SetChallenge` | 0x0081c820 | | port, atlas | inferred |
 | 0x00813b00 | `CConstructionGame` constructor (stores the app global) | 0x00815640 | | port, gx | verified (static) |
-| 0x00815c50 | `CGameCtnApp::SaveReplay` (fiber) | 0x008177f0 | | port, atlas | inferred |
+| 0x00815c50 | `CTrackMania::SaveReplayRecord` (fiber; the reflection entry `SaveReplayRecord` names the string 0x00a1744c it loads); instruction by instruction the same as Sunrise's | 0x008177f0 | | port, atlas, refl + string, cmp | verified (static) |
+| 0x004055b0 / 0x00401280 | `CFastStringInt::SetString({ptr, len})` ret 4 / `CFastStringInt::Empty()` | 0x0041a2a0 / 0x00401280 | | cmp (SaveReplayRecord, "My Replays" setup), kit | verified (static) |
+| 0x00480c10 / 0x0044ea70 | `FilterFileName(dst, src, 0, 0)` / `FileExists(name, folder)`, both cdecl | 0x00480ae0 / 0x0044e860 | | cmp, body = ESWC | verified (static) |
+| 0x007aaab0 / 0x007aab90 | `CGameCtnReplayRecord::GetBestGhostRaceTime(int&, int&)` ret 8 / `GetBestGhostStuntsScore()` | 0x007abd30 / 0x007abe10 | | cmp, body = ESWC | verified (static) |
+| 0x0041e2b0 / 0x00421ee0 / 0x0041e3b0 | `CSystemArchiveNod` ctor / `Save(name, nod, folder, 10, 7, 1, 1)` ret 0x1c / dtor | 0x0041e220 / 0x00421e60 / 0x0041e330 | | cmp, body = ESWC, kit (0x00421ee0) | verified (static) |
+| 0x00414e60 | `CSystemEngine::UnbindFid(CMwNod*)` ret 4 | 0x00414e00 | | cmp, body = ESWC | verified (static) |
 | 0x00864ef0 | `DialogInGameMenu_OnSaveReplay` | 0x00866b30 | | port, atlas | inferred |
 | 0x00820410 | `CTrackMania::ScanDiskForReplays()` | 0x00821f30 | | refl, port, atlas | verified (static) |
 | 0x00402cb0 / 0x00402bb0 | game `malloc` / `free` (cdecl) | 0x00402cc0 / 0x00402b90 | | port, atlas | verified (static) |
@@ -78,4 +83,6 @@ All thiscall unless noted. Prologue = first bytes, identical to the Sunrise func
 | Race classes: `CTrackManiaRace1P`, `...1PCrazy`, `...1PGhosts`, `...1PSpecial`, `...2PTurnBased` (solo); `CTrackManiaRaceNetLaps`, `...NetRounds`, `...NetTimeAttack` (network); editor `CConstructionEditor` / replay editor `CConstructionEditorReplay` (0x2405d000) | class names | verified (static, refl) |
 | Race vtables: `CTrackManiaRace` 0x00a484f8, `CTrackManiaRace1P` 0x00a48138 (slot 0 0x007dbe20) | | verified (static, vt) |
 
-Not found yet: the slot of a replay watched from the menu (ESWC: app+0x128, `CCtnMediaClipViewer`); `CFastStringInt::SetString` and `CSystemArchiveNod::SaveToFolder` (needed for a dialog-free replay save, as in ESWC). Respawns are not counted (the RespawnPlayer row is inferred only).
+Dialog-free replay save (solo): all functions, globals (empty string 0x00ab80e8, engine main 0x00b866f4) and members (app+0x130 ReplayRecord, app+0x1d8 "My Replays", replay +0x58 / +0xac), side by side with Sunrise and ESWC: [../tm-sunrise/replay-save.md](../tm-sunrise/replay-save.md) (verified static, 2026-11-11).
+
+Not found yet: the slot of a replay watched from the menu (ESWC: app+0x128, `CCtnMediaClipViewer`). Respawns are not counted (the RespawnPlayer row is inferred only).

@@ -39,7 +39,7 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 | [games/tmnf/](games/tmnf/) | [engine-hooks.md](games/tmnf/engine-hooks.md) (render/media/light hook table, TMNF + TMUF columns), [game-state-offsets.md](games/tmnf/game-state-offsets.md) (race/player state, replay/menu functions), [master-server-functions.md](games/tmnf/master-server-functions.md) (server browser, `tmtp://`), [tmnfc-annotations.md](games/tmnf/tmnfc-annotations.md) (physics addresses from TMNF-C) |
 | [games/tmuf/](games/tmuf/README.md) | TMUF specifics, porting method, VR-mod layouts |
 | [games/tmn-eswc/](games/tmn-eswc/) | [addresses.md](games/tmn-eswc/addresses.md), [engine-hooks.md](games/tmn-eswc/engine-hooks.md), [input.md](games/tmn-eswc/input.md) (DirectInput, bindings; ESWC + Sunrise) |
-| [games/tm-sunrise/](games/tm-sunrise/README.md) | Sunrise exe, play-a-map path, [race-events.md](games/tm-sunrise/race-events.md) |
+| [games/tm-sunrise/](games/tm-sunrise/README.md) | Sunrise exe, play-a-map path, [race-events.md](games/tm-sunrise/race-events.md), [replay-save.md](games/tm-sunrise/replay-save.md) (replay save without the dialog, Sunrise + Original + ESWC) |
 | [games/tm-original/](games/tm-original/README.md) | TM Original exe (Online Patch v2), [addresses.md](games/tm-original/addresses.md), [engine-hooks.md](games/tm-original/engine-hooks.md) (loader, dgVoodoo, D3D9, race hooks) |
 | [games/maniaplanet/](games/maniaplanet/engine.md) | ManiaPlanet.exe RVAs, class ids, D3D11 constant buffers |
 | [formats/](formats/) | [gbx.md](formats/gbx.md) (container, LZO, replay/ghost/challenge chunks, class ids), [replay-validable-eswc.md](formats/replay-validable-eswc.md) (format facts only) |
