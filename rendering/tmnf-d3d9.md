@@ -2,7 +2,7 @@
 
 Engine addresses used by the hooks: [../games/tmnf/engine-hooks.md](../games/tmnf/engine-hooks.md). ManiaPlanet (D3D11): [../games/maniaplanet/engine.md](../games/maniaplanet/engine.md). Lessons from in-game tests (one light change per test, shared install folder): [../gotchas.md](../gotchas.md).
 
-Source keys (short names for own project sources, not part of this repo): `tmvs` = TM Vibrant Shaders mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = own DeltaZero project; `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
+Source keys (short names for own project sources, not part of this repo): `tmvs` = [TM Vibrant Shaders](https://github.com/cheatoskar/TM-Vibrant-Shaders) mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = [DeltaZero](https://github.com/cheatoskar/DeltaZero); `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR; own fork [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS)); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
 
 ## D3D9 pipeline (TMNF/TMUF) facts
 

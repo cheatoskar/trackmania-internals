@@ -4,7 +4,7 @@ Exe: TMNF `TmForever.exe` 2.11.26, PE timestamp 4d431494. RVAs are relative to t
 
 Caution: the plugin's own build key is `4d431494-00a62000`, i.e. SizeOfImage 0xa62000 as seen at runtime, while the file on disk says 0xa2b000 (both measured). The plugin reads the loaded image; whether TMLoader changes the header in memory is unverified.
 
-Source keys (short names for own project sources, not part of this repo): `S` = server controller of a TMNF/TMUF randomizer server project; `W` = its website; `P` = 100 TMX Bingo plugin (own TMLoader mod); `H` = own launcher project; `A`/`T` = ESWC autosave tool; `R` = own RE tools (ESWC); `N` = a GBX tool fork; `M` = own RE notes. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
+Source keys (short names for own project sources, not part of this repo): `S` = [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (server controller of the TMNF/TMUF randomizer server, fork of randomizer-anywhere); `W` = the author's website code (private); `P` = [100-TMX-Bingo-Plugin](https://github.com/cheatoskar/100-TMX-Bingo-Plugin) (own TMLoader mod); `H` = own launcher project (private); `A`/`T` = [eswc-autosave](https://github.com/cheatoskar/eswc-autosave) (ESWC autosave tool) and its RE notes; `R` = own RE tools (ESWC); `N` = [nostalgic-completionist](https://github.com/cheatoskar/nostalgic-completionist) fork (a GBX tool); `M` = own RE notes. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
 
 ## In-game state offsets (read by 100 TMX Bingo plugin)
 
@@ -46,7 +46,7 @@ Source keys (short names for own project sources, not part of this repo): `S` = 
 
 ## Menu / ManiaCode / challenge-loading functions (Ghidra decompiles for the legacy randomizer plan)
 
-Source keys (short names for own project sources, not part of this repo): `tmvs` = TM Vibrant Shaders mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = own DeltaZero project; `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
+Source keys (short names for own project sources, not part of this repo): `tmvs` = [TM Vibrant Shaders](https://github.com/cheatoskar/TM-Vibrant-Shaders) mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = [DeltaZero](https://github.com/cheatoskar/DeltaZero); `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR; own fork [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS)); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
 
 | TMNF VA | name | source | status |
 |---|---|---|---|

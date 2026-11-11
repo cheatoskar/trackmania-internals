@@ -4,7 +4,7 @@
 
 How established: Ghidra 12.1.2 static analysis, xref queries (`re/q*.txt` in the source column = own query dumps, not included), and for hooked functions a runtime prologue check in the eswc-autosave mod (it refuses to hook if bytes differ).
 
-Source keys: `as` = eswc-autosave mod `src/autosave.cpp` (line numbers), `online` = eswc-autosave `src/online.cpp`, `T` = own eswc-autosave RE notes, `notes` = own ESWC replay RE notes.
+Source keys: `as` = [eswc-autosave](https://github.com/cheatoskar/eswc-autosave) mod [`src/autosave.cpp`](https://github.com/cheatoskar/eswc-autosave/blob/main/src/autosave.cpp) (line numbers), `online` = eswc-autosave [`src/online.cpp`](https://github.com/cheatoskar/eswc-autosave/blob/main/src/online.cpp), `T` = own eswc-autosave RE notes, `notes` = own ESWC replay RE notes.
 
 ## Functions
 

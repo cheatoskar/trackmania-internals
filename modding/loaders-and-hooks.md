@@ -4,7 +4,7 @@ How mods get into TMNF/TMUF, ESWC and ManiaPlanet, and the hooking patterns that
 
 ## From the server/TMX/ESWC side (eswc-autosave, 100 TMX Bingo plugin, own launcher)
 
-Source keys (all the author's own projects unless noted; paths are inside those projects): `W` = own website code; `P` = 100 TMX Bingo plugin (a TMLoader mod); `H` = own launcher project; `A` = eswc-autosave mod. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
+Source keys (all the author's own projects unless noted; paths are inside those projects): `W` = the author's website code (private); `P` = [100-TMX-Bingo-Plugin](https://github.com/cheatoskar/100-TMX-Bingo-Plugin) (a TMLoader mod); `H` = own launcher project (private); `A` = [eswc-autosave](https://github.com/cheatoskar/eswc-autosave) mod. "Twinkie" = third-party MIT TMNF mod whose published offsets the plugin reused.
 
 | Topic | Fact | Source | Status |
 |---|---|---|---|
@@ -26,7 +26,7 @@ Source keys (all the author's own projects unless noted; paths are inside those 
 
 ## From the rendering/physics side (TM Vibrant Shaders, TMFOXR, TMNF-C, TMInterface)
 
-Source keys: `xr` = TrackManiaForeverOpenXR (TMFOXR); `tmvs` = TM Vibrant Shaders (own); `tmvs/wt-X` = a development branch of TMVS; `phys` = own physics RE notes (tm-physics-re); `tmnfc` = TMNF-C (third party); `dz` = DeltaZero (own).
+Source keys: `xr` = TrackManiaForeverOpenXR (TMFOXR); `tmvs` = [TM Vibrant Shaders](https://github.com/cheatoskar/TM-Vibrant-Shaders) (own); `tmvs/wt-X` = a development branch of TMVS; `phys` = own physics RE notes (tm-physics-re); `tmnfc` = TMNF-C (third party); `dz` = [DeltaZero](https://github.com/cheatoskar/DeltaZero) (own).
 
 | topic | fact | source | status |
 |---|---|---|---|

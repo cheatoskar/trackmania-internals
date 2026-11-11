@@ -2,15 +2,15 @@
 
 `TmDedicatedServer_2006-05-30.zip`, exe `TrackManiaServer(.exe)` in `TmDedicatedServer/`, SHA-256 `28d79550fdd18623c47d3a428af5ce8e150402b8c4c5fa0b45d3efa4e6bf783d` (identical to the Internet Archive copy, checked 2026-11-09). Game chosen with `/game=nations|sunrise|original`. Same XML-RPC/GBXRemote transport as TMF, far fewer methods.
 
-Source keys: `100_server` = own server controller (C#, a fork of BigBang1112/randomizer-anywhere; file names and line numbers refer to it); `100_website` = own website code (not public); `mem:<note>` = own test notes; `nc` = own fork of Nostalgic Completionist (`Program.cs`).
+Source keys: `100-TMX-Server` = [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (C#, a fork of BigBang1112/randomizer-anywhere; file names and line numbers refer to it); `website` = the author's website code (private); `mem:<note>` = own test notes; `nc` = [nostalgic-completionist](https://github.com/cheatoskar/nostalgic-completionist) (own fork; [Program.cs](https://github.com/cheatoskar/nostalgic-completionist/blob/main/Program.cs)).
 
 ## Command line and config
 
 | Fact | Source | Status |
 |---|---|---|
-| Stays LAN unless `/internet`; on Linux it forks into the background unless `/nodaemon` (PID/stop lost otherwise) | 100_server ServerSetup.cs; mem:eswc | verified |
+| Stays LAN unless `/internet`; on Linux it forks into the background unless `/nodaemon` (PID/stop lost otherwise) | 100-TMX-Server [ServerSetup.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/ServerSetup.cs); mem:eswc | verified |
 | Ignores `/servername` ("Server not started: no ServerName specified"): name must be in `dedicated.cfg` `<server_options><name>` | ServerSetup.cs; mem:eswc | verified |
-| Config file `dedicated.cfg`; `<nation>` (must be valid, e.g. GER) instead of `<validation_key>`; lines may carry `// remarks` after the closing tag (a password may itself contain `//`) | ServerSetup.cs; 100_website admin/gbx.ts | verified |
+| Config file `dedicated.cfg`; `<nation>` (must be valid, e.g. GER) instead of `<validation_key>`; lines may carry `// remarks` after the closing tag (a password may itself contain `//`) | ServerSetup.cs; website code (private) admin/gbx.ts | verified |
 | `<connection_type>` takes presets only (e.g. `DSL_16384_4096`), no kbit/s | ServerSetup.cs | verified |
 | Server name in the list: max 25 chars incl. `$` codes, no `$o` | mem:eswc; controller config | verified |
 | Windows build fails to go online: WinINet "http error 12157" (master server speaks TLS 1.0 only) -> test online on Linux | mem:eswc | verified |
@@ -19,7 +19,7 @@ Source keys: `100_server` = own server controller (C#, a fork of BigBang1112/ran
 
 | Fact | Source | Status |
 |---|---|---|
-| Sends BeginRace, EndRace, PlayerConnect/Disconnect, PlayerChat; NO StatusChanged, NO PlayerCheckpoint | RandomizerGame.cs:922-1000 | verified |
+| Sends BeginRace, EndRace, PlayerConnect/Disconnect, PlayerChat; NO StatusChanged, NO PlayerCheckpoint | [RandomizerGame.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/RandomizerGame.cs):922-1000 | verified |
 | DOES send `TrackMania.PlayerFinish` (an older comment in the same file says it does not). Combined with polling this doubled finishes until a (login,time) de-dupe was added | RandomizerGame.cs:3158-3170; mem:eswc | verified |
 | Workable finish detection: poll `GetCurrentRanking(200,0)` every 1 s; a changed BestTime > 0 is a finish; first poll after a map change = baseline only | RandomizerGame.cs:922-1030 | verified |
 | `NextChallenge` answers OK during `Synchronization` and then stays on the map: wait for status Play (4) first (up to 15 s) | RandomizerGame.cs:3361-3388 | verified |
@@ -31,7 +31,7 @@ Source keys: `100_server` = own server controller (C#, a fork of BigBang1112/ran
 |---|---|
 | SendDisplayManialinkPage(+ToId/ToLogin), SendHideManialinkPage, ForceSpectator, SpectatorReleasePlayerSlot, GetDetailedPlayerInfo, GetCurrentCallVote, SaveBestGhostsReplay, AutoSaveValidationReplays, SetRoundForcedLaps, GetChatCommandList | ChatSend, ChatSendServerMessage(ToLogin), Kick, Ban/UnBan, CleanBanList, BlackList, GetPlayerList, GetPlayerInfo, GetCurrentRanking, NextChallenge, ChallengeRestart, GetCurrentChallengeInfo, GetStatus, Get/SetServerName, GetChatLines, CallVote, GetLastConnectionErrorMessage, GetValidationReplay |
 
-Source: 100_website; mem:eswc. Status: verified. Consequences: no manialinks (no widgets), no `/afk`, chat links (`$l`) show literally, so post plain URLs.
+Source: website code (private); mem:eswc. Status: verified. Consequences: no manialinks (no widgets), no `/afk`, chat links (`$l`) show literally, so post plain URLs.
 
 | Other fact | Source | Status |
 |---|---|---|

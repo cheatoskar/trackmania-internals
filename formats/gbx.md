@@ -1,6 +1,6 @@
 # GBX container, replays, challenges
 
-Source keys (own project sources, not part of this repo): `tmxcopy` = ESWC autosave tool source (tmxcopy.cpp); `notes` = own ESWC RE notes; `web` = own website source (gbx.ts, replay-header.ts, lzo1x.ts) and its notes; `nc` = a GBX tool fork (Program.cs).
+Source keys (own project sources): `tmxcopy` = [eswc-autosave](https://github.com/cheatoskar/eswc-autosave) tool source ([src/tmxcopy.cpp](https://github.com/cheatoskar/eswc-autosave/blob/main/src/tmxcopy.cpp)); `notes` = own ESWC RE notes; `web` = the author's website code (private) (gbx.ts, replay-header.ts, lzo1x.ts) and its notes; `nc` = [nostalgic-completionist](https://github.com/cheatoskar/nostalgic-completionist) (a GBX tool fork; [Program.cs](https://github.com/cheatoskar/nostalgic-completionist/blob/main/Program.cs)).
 
 ## File layout (binary GBX, version 6)
 
@@ -13,7 +13,7 @@ Source keys (own project sources, not part of this repo): `tmxcopy` = ESWC autos
 | user data | u32 chunk count, then (u32 id, u32 size, bit 31 = "heavy/skippable") pairs, then payloads; replays/maps hold an XML chunk | tm-re/eswc/scripts/gbxhdr.py | verified |
 | after user data | u32 numNodes, u32 numExternalRefs (0 here), u32 uncompressed body size, u32 compressed size, LZO1X body | tmxcopy:4-5 | verified |
 | body | chunks `u32 id, payload`; skippable chunks: `u32 id, "PIKS" (0x534B4950), u32 size, payload`; node end marker `FACADE01` (bytes `01 DE CA FA`) | tmxcopy:43 | verified |
-| `.map` vs file reference | a map file is `*.Challenge.Gbx` (TMF), replay `*.Replay.Gbx`; downloads must start with `GBX` (else it is an HTML error page) | server code TmxRules.cs ReadMapBytesAsync | verified |
+| `.map` vs file reference | a map file is `*.Challenge.Gbx` (TMF), replay `*.Replay.Gbx`; downloads must start with `GBX` (else it is an HTML error page) | server code [TmxRules.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/TmxRules.cs) ReadMapBytesAsync | verified |
 
 ## LZO
 
@@ -67,7 +67,7 @@ Source keys (own project sources, not part of this repo): `tmxcopy` = ESWC autos
 
 ## TMNF/TMUF class ids, chunk lists, ghost decoding (DeltaZero, TMVS, TMNF-C)
 
-Source keys (short names for own project sources, not part of this repo): `tmvs` = TM Vibrant Shaders mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = own DeltaZero project; `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
+Source keys (short names for own project sources, not part of this repo): `tmvs` = [TM Vibrant Shaders](https://github.com/cheatoskar/TM-Vibrant-Shaders) mod source; `tmvs-mp` = its ManiaPlanet port; `tmvs[X]` = feature branch X of it; `tmvs-notes` = its notes; `phys` = own physics RE notes; `tmnfc` = TMNF-C (third-party MIT reimplementation, github.com/adonis-singh/TMNF-C); `dz` = [DeltaZero](https://github.com/cheatoskar/DeltaZero); `xr` = TrackManiaForeverOpenXR (upstream jiink/TrackManiaForeverOpenXR; own fork [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS)); `tm-re` = own RE tools. Status: verified = seen in code/data or measured; inferred; unverified = prose only.
 
 | item | fact | source | status |
 |---|---|---|---|

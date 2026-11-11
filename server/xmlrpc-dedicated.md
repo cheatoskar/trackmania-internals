@@ -2,16 +2,16 @@
 
 Covers the TMF dedicated server (`TrackmaniaServer_2011-02-21`, used for TMNF and TMUF) as driven by a server controller (own fork of BigBang1112/randomizer-anywhere, C#, ManiaAPI.XmlRpc). The 2006 server is in [old-2006-server.md](old-2006-server.md).
 
-Source keys: `100_server` and bare `*.cs` names = own server controller (fork of randomizer-anywhere; line numbers refer to it); `100_website` = own website code (not public); `ANALYSE` = own server analysis report; `mem:<note>` = own operating notes.
+Source keys: `100-TMX-Server` and bare `*.cs` names = [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (fork of randomizer-anywhere; line numbers refer to it); `website` = the author's website code (private); `ANALYSE` = own server analysis report; `mem:<note>` = own operating notes.
 
 ## Wire protocol
 
 | Fact | Source | Status |
 |---|---|---|
-| Banner: u32 length + ASCII `GBXRemote 2` | 100_website src/lib/admin/gbx.ts:12-20 | verified |
+| Banner: u32 length + ASCII `GBXRemote 2` | website code (private) src/lib/admin/gbx.ts:12-20 | verified |
 | Frame: `u32 LE length, u32 LE handle, XML payload`; client handles start at 0x80000000, wrap 0xFFFFFFFE -> 0x80000001 | gbx.ts:252,331 | verified |
 | Callbacks arrive on the same socket with their own handles; match replies by handle | gbx.ts | verified |
-| Auth: `Authenticate("SuperAdmin", <pw>)`; keep the port on loopback (`<xmlrpc_allowremote>False`) | 100_server RemoteClient.cs, ServerSetup.cs | verified |
+| Auth: `Authenticate("SuperAdmin", <pw>)`; keep the port on loopback (`<xmlrpc_allowremote>False`) | 100-TMX-Server [RemoteClient.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/RemoteClient.cs), [ServerSetup.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/ServerSetup.cs) | verified |
 | `system.listMethods` at connect lets a client feature-detect (2006 server lacks many methods) | RemoteClient.cs | verified |
 
 ## Limits and timing
@@ -23,8 +23,8 @@ Source keys: `100_server` and bare `*.cs` names = own server controller (fork of
 | ManiaAPI dispatches callbacks from ONE loop: one blocked handler freezes chat commands, widgets, CP HUD while plain request/response still works | RemoteClient.cs:485-491 | verified |
 | Controller budget used: 10 s per call, slow-call log at 2 s, handler timeout 60 s, slow handler warning 15 s | RemoteClient.cs | verified |
 | After a redial, re-attach handlers BEFORE `EnableCallbacks`; whether chat-command registration is per connection is undocumented, so re-register | RemoteClient.cs:468-618 | inferred |
-| Dedicated rejects calls during a map transition ("Change in progress"); controller retries for 10 s with 700 ms gaps | RandomizerGame.cs:3389-3407 | verified (code; see contradictions) |
-| `SetGameMode`, `SetRoundForcedLaps`, `SetNbLaps`, `SetForceShowAllOpponents` only apply after `ChallengeRestart`/`NextChallenge` | 100_server IDEAS.md | verified |
+| Dedicated rejects calls during a map transition ("Change in progress"); controller retries for 10 s with 700 ms gaps | [RandomizerGame.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/RandomizerGame.cs):3389-3407 | verified (code; see contradictions) |
+| `SetGameMode`, `SetRoundForcedLaps`, `SetNbLaps`, `SetForceShowAllOpponents` only apply after `ChallengeRestart`/`NextChallenge` | 100-TMX-Server [IDEAS.md](https://github.com/cheatoskar/100-TMX-Server/blob/main/IDEAS.md) | verified |
 | `connection_uploadrate` default 512 kbit/s (~64 KB/s total); fork uses 10240 (recommended 10240-20480, "plausible, not measured") | ANALYSE; config.default.toml | inferred |
 
 ## Methods and callbacks seen in use
@@ -48,11 +48,11 @@ Source keys: `100_server` and bare `*.cs` names = own server controller (fork of
 | `$l[url]text$l` links work in TMF chat (literal text on the 2006 server) | ANALYSE | verified |
 | Manialink coordinates roughly +-64 X, +-48 Y (use posn/sizen); `SendHideManialinkPageToId` wants an INT id (string -> "Value of type STRING supplied where type INT was expected"); click = `action="<int>"` -> `PlayerManialinkPageAnswer` | IDEAS.md | verified |
 | `TrackMania.BeginRace` is missed for a map that finished loading before any player connected; query `GetCurrentChallengeInfo` on demand | IDEAS.md | verified |
-| Ladder anti-cheat auto-bans legit RPG/trial/stunt finishes for "Time incoherence" (`<incoherence> [login] was banned.`), preceded by "Invalid time: the race of X will be ignored"; ban list is in memory -> `CleanBanList` at start | 100_website docs; RandomizerGame.cs:1095-1110 | verified |
-| Dedicated keeps ghost sockets on 2350: count connects minus disconnects in ConsoleLog, not TCP connections | 100_website docs | verified |
-| Replays: `SaveBestGhostsReplay(login, "<dir>/<file>.Replay.Gbx")` writes under `GameData/Tracks/Replays/`; server-saved replays are what TMX accepts | RandomizerGame.cs SendReplayLinkAsync; 100_website docs | verified |
+| Ladder anti-cheat auto-bans legit RPG/trial/stunt finishes for "Time incoherence" (`<incoherence> [login] was banned.`), preceded by "Invalid time: the race of X will be ignored"; ban list is in memory -> `CleanBanList` at start | website docs (private); RandomizerGame.cs:1095-1110 | verified |
+| Dedicated keeps ghost sockets on 2350: count connects minus disconnects in ConsoleLog, not TCP connections | website docs (private) | verified |
+| Replays: `SaveBestGhostsReplay(login, "<dir>/<file>.Replay.Gbx")` writes under `GameData/Tracks/Replays/`; server-saved replays are what TMX accepts | RandomizerGame.cs SendReplayLinkAsync; website docs (private) | verified |
 | Custom-block maps that crash every client show in logs as many joins with 0 checkpoints; handled with a live-reloaded skip list | mem:gameserver-analysis-2026-10-16 | verified |
-| `inunlimiter=0` on TMX is uploader-declared; an Unlimiter map slipped through and stalled the server 2h18m (2026-09-02) | 100_website docs/gbx-detection-plan.md | verified |
+| `inunlimiter=0` on TMX is uploader-declared; an Unlimiter map slipped through and stalled the server 2h18m (2026-09-02) | website docs (private)/gbx-detection-plan.md | verified |
 
 ## Config and command line
 
@@ -61,7 +61,7 @@ Source keys: `100_server` and bare `*.cs` names = own server controller (fork of
 | cfg | `GameData/Config/dedicated_cfg.txt`; keys touched: `<packmask>` (`nations` for TMNF, empty for United = only TMUF owners), `<xmlrpc_port>`, `<server_port>`, `<server_p2p_port>`, `<masterserver_account>` (`<login>`, `<password>`, `<validation_key>`), `<use_changing_validation_seed>False`, `<connection_uploadrate>`, `<xmlrpc_allowremote>`, `autosave_replays`, `autosave_validation_replays` | ServerSetup.cs SetupDedicatedCfgAsync | verified |
 | command line | `/game_settings=<path> /servername=<n> /verbose_rpc /comment=<c> /dedicated_cfg=dedicated_cfg.txt /lan /bindip=<ip>` | ServerSetup.cs StartServer | verified |
 | MatchSettings | `<gameinfos>` game_mode 1, chat_time 0, finishtimeout 1, timeattack_limit 600000, laps_nblaps 5, ...; `<filter>` is_lan/is_internet 1, random_map_order 0; `<challenge><file>` | ServerSetup.cs | verified |
-| Ports used by the fork | TMNF 2350/3450, XML-RPC 5000; TMUF 2351/3451, 5001; ESWC 2352/3452, 5002. Client LAN discovery scans 2350-2359 (TMF), 2350-2369 (ESWC), 2350 only (TMS/TMO) | 100_server README; CANNOT_SEE_SERVER.txt | verified |
+| Ports used by the fork | TMNF 2350/3450, XML-RPC 5000; TMUF 2351/3451, 5001; ESWC 2352/3452, 5002. Client LAN discovery scans 2350-2359 (TMF), 2350-2369 (ESWC), 2350 only (TMS/TMO) | 100-TMX-Server README; CANNOT_SEE_SERVER.txt | verified |
 | A wrong master-server password makes the dedicated exit -> restart loop under systemd | mem:tmuf-instance-setup | verified |
 | Local Windows test without `Lan = true`: master-server registration fails and the process dies ~10-15 s after boot | DEPLOY_NOTES.md | verified |
 
@@ -69,7 +69,7 @@ Source keys: `100_server` and bare `*.cs` names = own server controller (fork of
 
 | File | Content | Source | Status |
 |---|---|---|---|
-| `Logs/GameLog.<serverlogin>.txt` | full chat incl. every `/command` and server replies; `[YYYY/MM/DD HH:MM:SS] <chat> [login (nick)] text`, local time, never rotated | mem:tmf-logs-for-command-failures; 100_website admin/chat.ts | verified |
+| `Logs/GameLog.<serverlogin>.txt` | full chat incl. every `/command` and server replies; `[YYYY/MM/DD HH:MM:SS] <chat> [login (nick)] text`, local time, never rotated | mem:tmf-logs-for-command-failures; website code (private) admin/chat.ts | verified |
 | `Logs/ConsoleLog.<pid>.txt` | with `/verbose_rpc`: every XML-RPC request + "XmlRpc request succeeded" -> tells "server never answered" from "answer lost in client"; 15-31 MB per run | mem:tmf-logs-for-command-failures | verified |
 
 ## Local test harness (no live server needed)

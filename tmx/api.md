@@ -2,7 +2,7 @@
 
 Exchanges: `tmnf.exchange`, `tmuf.exchange`, `nations.tm-exchange.com`, `sunrise.tm-exchange.com`, `original.tm-exchange.com` (TMF-era API, `/api/tracks`); ManiaPlanet era: `tm.mania.exchange`, `sm.mania.exchange`, `trackmania.exchange` (`/api/maps`). Docs: api2.mania.exchange; method list api.mania.exchange/api/methods.
 
-Source keys (the author's own projects; file names and line numbers kept for provenance): `srv` = server controller (`TmxRules.cs`, `Presets/*.toml`, `IDEAS.md`); `web` = website TMX client (`tmx-api.ts`, `tmx-uid.ts`, docs); `hub` = own launcher project (`tmx.ts`, `tmx.rs`); `nc` = own Nostalgic Completionist fork; `plugin` = 100 TMX Bingo plugin (`worker.cpp`). `curl` = manual request on the given date.
+Source keys (the author's own projects; file names and line numbers kept for provenance): `srv` = [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (`TmxRules.cs`, `Presets/*.toml`, `IDEAS.md`); `web` = website TMX client (the author's website code (private); `tmx-api.ts`, `tmx-uid.ts`, docs); `hub` = own launcher project (private) (`tmx.ts`, `tmx.rs`); `nc` = [nostalgic-completionist](https://github.com/cheatoskar/nostalgic-completionist) (own fork); `plugin` = [100-TMX-Bingo-Plugin](https://github.com/cheatoskar/100-TMX-Bingo-Plugin) (`worker.cpp`). `curl` = manual request on the given date.
 
 ## Endpoints
 
@@ -25,14 +25,14 @@ Source keys (the author's own projects; file names and line numbers kept for pro
 
 | Fact | Source | Status |
 |---|---|---|
-| Dot paths work but are undocumented: `Uploader.Name`, `Uploader.UserId`, `WRReplay.ReplayId`, `User.Name`, `Track.TrackId` | srv IDEAS.md; web | verified |
+| Dot paths work but are undocumented: `Uploader.Name`, `Uploader.UserId`, `WRReplay.ReplayId`, `User.Name`, `Track.TrackId` | srv [IDEAS.md](https://github.com/cheatoskar/100-TMX-Server/blob/main/IDEAS.md); web | verified |
 | `fields=UId` (capital I) selects the map UID; `Uid` is rejected | web | verified |
 | `Username`, `Author`, `AuthorLogin` -> 400 "field does not exist"; on replays `Login`, `PlayerLogin`, `TmLogin`, `Nickname` -> 400: TMX never exposes the TM login | web | verified |
 | `Owner.Name` is not a trackpack field (400) | web | verified |
 | Track fields seen: TrackId, TrackName, Tags[], Difficulty (0 Beginner .. 3 Lunatic), AuthorTime (ms), PrimaryType, AuthorBeatable, UnlimiterVersion, Awards, Environment, Mood, Routes, Length, UploadedAt, Uploader{UserId,Name}, WRReplay{ReplayId}, HasThumbnail, Authors[], UId | web; srv; hub | verified |
 | Has-record check: `?id=<id>&fields=TrackId,WRReplay.ReplayId` -> `WRReplay` present | srv:439-464 | verified |
 | `ReplayAt`/`UploadedAt` have no timezone suffix but are UTC: append `Z` | web docs; hub | verified |
-| Result field `Environment` is 1-based (1 Snow .. 7 Stadium), while the TMUF filter `environment=` is 0-based (0 Snow, 1 Desert, 2 Rally, 3 Island, 4 Coast, 5 Bay, 6 Stadium) | srv Presets/100tmx_tmuf_snow.toml; hub tmx.ts | verified (2026-11-07) |
+| Result field `Environment` is 1-based (1 Snow .. 7 Stadium), while the TMUF filter `environment=` is 0-based (0 Snow, 1 Desert, 2 Rally, 3 Island, 4 Coast, 5 Bay, 6 Stadium) | srv [Presets/100tmx_tmuf_snow.toml](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/Presets/100tmx_tmuf_snow.toml); hub tmx.ts | verified (2026-11-07) |
 
 ## Filters (and silent-ignore traps)
 
@@ -41,7 +41,7 @@ Source keys (the author's own projects; file names and line numbers kept for pro
 | `uid=<MapUid>` | works; `trackuid`, `uids` are silently ignored -> 200 + newest tracks | web | verified |
 | `packid=<id>` | works; `trackpackid`, `inpack`, `pack`, `trackpack`, `packs`, `inpacks` silently ignored; nonexistent pack -> empty | web | verified |
 | `id=a,b,c` | up to 100 ids per call | web | verified |
-| `tag=<ids>` | use instead of `primarytype`: `/trackrandom` 404s for any nonzero `primarytype` though documented | srv Presets/short_lol_tmnf.toml | verified |
+| `tag=<ids>` | use instead of `primarytype`: `/trackrandom` 404s for any nonzero `primarytype` though documented | srv [Presets/short_lol_tmnf.toml](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/Presets/short_lol_tmnf.toml) | verified |
 | `routes=` | listing all four `0,1,2,3` -> HTTP 500 (TMX bug): omit instead | srv presets | verified |
 | `inhasrecord=0/1`, `inunlimiter=0`, `uploadedafter=<iso>`, `difficulty=3`, `authortimemax=45000`, `environment=`, `inauthortimebeaten`, `ETag=[Laps]` (exclude tag), `count` (max 1000) | used in presets | srv; nc | verified |
 | `inunlimiter=0` | relies on uploader-declared `UnlimiterVersion`; not reliable | web docs | verified |
@@ -57,7 +57,7 @@ Source keys (the author's own projects; file names and line numbers kept for pro
 |---|---|---|
 | No documented rate limit found; clients here use >= 120 ms between requests per site, 5 retries with exponential backoff (1-30 s) on 429/5xx, other 4xx fatal, 45 s timeout | web tmx-api.ts | verified (client policy) |
 | `/trackrandom` is uneven: 213 draws in 2 days gave 75 distinct maps from a 289-map pool | server analysis 2026-10-16 | verified (measurement) |
-| TMX outages happen (HttpRequestException, 5xx, 429, 403, 408, timeouts): a controller should keep a local map-pool copy and a fallback to local `*.Challenge.Gbx` | srv; ServerSetup.cs | verified |
+| TMX outages happen (HttpRequestException, 5xx, 429, 403, 408, timeouts): a controller should keep a local map-pool copy and a fallback to local `*.Challenge.Gbx` | srv; [ServerSetup.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/ServerSetup.cs) | verified |
 | A map UID is unique per upload; re-uploads keep the UID -> several hits | web | verified |
 | UID lookup narrowing by environment: Stadium -> tmnf, tmn, tmuf; Island/Bay/Coast -> tms, tmuf; Desert/Snow/Rally -> tmo, tmuf | web tmx-uid.ts | verified |
 | TMX sites send `X-Frame-Options: SAMEORIGIN` | hub README | verified |

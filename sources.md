@@ -10,7 +10,10 @@ The notes were compiled in November 2026 from the author's own reverse-engineeri
 | [eswc-autosave](https://github.com/cheatoskar/eswc-autosave) | ESWC addresses, inline/IAT hooks, dinput8 loader, TLS 1.0 compatibility fix |
 | [100-TMX-Bingo-Plugin](https://github.com/cheatoskar/100-TMX-Bingo-Plugin) | TMNF state offsets, pointer chains, D3D9 overlay hook, TMLoader mod contract |
 | [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (fork of randomizer-anywhere) | TMF/2006 dedicated server, XML-RPC, TMX API usage |
+| [nostalgic-completionist](https://github.com/cheatoskar/nostalgic-completionist) (own fork, for the 100% TMX project) | old-game (TMN/TMS/TMO) LAN driving, GBX tool notes |
 | [DeltaZero](https://github.com/cheatoskar/DeltaZero) | ghost/replay parsing, TMInterface integration |
+| [TMX-Downloader](https://github.com/cheatoskar/TMX-Downloader) | bulk TMX download (see docs/tools.md) |
+| [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) | experimental MCP interface for TMF maps (see docs/tools.md) |
 | [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS) (fork of TMFOXR) | VR mod notes |
 | Own measurements (map generation, map writing, block flags) | dataset quirks, representation, route order, ports, flags, map writing (`own` in [docs/map-generation.md](docs/map-generation.md)) |
 
