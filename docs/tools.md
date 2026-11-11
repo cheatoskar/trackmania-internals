@@ -67,15 +67,13 @@ I could not verify a maintained JavaScript GBX parser, so none is listed.
 | [EvoSC-sharp](https://github.com/EvoEsports/EvoSC-sharp) | C#; GPL-3.0; last push 2026-11-10; the rewrite for current Trackmania |
 | [ManiaAPI.XmlRpc](https://github.com/BigBang1112/maniaapi-net) by BigBang1112 | .NET client for the XML-RPC interface |
 
-## Related projects by the author
+## Own tools and side projects
 
-My own projects around the classic games, listed separately so they are not mistaken for checked third-party tools. Data from the GitHub API, 2026-11-11.
-
-| Project | Language / licence | Last push | For |
-|---|---|---|---|
-| [DeltaZero](https://github.com/cheatoskar/DeltaZero) | Python; MIT | 2026-10-07 | autonomous driving AI for TMNF: imitation learning, headless physics on [TMNF-C](https://github.com/adonis-singh/TMNF-C), vectorised PPO |
-| [TMX-Downloader](https://github.com/cheatoskar/TMX-Downloader) | JavaScript; MIT | 2026-10-07 | bulk download of tracks from all TMX exchanges, bundled as a zip; respect the [TMX API](../tmx/api.md) limits |
-| [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) | TypeScript; licence not detected by GitHub (check the repo) | 2026-10-07 | **experimental, for fun:** an MCP interface for TMF maps, so an AI assistant can read and edit maps through tools. Not a stable tool. |
+| Project | Status | For |
+|---|---|---|
+| [TMX-Downloader](https://github.com/cheatoskar/TMX-Downloader) | maintained (JavaScript, MIT) | bulk download of tracks from all TMX exchanges, bundled as a zip; respects the TMX API limits |
+| [DeltaZero](https://github.com/cheatoskar/DeltaZero) | side project, not continued (Python, MIT) | an early driving-AI experiment for TMNF (imitation learning, headless physics on TMNF-C); useful as a reference for ghost parsing |
+| [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) | side project, not continued | a quick experiment with an MCP interface for TMF maps; not a usable tool |
 
 The fvlab patches on ForeverValidator and the search scripts are in this repository: [tools/fvlab/](../tools/fvlab/README.md), [scripts/tas/](../scripts/tas/).
 
