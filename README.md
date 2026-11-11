@@ -4,6 +4,12 @@ Reverse-engineering notes on the classic TrackMania games for mod and tool devel
 
 Everything here is **knowledge, not game content**: no executables, assets, maps, replays, symbol maps or decompiled code are included (see [DISCLAIMER.md](DISCLAIMER.md)).
 
+## Start here
+
+- **Building a mod?** [docs/building-mods.md](docs/building-mods.md): pick the exact exe, choose a hook route, find and verify addresses, test safely, and how to use an AI coding assistant with Ghidra.
+- **Looking for tools?** [docs/tools.md](docs/tools.md): checked links for GBX parsing, reverse engineering, TAS/physics, loaders, TMX and servers.
+- **Need an address?** Check your exe in the [Coverage](#coverage) table, then open that game's page under [Navigation](#navigation).
+
 ## Coverage
 
 | Game | Exe | Build covered (identify by PE timestamp / SHA-256, not by version string) | What is covered | Depth |
@@ -23,6 +29,7 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 
 | Folder / file | Content |
 |---|---|
+| [docs/](docs/) | [building-mods.md](docs/building-mods.md) (guide, with or without AI help), [tools.md](docs/tools.md) (tools and libraries) |
 | [games/tmnf/](games/tmnf/) | [engine-hooks.md](games/tmnf/engine-hooks.md) (render/media/light hook table, TMNF + TMUF columns), [game-state-offsets.md](games/tmnf/game-state-offsets.md) (race/player state, replay/menu functions), [master-server-functions.md](games/tmnf/master-server-functions.md) (server browser, `tmtp://`), [tmnfc-annotations.md](games/tmnf/tmnfc-annotations.md) (physics addresses from TMNF-C) |
 | [games/tmuf/](games/tmuf/README.md) | TMUF specifics, porting method, VR-mod layouts |
 | [games/tmn-eswc/](games/tmn-eswc/) | [addresses.md](games/tmn-eswc/addresses.md), [engine-hooks.md](games/tmn-eswc/engine-hooks.md), [input.md](games/tmn-eswc/input.md) (DirectInput, bindings; ESWC + Sunrise) |
