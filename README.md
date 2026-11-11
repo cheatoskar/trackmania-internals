@@ -10,6 +10,7 @@ Everything here is **knowledge, not game content**: no executables, assets, maps
 - **Starting a mod with an AI assistant?** Paste the [setup prompt](docs/building-mods.md#setup-prompt) into Claude Code (or another assistant) in an empty folder: it clones this repository next to it, checks your exe, copies a [template](templates/README.md), fills in a `CLAUDE.md` and builds, then stops before installing anything.
 - **Want code that compiles?** [templates/](templates/README.md): a TMLoader plugin and a dinput8 proxy with build check, prologue check, log and one harmless example hook.
 - **Looking for tools?** [docs/tools.md](docs/tools.md): checked links for GBX parsing, reverse engineering, TAS/physics, loaders, TMX and servers.
+- **Generating maps with machine learning?** [docs/map-generation.md](docs/map-generation.md): how Stadium maps are represented for a model, what worked and failed, quality metrics, and how to write a `.Challenge.Gbx` (block flags, password chunk, author time).
 - **Need an address?** Check your exe in the [Coverage](#coverage) table, then open that game's page under [Navigation](#navigation).
 
 ## Coverage
@@ -33,7 +34,7 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 
 | Folder / file | Content |
 |---|---|
-| [docs/](docs/) | [building-mods.md](docs/building-mods.md) (guide, with or without AI help), [tools.md](docs/tools.md) (tools and libraries) |
+| [docs/](docs/) | [building-mods.md](docs/building-mods.md) (guide, with or without AI help), [tools.md](docs/tools.md) (tools and libraries), [map-generation.md](docs/map-generation.md) (ML map generation, map writing) |
 | [games/tmnf/](games/tmnf/) | [engine-hooks.md](games/tmnf/engine-hooks.md) (render/media/light hook table, TMNF + TMUF columns), [game-state-offsets.md](games/tmnf/game-state-offsets.md) (race/player state, replay/menu functions), [master-server-functions.md](games/tmnf/master-server-functions.md) (server browser, `tmtp://`), [tmnfc-annotations.md](games/tmnf/tmnfc-annotations.md) (physics addresses from TMNF-C) |
 | [games/tmuf/](games/tmuf/README.md) | TMUF specifics, porting method, VR-mod layouts |
 | [games/tmn-eswc/](games/tmn-eswc/) | [addresses.md](games/tmn-eswc/addresses.md), [engine-hooks.md](games/tmn-eswc/engine-hooks.md), [input.md](games/tmn-eswc/input.md) (DirectInput, bindings; ESWC + Sunrise) |

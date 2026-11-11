@@ -52,6 +52,7 @@ I could not verify a maintained JavaScript GBX parser, so none is listed.
 | Resource | For |
 |---|---|
 | [TrackMania Exchange](https://trackmania.exchange) and its [API](https://api2.mania.exchange) | map/replay listing and download; field and filter quirks in [tmx/api.md](../tmx/api.md) |
+| [trackmania-community-tracks-and-telemetry](https://huggingface.co/datasets/jeanmidev/trackmania-community-tracks-and-telemetry) by jeanmidev (Hugging Face, CC BY 4.0) | ~617k TMNF and ~282k TM2020 track layouts with metadata and winning-run traces, collected from the Mania Exchange sites; Parquet, no login. Quirks in [map-generation.md](map-generation.md#data) |
 | [ManiaPark](https://www.maniapark.com) | I only verified that the site is reachable; I have no notes on it. Check what it offers before relying on it. |
 | [trackmania.io wiki](https://wiki.trackmania.io) | community documentation, reachable; mostly about TM2020 |
 
@@ -74,6 +75,7 @@ My own projects around the classic games, listed separately so they are not mist
 |---|---|---|---|
 | [DeltaZero](https://github.com/cheatoskar/DeltaZero) | Python; MIT | 2026-10-07 | autonomous driving AI for TMNF: imitation learning, headless physics on [TMNF-C](https://github.com/adonis-singh/TMNF-C), vectorised PPO |
 | [TMX-Downloader](https://github.com/cheatoskar/TMX-Downloader) | JavaScript; MIT | 2026-10-07 | bulk download of tracks from all TMX exchanges, bundled as a zip; respect the [TMX API](../tmx/api.md) limits |
+| [TMTrackNN2](https://github.com/cheatoskar/TMTrackNN2) | Python; GPL-3.0 | not published yet | neural map generator for TMNF Stadium (route, structure and design models, GBX writer with learned block flags), rebuilt from donadigo's [TMTrackNN](https://github.com/donadigo/TMTrackNN); notes in [map-generation.md](map-generation.md) |
 | [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) | TypeScript; licence not detected by GitHub (check the repo) | 2026-10-07 | **experimental, for fun:** an MCP interface for TMF maps, so an AI assistant can read and edit maps through tools. Not a stable tool. |
 
 The fvlab patches on ForeverValidator and the search scripts are in this repository: [tools/fvlab/](../tools/fvlab/README.md), [scripts/tas/](../scripts/tas/).

@@ -12,6 +12,7 @@ The notes were compiled in November 2026 from the author's own reverse-engineeri
 | [100-TMX-Server](https://github.com/cheatoskar/100-TMX-Server) (fork of randomizer-anywhere) | TMF/2006 dedicated server, XML-RPC, TMX API usage |
 | [DeltaZero](https://github.com/cheatoskar/DeltaZero) | ghost/replay parsing, TMInterface integration |
 | [TrackManiaForeverOpenXR-TMVS](https://github.com/cheatoskar/TrackManiaForeverOpenXR-TMVS) (fork of TMFOXR) | VR mod notes |
+| [TMTrackNN2](https://github.com/cheatoskar/TMTrackNN2) (rebuild of TMTrackNN; not published yet) | map generation, map writing, block flags, dataset quirks (`tmtracknn2` in [docs/map-generation.md](docs/map-generation.md)) |
 
 Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-model6.md`, `bugslide.md`), the TM Horizon launcher, the 100% TMX website code, Ghidra workspace notes, ESWC replay RE notes.
 
@@ -31,6 +32,8 @@ Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-mo
 | [TMLoader / ModLoader](https://tomashu.dev/software/tmloader) | closed source | mod loading, product/profile layout |
 | [TMUnlimiter](https://unlimiter.net/) | closed source | coexistence of hooks |
 | [TrackMania Exchange API](https://api2.mania.exchange) | | TMX endpoints and fields |
+| [TMTrackNN](https://github.com/donadigo/TMTrackNN), [pygbx](https://github.com/donadigo/pygbx) | GPL-3.0 | map generation approach, block tables, GBX reading (`dona` in docs/map-generation.md) |
+| [trackmania-community-tracks-and-telemetry](https://huggingface.co/datasets/jeanmidev/trackmania-community-tracks-and-telemetry) | CC BY 4.0 | dataset facts in docs/map-generation.md |
 
 ## Tools
 
