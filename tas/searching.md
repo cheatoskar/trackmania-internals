@@ -110,4 +110,4 @@ Rule: always print the state of the best run tick by tick before reporting a res
 My fvlab patches read their settings from environment variables with an `FVLAB_` prefix (target point, minimum speed,
 objective, nose minimum speed, landing box, loss and gain windows, spike filter, exponent minimum speed, checkpoints
 needed, pose wheels/pitch/roll/yaw, direction target, stall kick, human-playable). The concepts above are the real content;
-the exact names are in the patch source if you use it ([tools.md](tools.md)).
+the exact names and a table of them are in [tools/fvlab/README.md](../tools/fvlab/README.md).

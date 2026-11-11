@@ -1,0 +1,444 @@
+From fde3437070b7b0c01e1104c8c6aba65e745fd3df Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 21:35:58 +0100
+Subject: [PATCH 06/28] fvlab: opt and uber search modes, blocks mode, donut
+ maxima probe, fvlab_dev target
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ CMakeLists.txt                                |   5 +
+ .../scene/scene_vehicle_car_handling.cpp      |  10 +
+ tools/fvlab.cpp                               | 344 +++++++++++++++++-
+ 3 files changed, 358 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d7aef18..387614a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -559,6 +559,11 @@ if(FOREVERVALIDATOR_BUILD_BENCHMARKS)
+     target_include_directories(fvlab PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+     target_link_libraries(fvlab PRIVATE forevervalidator_native forevervalidator_core)
+     forevervalidator_configure_target(fvlab)
++    # second binary so tools can be rebuilt while searches run on fvlab.exe
++    add_executable(fvlab_dev tools/fvlab.cpp)
++    target_include_directories(fvlab_dev PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
++    target_link_libraries(fvlab_dev PRIVATE forevervalidator_native forevervalidator_core)
++    forevervalidator_configure_target(fvlab_dev)
+     add_executable(optimized_cpu_benchmark
+         tools/optimized_cpu_benchmark.cpp)
+     target_include_directories(optimized_cpu_benchmark PRIVATE
+diff --git a/src/engine/scene/scene_vehicle_car_handling.cpp b/src/engine/scene/scene_vehicle_car_handling.cpp
+index 3a1afe3..62d1d60 100644
+--- a/src/engine/scene/scene_vehicle_car_handling.cpp
++++ b/src/engine/scene/scene_vehicle_car_handling.cpp
+@@ -3,6 +3,13 @@
+ #include <cstdio>
+ #include <cstdlib>
+ #include "engine/scene/scene_vehicle_car_internal.h"
++
++// tm-physics-re: running maxima of the donut pull, read and reset by tools/fvlab.cpp
++namespace tmphys_probe {
++float maxExponent = -1e30f;
++float maxMagnitude = 0.0f;
++unsigned donutPulls = 0u;
++}  // namespace tmphys_probe
+ using namespace SceneVehicleCarDynamics;
+ 
+ CSceneVehicleMaterial *CSceneVehicleCar::GetWheelMaterial(
+@@ -397,6 +404,9 @@ void CSceneVehicleCar::ApplyCircularBurnoutForces(
+         std::fflush(donutTrace);
+       }
+     }
++    if (correctionExponent > tmphys_probe::maxExponent) tmphys_probe::maxExponent = correctionExponent;
++    if (correctionMagnitude > tmphys_probe::maxMagnitude) tmphys_probe::maxMagnitude = correctionMagnitude;
++    ++tmphys_probe::donutPulls;
+     GmVec3 correction = SceneVehicleMath::Scale(radialDir, correctionMagnitude);
+     AddVehicleCentralForce(correction);
+   }
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index ce68677..0cafa14 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -12,6 +12,8 @@
+ #include <forevervalidator/native.h>
+ 
+ #include <algorithm>
++#include <array>
++#include <chrono>
+ #include <cmath>
+ #include <cstdint>
+ #include <cstdio>
+@@ -24,6 +26,12 @@
+ using namespace forevervalidator;
+ using namespace forevervalidator::experimental;
+ 
++namespace tmphys_probe {  // defined in engine/scene/scene_vehicle_car_handling.cpp
++extern float maxExponent;
++extern float maxMagnitude;
++extern unsigned donutPulls;
++}  // namespace tmphys_probe
++
+ namespace {
+ 
+ struct Mat3 {
+@@ -96,7 +104,8 @@ int main(int argc, char **argv) {
+     auto source = OpenInstalledPackDirectory(argv[1]);
+     if (!source) return Fail("cannot open packs");
+     PhysicsSandboxOptions options;
+-    options.backend = SimulationBackend::Reference;
++    options.backend = std::getenv("FVLAB_OPTIMIZED") != nullptr ? SimulationBackend::OptimizedCpu
++                                                                : SimulationBackend::Reference;
+     auto created = CreatePhysicsSandbox(std::move(source).Value(), options);
+     if (!created) return Fail("cannot create sandbox");
+     PhysicsSandbox sandbox = std::move(created).Value();
+@@ -108,6 +117,30 @@ int main(int argc, char **argv) {
+     }
+     const std::string mode = argv[3];
+ 
++    // FVLAB_INPUTS=<csv from "inputs" mode or opt output>: replace the replay's inputs before anything else.
++    if (const char *inputsPath = std::getenv("FVLAB_INPUTS")) {
++        std::ifstream f(inputsPath);
++        std::string line;
++        std::vector<PhysicsSandboxInputEvent> events;
++        std::getline(f, line);
++        while (std::getline(f, line)) {
++            int t, a, k, sw, an;
++            if (std::sscanf(line.c_str(), "%d,%d,%d,%d,%d", &t, &a, &k, &sw, &an) != 5) continue;
++            PhysicsSandboxInputEvent e;
++            e.timeMs = t;
++            e.action = static_cast<PhysicsSandboxInputAction>(a);
++            e.value.kind = static_cast<PhysicsSandboxInputValueKind>(k);
++            e.value.switchState = static_cast<PhysicsSandboxSwitchState>(sw);
++            e.value.analog = an;
++            events.push_back(e);
++        }
++        auto replaced = sandbox.ReplaceInputs(std::move(events));
++        if (!replaced) {
++            std::fprintf(stderr, "%s\n", replaced.Error().diagnostic.c_str());
++            return Fail("FVLAB_INPUTS rejected");
++        }
++    }
++
+     auto advanceTo = [&](std::uint64_t timeMs) -> bool {
+         for (;;) {
+             auto s = sandbox.ReadState();
+@@ -117,6 +150,315 @@ int main(int argc, char **argv) {
+         }
+     };
+ 
++    // fvlab PACKS REPLAY opt SEED FROM_MS TO_MS SEGMENTS SECONDS OUT.csv
++    //   Local search on the steering between FROM and TO for the earliest precise finish time.
++    //   The window is cut into SEGMENTS; each attempt mutates the steer events of one segment of the
++    //   current best (restoring the cached state at that segment's start) and keeps it if the finish
++    //   is earlier. Writes the best inputs (inputs-mode CSV) to OUT.csv on every improvement.
++    // fvlab PACKS REPLAY uber SEED FROM_MS TO_MS SECONDS OUT.csv HORIZON_MS FX FY FZ
++    //   Search for an uber towards a target point (finish). Mutates steer, gas and brake events in
++    //   [FROM, TO) of the current best and simulates until TO + HORIZON or the finish. Score (lower is
++    //   better): finished -> finish time - 1e6; otherwise the closest distance to (FX,FY,FZ) reached,
++    //   minus 0.5 per km/h of peak speed and 5 per unit of the largest donut-pull exponent (capped at 6),
++    //   so ubers and near-ubers are rewarded before they point at the target.
++    if (mode == "uber" && argc >= 13) {
++        std::uint32_t rng = static_cast<std::uint32_t>(std::strtoul(argv[4], nullptr, 10)) * 2654435761u + 777u;
++        auto next = [&rng]() {
++            rng ^= rng << 13;
++            rng ^= rng >> 17;
++            rng ^= rng << 5;
++            return rng;
++        };
++        auto uniform = [&](int lo, int hi) { return lo + static_cast<int>(next() % static_cast<std::uint32_t>(hi - lo + 1)); };
++        const std::int32_t from = std::atoi(argv[5]) / 10 * 10;
++        const std::int32_t to = std::atoi(argv[6]) / 10 * 10;
++        const double seconds = std::atof(argv[7]);
++        const std::string outPath = argv[8];
++        const std::int32_t horizon = std::atoi(argv[9]);
++        const float fx = std::strtof(argv[10], nullptr), fy = std::strtof(argv[11], nullptr), fz = std::strtof(argv[12], nullptr);
++        auto isControl = [](PhysicsSandboxInputAction a) {
++            return a == PhysicsSandboxInputAction::Steer || a == PhysicsSandboxInputAction::Brake ||
++                   a == PhysicsSandboxInputAction::Accelerate || a == PhysicsSandboxInputAction::Gas;
++        };
++        auto base = sandbox.ReadInputs();
++        if (!base) return Fail("inputs");
++        std::vector<PhysicsSandboxInputEvent> fixed, best;
++        for (const auto &e : base.Value()) {
++            if (isControl(e.action) && e.timeMs >= from && e.timeMs < to) best.push_back(e);
++            else fixed.push_back(e);
++        }
++        if (!advanceTo(static_cast<std::uint64_t>(from))) return Fail("advance");
++        auto start = sandbox.CaptureState();
++        if (!start) return Fail("capture");
++        struct Score { double value; double finishMs; float minDist; float maxExp; float maxKmh; };
++        auto run = [&](const std::vector<PhysicsSandboxInputEvent> &cand) -> Score {
++            Score sc{1e30, 0, 1e30f, -1e30f, 0};
++            if (!sandbox.RestoreState(start.Value())) return sc;
++            if (!sandbox.ReplaceInputWindow(from, to, cand)) return sc;
++            tmphys_probe::maxExponent = -1e30f;
++            tmphys_probe::maxMagnitude = 0.0f;
++            for (;;) {
++                auto st = sandbox.ReadState();
++                if (!st) return sc;
++                const auto &v = st.Value();
++                const float dx = v.car.position.x - fx, dy = v.car.position.y - fy, dz = v.car.position.z - fz;
++                sc.minDist = std::min(sc.minDist, std::sqrt(dx * dx + dy * dy + dz * dz));
++                sc.maxKmh = std::max(sc.maxKmh, Speed(v.car) * 3.6f);
++                if (v.raceCompleted) {
++                    sc.finishMs = v.finishTime && v.finishTime->IsValid() ? v.finishTime->estimatedNs / 1e6
++                                                                          : (v.finishTimeMs ? *v.finishTimeMs : 1e9);
++                    break;
++                }
++                if (v.timeMs >= static_cast<std::uint64_t>(to + horizon)) break;
++                if (!sandbox.AdvanceTicks(1)) break;
++            }
++            sc.maxExp = tmphys_probe::maxExponent;
++            // an uber shows up as top speed: 1 km/h of peak speed is worth 0.5 m of distance to the target
++            sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
++                                       : sc.minDist - 0.5 * sc.maxKmh -
++                                                 5.0 * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
++            return sc;
++        };
++        auto writeBest = [&]() {
++            std::vector<PhysicsSandboxInputEvent> all = fixed;
++            all.insert(all.end(), best.begin(), best.end());
++            std::stable_sort(all.begin(), all.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            FILE *f = std::fopen(outPath.c_str(), "w");
++            if (f == nullptr) return;
++            std::fprintf(f, "timeMs,action,kind,switch,analog\n");
++            for (const auto &e : all) {
++                std::fprintf(f, "%d,%d,%d,%d,%d\n", e.timeMs, static_cast<int>(e.action), static_cast<int>(e.value.kind),
++                             static_cast<int>(e.value.switchState), static_cast<int>(e.value.analog));
++            }
++            std::fclose(f);
++        };
++        Score bestScore = run(best);
++        std::printf("base: score %.2f finish %.2f ms, closest %.1f m, max exponent %.2f, max %.0f km/h, %zu events\n",
++                    bestScore.value, bestScore.finishMs, bestScore.minDist, bestScore.maxExp, bestScore.maxKmh, best.size());
++        std::fflush(stdout);
++        writeBest();
++        const auto t0 = std::chrono::steady_clock::now();
++        std::uint64_t attempts = 0;
++        for (;;) {
++            const double elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
++            if (elapsed > seconds) break;
++            std::vector<PhysicsSandboxInputEvent> cand = best;
++            const int changes = uniform(1, 4);
++            for (int c = 0; c < changes; ++c) {
++                const int kind = uniform(0, 99);
++                const std::int32_t t = from + uniform(0, std::max(0, (to - from) / 10 - 1)) * 10;
++                if (cand.empty() || kind < 15) {
++                    cand.push_back(Steer(t, uniform(0, 2) == 0 ? (uniform(0, 1) ? 65536 : -65536) : uniform(-65536, 65536)));
++                } else if (kind < 25) {
++                    PhysicsSandboxInputEvent e;
++                    e.timeMs = t;
++                    e.action = uniform(0, 1) ? PhysicsSandboxInputAction::Brake : PhysicsSandboxInputAction::Accelerate;
++                    e.value.kind = PhysicsSandboxInputValueKind::Switch;
++                    e.value.switchState = uniform(0, 1) ? PhysicsSandboxSwitchState::Pressed : PhysicsSandboxSwitchState::Released;
++                    cand.push_back(e);
++                } else {
++                    auto &e = cand[static_cast<std::size_t>(uniform(0, static_cast<int>(cand.size()) - 1))];
++                    if (kind < 65 && e.action == PhysicsSandboxInputAction::Steer) {
++                        const int sigma = std::array<int, 4>{1000, 4000, 16000, 65536}[static_cast<std::size_t>(uniform(0, 3))];
++                        e.value.analog = std::clamp(e.value.analog + uniform(-sigma, sigma), -65536, 65536);
++                    } else if (kind < 95) {
++                        e.timeMs = std::clamp(e.timeMs + uniform(-3, 3) * 10, from, to - 10);
++                    } else {
++                        e.timeMs = -1;
++                    }
++                }
++            }
++            cand.erase(std::remove_if(cand.begin(), cand.end(), [](const auto &e) { return e.timeMs < 0; }), cand.end());
++            std::stable_sort(cand.begin(), cand.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            ++attempts;
++            const Score sc = run(cand);
++            if (sc.value < bestScore.value) {
++                best = cand;
++                bestScore = sc;
++                writeBest();
++                std::printf("%.1f s, attempt %llu: %.6f ms (segment 0) score %.2f finish %.2f closest %.1f m exp %.2f max %.0f km/h\n",
++                            elapsed, static_cast<unsigned long long>(attempts),
++                            sc.finishMs > 0 ? sc.finishMs : sc.value, sc.value, sc.finishMs, sc.minDist, sc.maxExp, sc.maxKmh);
++                std::fflush(stdout);
++            }
++        }
++        std::printf("done: %llu attempts, best %.6f ms\n", static_cast<unsigned long long>(attempts),
++                    bestScore.finishMs > 0 ? bestScore.finishMs : bestScore.value);
++        return 0;
++    }
++
++    if (mode == "opt" && argc >= 10) {
++        std::uint32_t rng = static_cast<std::uint32_t>(std::strtoul(argv[4], nullptr, 10)) * 2654435761u + 12345u;
++        auto next = [&rng]() {
++            rng ^= rng << 13;
++            rng ^= rng >> 17;
++            rng ^= rng << 5;
++            return rng;
++        };
++        auto uniform = [&](int lo, int hi) { return lo + static_cast<int>(next() % static_cast<std::uint32_t>(hi - lo + 1)); };
++        const std::int32_t from = std::atoi(argv[5]) / 10 * 10;
++        const std::int32_t to = std::atoi(argv[6]) / 10 * 10;
++        const int segments = std::max(1, std::atoi(argv[7]));
++        const double seconds = std::atof(argv[8]);
++        const std::string outPath = argv[9];
++
++        auto base = sandbox.ReadInputs();
++        if (!base) return Fail("inputs");
++        std::vector<PhysicsSandboxInputEvent> fixed, best;
++        for (const auto &e : base.Value()) {
++            if (e.action == PhysicsSandboxInputAction::Steer && e.timeMs >= from && e.timeMs < to) {
++                best.push_back(e);
++            } else {
++                fixed.push_back(e);
++            }
++        }
++        auto merged = [&](const std::vector<PhysicsSandboxInputEvent> &steer) {
++            std::vector<PhysicsSandboxInputEvent> all = fixed;
++            all.insert(all.end(), steer.begin(), steer.end());
++            std::stable_sort(all.begin(), all.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            return all;
++        };
++        std::int32_t endMs = to;
++        for (const auto &e : base.Value()) endMs = std::max(endMs, e.timeMs);
++        endMs = (endMs / 10 + 200) * 10;
++
++        if (!advanceTo(static_cast<std::uint64_t>(from))) return Fail("advance");
++        auto start = sandbox.CaptureState();
++        if (!start) return Fail("capture");
++        std::vector<std::int32_t> segStart;
++        for (int i = 0; i < segments; ++i) segStart.push_back((from + (to - from) * i / segments) / 10 * 10);
++
++        // simulate candidate steering from segment k's cached state; returns finish ns or UINT64_MAX
++        std::vector<PhysicsSandboxState> cache;
++        double bestNs = 0;
++        auto run = [&](const std::vector<PhysicsSandboxInputEvent> &steer, int k, double limitNs,
++                       std::vector<PhysicsSandboxState> *capture) -> double {
++            const PhysicsSandboxState &s0 = k == 0 ? start.Value() : cache[static_cast<std::size_t>(k)];
++            if (!sandbox.RestoreState(s0)) return 1e30;
++            std::vector<PhysicsSandboxInputEvent> all = merged(steer), win;
++            for (const auto &e : all) {
++                if (e.timeMs >= segStart[static_cast<std::size_t>(k)] && e.timeMs < to &&
++                    (e.action == PhysicsSandboxInputAction::Steer || e.action == PhysicsSandboxInputAction::Accelerate ||
++                     e.action == PhysicsSandboxInputAction::Gas || e.action == PhysicsSandboxInputAction::Brake)) {
++                    win.push_back(e);
++                }
++            }
++            auto replaced = sandbox.ReplaceInputWindow(segStart[static_cast<std::size_t>(k)], to, win);
++            if (!replaced) {
++                std::fprintf(stderr, "window: %s\n", replaced.Error().diagnostic.c_str());
++                return 1e30;
++            }
++            std::size_t nextSeg = static_cast<std::size_t>(k) + 1;
++            for (;;) {
++                auto st = sandbox.ReadState();
++                if (!st) return 1e30;
++                const auto &v = st.Value();
++                if (capture != nullptr) {
++                    while (nextSeg < segStart.size() && v.timeMs >= static_cast<std::uint64_t>(segStart[nextSeg])) {
++                        auto c = sandbox.CaptureState();
++                        if (c) (*capture)[nextSeg] = std::move(c).Value();
++                        ++nextSeg;
++                    }
++                }
++                if (v.raceCompleted) {
++                    if (v.finishTime && v.finishTime->IsValid()) return static_cast<double>(v.finishTime->estimatedNs);
++                    return v.finishTimeMs ? *v.finishTimeMs * 1e6 : 1e30;
++                }
++                if (static_cast<double>(v.timeMs) * 1e6 > limitNs || v.timeMs >= static_cast<std::uint64_t>(endMs)) return 1e30;
++                if (!sandbox.AdvanceTicks(1)) return 1e30;
++            }
++        };
++        auto writeBest = [&]() {
++            FILE *f = std::fopen(outPath.c_str(), "w");
++            if (f == nullptr) return;
++            std::fprintf(f, "timeMs,action,kind,switch,analog\n");
++            for (const auto &e : merged(best)) {
++                std::fprintf(f, "%d,%d,%d,%d,%d\n", e.timeMs, static_cast<int>(e.action), static_cast<int>(e.value.kind),
++                             static_cast<int>(e.value.switchState), static_cast<int>(e.value.analog));
++            }
++            std::fclose(f);
++        };
++        cache.assign(segStart.size(), start.Value());
++        bestNs = run(best, 0, 1e30, &cache);
++        std::printf("base finish %.6f ms, %zu steer events in window, segments %d\n", bestNs / 1e6, best.size(), segments);
++        std::fflush(stdout);
++        if (bestNs >= 1e29) return Fail("base run does not finish");
++        writeBest();
++
++        const auto t0 = std::chrono::steady_clock::now();
++        std::uint64_t attempts = 0, rejectedDrift = 0;
++        for (;;) {
++            const double elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
++            if (elapsed > seconds) break;
++            const int k = uniform(0, segments - 1);
++            const std::int32_t a = segStart[static_cast<std::size_t>(k)];
++            const std::int32_t b = k + 1 < segments ? segStart[static_cast<std::size_t>(k) + 1] : to;
++            std::vector<PhysicsSandboxInputEvent> cand = best;
++            std::vector<std::size_t> inSeg;
++            for (std::size_t i = 0; i < cand.size(); ++i) if (cand[i].timeMs >= a && cand[i].timeMs < b) inSeg.push_back(i);
++            const int changes = uniform(1, 3);
++            for (int c = 0; c < changes; ++c) {
++                const int kind = uniform(0, 99);
++                if (inSeg.empty() || kind < 20) {
++                    const std::int32_t t = (a + uniform(0, std::max(0, (b - a) / 10 - 1)) * 10);
++                    const int pick = uniform(0, 2);
++                    const AnalogInputState v = pick == 0 ? 65536 : pick == 1 ? -65536 : uniform(-65536, 65536);
++                    cand.push_back(Steer(t, v));
++                } else {
++                    auto &e = cand[inSeg[static_cast<std::size_t>(uniform(0, static_cast<int>(inSeg.size()) - 1))]];
++                    if (kind < 70) {
++                        const int sigma = std::array<int, 4>{1000, 4000, 16000, 65536}[static_cast<std::size_t>(uniform(0, 3))];
++                        e.value.analog = std::clamp(e.value.analog + uniform(-sigma, sigma), -65536, 65536);
++                    } else if (kind < 95) {
++                        e.timeMs = std::clamp(e.timeMs + uniform(-3, 3) * 10, a, b - 10);
++                    } else {
++                        e.timeMs = -1;  // delete
++                    }
++                }
++            }
++            cand.erase(std::remove_if(cand.begin(), cand.end(), [](const auto &e) { return e.timeMs < 0; }), cand.end());
++            std::stable_sort(cand.begin(), cand.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            ++attempts;
++            const double ns = run(cand, k, bestNs, nullptr);
++            if (ns < bestNs) {
++                // Re-simulate the whole window from the start state: a restored mid-run snapshot can drift
++                // from a continuous run, so only a full run decides and refreshes every cached segment.
++                std::vector<PhysicsSandboxState> fresh(segStart.size(), start.Value());
++                const double full = run(cand, 0, 1e30, &fresh);
++                if (!(full < bestNs)) {
++                    ++rejectedDrift;
++                    continue;
++                }
++                best = cand;
++                bestNs = full;
++                cache = std::move(fresh);
++                writeBest();
++                std::printf("%.1f s, attempt %llu: %.6f ms (segment %d)\n", elapsed,
++                            static_cast<unsigned long long>(attempts), bestNs / 1e6, k);
++                std::fflush(stdout);
++            }
++        }
++        std::printf("done: %llu attempts, best %.6f ms (%llu candidates rejected by the full re-run)\n",
++                    static_cast<unsigned long long>(attempts), bestNs / 1e6,
++                    static_cast<unsigned long long>(rejectedDrift));
++        return 0;
++    }
++
++    // fvlab PACKS REPLAY blocks: placed blocks and trigger objects with their world position
++    if (mode == "blocks") {
++        auto scene = sandbox.ReadRenderScene();
++        if (!scene || !scene.Value()) return Fail("render scene");
++        std::printf("block,purpose,component,x,y,z\n");
++        for (const auto &inst : scene.Value()->instances) {
++            const auto &p = inst.provenance;
++            if (p.blockName.empty()) continue;
++            const auto &t = inst.worldTransform.translation;
++            std::printf("%s,%d,%u,%.2f,%.2f,%.2f\n", p.blockName.c_str(), static_cast<int>(inst.purpose),
++                        p.componentIndex, t.x, t.y, t.z);
++        }
++        return 0;
++    }
++
+     // fvlab PACKS REPLAY scene X Y Z RADIUS: collision triangles with a vertex within RADIUS of (X,Y,Z)
+     if (mode == "scene" && argc >= 8) {
+         const float cx = std::strtof(argv[4], nullptr), cy = std::strtof(argv[5], nullptr),
+-- 
+2.52.0.windows.1
+

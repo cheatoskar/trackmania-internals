@@ -111,6 +111,8 @@ or in a JSON MCP configuration:
 
 Keep the server on `127.0.0.1`. Use project-local registration if your client supports it, so other projects do not see the Ghidra tools, and do not commit a configuration that contains your own paths.
 
+The same pattern works for other domains: [trackmania-map-mcp](https://github.com/cheatoskar/trackmania-map-mcp) (experimental, my own) gives an assistant tools to read and edit TMF maps instead of letting it guess the GBX format. For physics and TAS questions, let it run the offline tools in [tools/fvlab/](../tools/fvlab/README.md) and [scripts/tas/](../scripts/tas/) rather than reasoning about the physics from memory; [DeltaZero](https://github.com/cheatoskar/DeltaZero) shows a headless-physics setup for driving AI.
+
 ### Good practices
 
 - **One change at a time.** One hook, one test, one commit. Small steps make a crash attributable.

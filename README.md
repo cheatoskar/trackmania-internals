@@ -46,8 +46,8 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 | [modding/](modding/) | [loaders-and-hooks.md](modding/loaders-and-hooks.md) (TMLoader, dinput8/d3d9/d3d11 proxies, inline/IAT/vtable hooks), [reflection.md](modding/reflection.md), [game-control.md](modding/game-control.md), [tmx-rules-for-mods.md](modding/tmx-rules-for-mods.md), [vr-tmfoxr.md](modding/vr-tmfoxr.md) |
 | [server/](server/) | [xmlrpc-dedicated.md](server/xmlrpc-dedicated.md), [old-2006-server.md](server/old-2006-server.md), [masterserver.md](server/masterserver.md) (compatibility facts only) |
 | [tmx/](tmx/api.md) | TMX endpoints, fields, filters, silent-ignore traps, paging |
-| [tools/](tools/) | [ghidra.md](tools/ghidra.md) (headless + MCP setup, timings), [scripts.md](tools/scripts.md) (inventory) |
-| [scripts/](scripts/) | helper scripts: `ghidra/`, `re/`, `gbx/`, `physics/` |
+| [tools/](tools/) | [ghidra.md](tools/ghidra.md) (headless + MCP setup, timings), [scripts.md](tools/scripts.md) (inventory), [fvlab/](tools/fvlab/README.md) (traces and search tool: patch series on ForeverValidator) |
+| [scripts/](scripts/) | helper scripts: `ghidra/`, `re/`, `gbx/`, `physics/` (trace analysis), `tas/` (fvlab searches, map and trick analysis) |
 | [templates/](templates/README.md) | mod templates that compile: TMLoader plugin, dinput8 proxy, shared hook/log/build-check code, `CLAUDE.md` template |
 | [data/](data/README.md) | engine reflection tables (TMNF, ESWC, Sunrise), the TMNF/TMUF symbols the notes use, Model6 call/constant index |
 | [gotchas.md](gotchas.md) | Windows/encoding, Ghidra, loader lock, testing and TMX traps |
@@ -84,6 +84,7 @@ Issues and pull requests are welcome. Every address needs the game, the exact bu
 
 - **Text and data** (all Markdown files, `data/`): [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). Credit "trackmania-internals contributors" with a link to this repository.
 - **Code** in `scripts/` and `templates/` (the template sources, build files, `CLAUDE.md.template` and the workflow that builds them): [MIT](LICENSE-MIT), unless a file header names another licence.
+- **fvlab patches** in `tools/fvlab/`: a derived work of [ForeverValidator](https://github.com/Skycrafter-dev/ForeverValidator), MIT with the upstream copyright notice kept (see its README).
 - The games, their names and all game content belong to their owners and are not covered by either licence.
 
 ## Credits

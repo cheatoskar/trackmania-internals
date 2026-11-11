@@ -1,6 +1,7 @@
 # TAS tools and how they fit together
 
-No third-party code is copied into this repository. Every tool below is linked with its author and licence; read the
+Apart from my patch series on ForeverValidator in [tools/fvlab/](../tools/fvlab/README.md) (MIT, upstream notice kept),
+no third-party code is copied into this repository. Every tool below is linked with its author and licence; read the
 licence in the tool's own repository before reusing code.
 
 ## Overview
@@ -33,7 +34,8 @@ licence in the tool's own repository before reusing code.
 ## My patches on ForeverValidator ("fvlab")
 
 - Derived work of ForeverValidator, so MIT with the upstream notice kept. They sit on one upstream commit as a patch
-  series; they are not part of this repository.
+  series: [tools/fvlab/](../tools/fvlab/README.md) (patches, how to apply and build, every switch). The scripts that
+  drive it are in [scripts/tas/](../scripts/tas/), the trace analysis in [scripts/physics/](../scripts/physics/).
 - What they add: (1) opt-in per-physics-call CSV traces (state, burnout phase, donut terms, wheel impulses), off unless
   an environment variable is set; (2) maxima of the donut pull exposed to the search; (3) a command-line search and
   experiment tool, `fvlab`, with the modes and objectives of [searching.md](searching.md).

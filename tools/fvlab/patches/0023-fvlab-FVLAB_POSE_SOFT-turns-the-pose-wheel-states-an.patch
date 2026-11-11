@@ -1,0 +1,51 @@
+From 3bbabc4ed33564970a230094bd95609f81018932 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Sat, 31 Oct 2026 17:44:43 +0100
+Subject: [PATCH 23/28] fvlab: FVLAB_POSE_SOFT turns the pose wheel states and
+ speed floor into penalties (gradient from four wheels down)
+
+---
+ tools/fvlab.cpp | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 77f4b89..9235136 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -481,13 +481,19 @@ int main(int argc, char **argv) {
+                 static const float poseRoll = std::getenv("FVLAB_POSE_ROLL") ? std::strtof(std::getenv("FVLAB_POSE_ROLL"), nullptr) : 0.0f;
+                 static const float poseYaw = std::getenv("FVLAB_POSE_YAW") ? std::strtof(std::getenv("FVLAB_POSE_YAW"), nullptr) : -1.0f;
+                 static const float poseMinKmh = std::getenv("FVLAB_POSE_MINKMH") ? std::strtof(std::getenv("FVLAB_POSE_MINKMH"), nullptr) : 0.0f;
+-                bool wheelsOk = true;
++                //   FVLAB_POSE_SOFT=w  wheel states and speed floor become penalties instead of filters: + w per
++                //                      wrong wheel and + w/50 per km/h below the floor, so a search that starts on
++                //                      four wheels still has a gradient (default 0 = filters)
++                static const float poseSoft = std::getenv("FVLAB_POSE_SOFT") ? std::strtof(std::getenv("FVLAB_POSE_SOFT"), nullptr) : 0.0f;
++                int wrongWheels = 0;
+                 for (int i = 0; i < 4 && i < static_cast<int>(poseWheels.size()); ++i) {
+-                    if (poseWheels[i] == 'G' && !v.car.wheelContact[i]) wheelsOk = false;
+-                    if (poseWheels[i] == 'L' && v.car.wheelContact[i]) wheelsOk = false;
++                    if (poseWheels[i] == 'G' && !v.car.wheelContact[i]) ++wrongWheels;
++                    if (poseWheels[i] == 'L' && v.car.wheelContact[i]) ++wrongWheels;
+                 }
+-                if (noseposObjective && now >= evalFrom && now <= evalTo && v.checkpointsCollected >= needCps && wheelsOk &&
+-                    Speed(v.car) * 3.6f >= poseMinKmh) {
++                const float underKmh = std::max(poseMinKmh - Speed(v.car) * 3.6f, 0.0f);
++                const float posePenalty = poseSoft > 0.0f ? poseSoft * (wrongWheels + underKmh / 50.0f) : 0.0f;
++                if (noseposObjective && now >= evalFrom && now <= evalTo && v.checkpointsCollected >= needCps &&
++                    (poseSoft > 0.0f || (wrongWheels == 0 && underKmh == 0.0f))) {
+                     const Pose p = PoseOf(v.car);
+                     const Mat3 r = FromQuat(v.car.rotationX, v.car.rotationY, v.car.rotationZ, v.car.rotationW);
+                     // heading: forward + up projected on the ground (forward when level, up when nose down)
+@@ -499,7 +505,7 @@ int main(int argc, char **argv) {
+                         heading = std::acos(std::clamp(c, -1.0f, 1.0f)) * 57.29578f;
+                     }
+                     const float yawErr = poseYaw < 0.0f ? std::max(heading - 90.0f, 0.0f) : std::fabs(heading - poseYaw);
+-                    const float angle = std::fabs(posePitch - p.pitchDeg) + std::fabs(p.rollDeg - poseRoll) + yawErr;
++                    const float angle = std::fabs(posePitch - p.pitchDeg) + std::fabs(p.rollDeg - poseRoll) + yawErr + posePenalty;
+                     static const float angleMin = std::getenv("FVLAB_ANGLE_MIN") ? std::strtof(std::getenv("FVLAB_ANGLE_MIN"), nullptr) : 5.0f;
+                     const float tickValue = angle < angleMin ? -Speed(v.car) * 3.6f : 1000.0f + angle;
+                     if (tickValue < noseposBest) {
+-- 
+2.52.0.windows.1
+

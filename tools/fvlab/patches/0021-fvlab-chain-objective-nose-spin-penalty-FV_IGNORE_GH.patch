@@ -1,0 +1,139 @@
+From 4a000fa01a7e085cf18adce745686571ab953e1c Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 22:20:27 +0100
+Subject: [PATCH 21/28] fvlab: chain objective, nose spin penalty;
+ FV_IGNORE_GHOST for replays with a rejected ghost state
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ src/format/replay/replay_file_reader.cpp |  9 ++++
+ tools/fvlab.cpp                          | 58 +++++++++++++++++++++++-
+ 2 files changed, 66 insertions(+), 1 deletion(-)
+
+diff --git a/src/format/replay/replay_file_reader.cpp b/src/format/replay/replay_file_reader.cpp
+index 50e967a..a0bc761 100644
+--- a/src/format/replay/replay_file_reader.cpp
++++ b/src/format/replay/replay_file_reader.cpp
+@@ -1,5 +1,6 @@
+ #include "format/replay/replay_file.h"
+ #include <cstdint>
++#include <cstdlib>
+ #include <limits>
+ #include <optional>
+ #include <string_view>
+@@ -2146,6 +2147,14 @@ ReplayFileReadError ParseReplayStorage(
+     error = DecodeGhostTrajectory(ghostSections,
+                                   &ghostTrajectory,
+                                   &ghostArchiveMetadata);
++    // FV_IGNORE_GHOST=1: my TMInterface replays saved mid-run since 2026-10-30 21:00 carry a ghost state this reader
++    // rejects; the inputs are fine, so drop the ghost trajectory instead of failing the whole replay
++    if (error == ReplayFileReadError::InvalidGhostState && std::getenv("FV_IGNORE_GHOST") != nullptr &&
++        ReplayGhostTrajectory::CreateFixedStep(0u, {}, &ghostTrajectory) ==
++                ReplayGhostTrajectoryCreateResult::Success) {
++        ghostArchiveMetadata = {};
++        error = ReplayFileReadError::Success;
++    }
+     if (error != ReplayFileReadError::Success) {
+         return error;
+     }
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index dad3738..9d7517d 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -222,6 +222,31 @@ int main(int argc, char **argv) {
+         const bool noseObjective = noseLow || (std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nose");
+         const bool rta = std::getenv("FVLAB_RTA") != nullptr;
+         const bool noseposObjective = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nosepos";
++        // FVLAB_OBJECTIVE=chain: a nose chain from trigger to trigger. FVLAB_WAYPOINTS="x,z,r;x,z,r;..." are reached
++        // in order (horizontal distance < r). From FVLAB_CHAIN_FROM (default `from`) every tick off the nose (a rear
++        // wheel down or the nose < 45 deg down) costs FVLAB_CHAIN_OFF_W (default 1), every km/h below
++        // FVLAB_CHAIN_MINKMH (default 0) costs 0.01 per tick. Score: 1000 per waypoint left + metres to the next one
++        // + those penalties; with all reached, the time of the last one (1 per 10 ms) instead of the distance.
++        const bool chainObjective = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "chain";
++        static const std::vector<std::array<float, 3>> chainWps = [] {
++            std::vector<std::array<float, 3>> w;
++            if (const char *s = std::getenv("FVLAB_WAYPOINTS")) {
++                std::string str(s);
++                std::size_t p = 0;
++                while (p < str.size()) {
++                    std::array<float, 3> a{};
++                    if (std::sscanf(str.c_str() + p, "%f,%f,%f", &a[0], &a[1], &a[2]) != 3) break;
++                    w.push_back(a);
++                    p = str.find(';', p);
++                    if (p == std::string::npos) break;
++                    ++p;
++                }
++            }
++            return w;
++        }();
++        const std::int64_t chainFrom = std::getenv("FVLAB_CHAIN_FROM") ? std::atoll(std::getenv("FVLAB_CHAIN_FROM")) : from;
++        static const float chainOffW = std::getenv("FVLAB_CHAIN_OFF_W") ? std::strtof(std::getenv("FVLAB_CHAIN_OFF_W"), nullptr) : 1.0f;
++        static const float chainMinKmh = std::getenv("FVLAB_CHAIN_MINKMH") ? std::strtof(std::getenv("FVLAB_CHAIN_MINKMH"), nullptr) : 0.0f;
+         const std::int64_t evalFrom = std::getenv("FVLAB_EVAL_FROM") ? std::atoll(std::getenv("FVLAB_EVAL_FROM")) : to;
+         const std::int64_t evalTo = std::getenv("FVLAB_EVAL_TO") ? std::atoll(std::getenv("FVLAB_EVAL_TO")) : to + horizon;
+         // FVLAB_BOOST_GAIN=<km/h>: for noselow, a boost counts when the speed rises by this much within 600 ms
+@@ -243,6 +268,10 @@ int main(int argc, char **argv) {
+             float lastKmh = 0.0f;  // speed at the last simulated tick (FVLAB_NOSE_NOLAND_KMH)
+             std::int64_t boostAt = -1;  // first tick at FVLAB_BOOST_KMH (FVLAB_BOOST_BOX / FVLAB_BOOST_DIR)
+             float boostPenalty = 0.0f;
++            std::size_t chainNext = 0;  // FVLAB_OBJECTIVE=chain: next waypoint, penalties, time of the last one
++            float chainPenalty = 0.0f;
++            std::int64_t chainDoneAt = -1;
++            float chainDist = 1e9f;
+             unsigned pullsAtLanding = 0;
+             static const float targetMinKmh = std::getenv("FVLAB_TARGET_MINKMH") ? std::strtof(std::getenv("FVLAB_TARGET_MINKMH"), nullptr) : 0.0f;
+             static const unsigned needCps =std::getenv("FVLAB_NEED_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_NEED_CPS"))) : 0u;
+@@ -353,6 +382,11 @@ int main(int argc, char **argv) {
+                     // -0.8 deg, two landings without a boost at 4.4 and 9.6 deg)
+                     static const float noseRollW = std::getenv("FVLAB_NOSE_ROLL") ? std::strtof(std::getenv("FVLAB_NOSE_ROLL"), nullptr) : 0.0f;
+                     sc.noseErr += noseRollW * std::fabs(p.rollDeg);
++                    // FVLAB_NOSE_SPIN=w: + w per deg/s of pitch rotation at the landing (a landing at 81 deg that still
++                    // turns forward at ~150 deg/s goes past 90 deg 60 ms later and hits the body; the road-CP boost
++                    // landed turning at ~15 deg/s)
++                    static const float noseSpinW = std::getenv("FVLAB_NOSE_SPIN") ? std::strtof(std::getenv("FVLAB_NOSE_SPIN"), nullptr) : 0.0f;
++                    sc.noseErr += noseSpinW * std::fabs(p.localW[1]) * 57.29578f;
+                     // FVLAB_NOSE_BOX=x,y,z,sx,sy,sz (TMInterface corner + size): the landing must be in this box,
+                     // + 3 per metre outside (e.g. the floor of a ring CP)
+                     static const std::vector<float> noseBox = [] {
+@@ -379,6 +413,22 @@ int main(int argc, char **argv) {
+                 // gain counts only while the rear wheels are off the ground (a kick after the car has fallen back
+                 // onto its wheels is an uber, not a nose boost); noselow keeps the plain 600 ms window
+                 const bool rearUp = !v.car.wheelContact[2] && !v.car.wheelContact[3] && PoseOf(v.car).pitchDeg > 45.0f;
++                if (chainObjective && now >= chainFrom && chainDoneAt < 0 && !chainWps.empty()) {
++                    if (!rearUp) chainPenalty += chainOffW;
++                    chainPenalty += 0.01f * std::max(0.0f, chainMinKmh - Speed(v.car) * 3.6f);
++                    while (chainNext < chainWps.size()) {
++                        const auto &w = chainWps[chainNext];
++                        const float wx = v.car.position.x - w[0], wz = v.car.position.z - w[1];
++                        const float d = std::sqrt(wx * wx + wz * wz);
++                        if (d >= w[2]) {
++                            chainDist = d;
++                            break;
++                        }
++                        ++chainNext;
++                        chainDist = 1e9f;
++                    }
++                    if (chainNext == chainWps.size()) chainDoneAt = now;
++                }
+                 // FVLAB_GAIN_MS: how long after the landing the gain counts (default 300; a slow nose start near the
+                 // 440 km/h "gear" needs longer, the guides evaluate 0.3-0.7 s)
+                 static const std::int64_t gainMs = std::getenv("FVLAB_GAIN_MS") ? std::atoll(std::getenv("FVLAB_GAIN_MS")) : 300;
+@@ -458,7 +508,13 @@ int main(int argc, char **argv) {
+             // FVLAB_EXP_WEIGHT (default 5): bonus per unit of the near-uber exponent; 0 once no uber is wanted (a
+             // noseboost to a CP: donut pulls there are noise that outweighs metres of distance)
+             static const double expWeight = std::getenv("FVLAB_EXP_WEIGHT") ? std::atof(std::getenv("FVLAB_EXP_WEIGHT")) : 5.0;
+-            if (noseposObjective) {
++            if (chainObjective) {
++                const float left = static_cast<float>(chainWps.size() - chainNext);
++                sc.value = 1000.0 * left + chainPenalty +
++                           (chainDoneAt >= 0 ? static_cast<double>(chainDoneAt - chainFrom) / 10.0 : std::min(chainDist, 1000.0f));
++                sc.noseErr = chainPenalty;  // reported as "nose"
++                sc.noseGain = static_cast<float>(chainNext);  // reported as "gain": waypoints reached
++            } else if (noseposObjective) {
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6 : noseposBest;
+             } else if (noseLow) {
+                 sc.noseErr = landKmh;  // reported as "nose": the landing speed
+-- 
+2.52.0.windows.1
+

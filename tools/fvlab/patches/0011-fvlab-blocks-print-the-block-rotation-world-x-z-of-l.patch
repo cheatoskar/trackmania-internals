@@ -1,0 +1,40 @@
+From 8b8475acbec55904ba47f8fda5afed41ee47e555 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 00:28:17 +0100
+Subject: [PATCH 11/28] fvlab blocks: print the block rotation (world x/z of
+ local x and z axes)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index a1c869c..9868ab8 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -584,13 +584,16 @@ int main(int argc, char **argv) {
+     if (mode == "blocks") {
+         auto scene = sandbox.ReadRenderScene();
+         if (!scene || !scene.Value()) return Fail("render scene");
+-        std::printf("block,purpose,component,x,y,z\n");
++        // bxx,bxz,bzx,bzz: world x/z of the block's local x and z axes (rotation; the local origin is a corner)
++        std::printf("block,purpose,component,x,y,z,bxx,bxz,bzx,bzz\n");
+         for (const auto &inst : scene.Value()->instances) {
+             const auto &p = inst.provenance;
+             if (p.blockName.empty()) continue;
+-            const auto &t = inst.worldTransform.translation;
+-            std::printf("%s,%d,%u,%.2f,%.2f,%.2f\n", p.blockName.c_str(), static_cast<int>(inst.purpose),
+-                        p.componentIndex, t.x, t.y, t.z);
++            const auto &w = inst.worldTransform;
++            const auto &t = w.translation;
++            std::printf("%s,%d,%u,%.2f,%.2f,%.2f,%.3f,%.3f,%.3f,%.3f\n", p.blockName.c_str(),
++                        static_cast<int>(inst.purpose), p.componentIndex, t.x, t.y, t.z, w.basisX.x, w.basisX.z,
++                        w.basisZ.x, w.basisZ.z);
+         }
+         return 0;
+     }
+-- 
+2.52.0.windows.1
+

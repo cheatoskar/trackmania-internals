@@ -1,0 +1,349 @@
+From 611a561bb8623b84c1a0f42d5bb471956b4f7f21 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Wed, 4 Nov 2026 00:54:16 +0100
+Subject: [PATCH 28/28] fvlab: FVLAB_STAGE, VIA, GOAL_*, BOOST_FROM, POSE_BOX,
+ POSE_KMH_W, NOSE_HOLD, CHAIN_AIR_W; nosepos counts only stage-valid CPs
+
+---
+ tools/fvlab.cpp | 227 +++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 217 insertions(+), 10 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index fcd9dfe..1b91e96 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -266,6 +266,16 @@ int main(int argc, char **argv) {
+             std::int64_t landedAt = -1;
+             float landKmh = 0;
+             float noseLoss = 0;
++            int holdRun = 0, holdBest = 0;
++            int landRun = 0;  // FVLAB_LAND_BOX: consecutive ticks with >= 2 wheels down inside the box
++            bool goalHit = false;
++            unsigned prevCps = 0;
++            std::vector<float> recentY;  // car y over the last 500 ms (FVLAB_GOAL_MAXY)
++            bool stageFail = false;      // FVLAB_STAGE: the staged CP was taken elsewhere or the wrong way
++            bool goalScored = false;     // FVLAB_GOAL_CPS: the goal tick was scored
++            // starts at the CP count of the first simulated tick: a window that opens after the staged CP (CP n at
++            // 23.05 s, inputs from 23.2 s) must not check that CP again at the wrong place
++            unsigned stagePrevCps = ~0u;
+             float noseposBest = 5000.0f;
+             float lastKmh = 0.0f;  // speed at the last simulated tick (FVLAB_NOSE_NOLAND_KMH)
+             // FVLAB_SPIKE_FILTER=n: a tick's speed counts as the minimum over this tick and the n ticks before it
+@@ -278,6 +288,7 @@ int main(int argc, char **argv) {
+             };
+             std::int64_t boostAt = -1;  // first tick at FVLAB_BOOST_KMH (FVLAB_BOOST_BOX / FVLAB_BOOST_DIR)
+             float boostPenalty = 0.0f;
++            float viaMin = 1e9f;  // FVLAB_VIA: closest distance to the guide box (from FVLAB_BOOST_FROM on)
+             std::size_t chainNext = 0;  // FVLAB_OBJECTIVE=chain: next waypoint, penalties, time of the last one
+             float chainPenalty = 0.0f;
+             std::int64_t chainDoneAt = -1;
+@@ -337,9 +348,32 @@ int main(int argc, char **argv) {
+                     tmphys_probe::maxExponent = -1e30f;
+                 }
+                 const float dx = v.car.position.x - fx, dy = v.car.position.y - fy, dz = v.car.position.z - fz;
++                // FVLAB_STAGE=n,x,y,z,r,maxY,minKmh: the n-th CP must be collected within r m of (x, y, z) at >= minKmh,
++                // with the car below maxY over the 500 ms before (e.g. a bug CP taken from below). Otherwise the run's
++                // CPs stop counting for NEED_CPS / GOAL_CPS: skipping CP n and taking a later CP as the n-th CP (a ground
++                // bugslide) or taking CP n from above scores nothing
++                static const std::vector<float> stage = [] {
++                    std::vector<float> g(7);
++                    const char *s = std::getenv("FVLAB_STAGE");
++                    if (!s || std::sscanf(s, "%f,%f,%f,%f,%f,%f,%f", &g[0], &g[1], &g[2], &g[3], &g[4], &g[5], &g[6]) != 7)
++                        return std::vector<float>{};
++                    return g;
++                }();
++                if (stagePrevCps == ~0u) stagePrevCps = v.checkpointsCollected;
++                if (!stage.empty() && v.checkpointsCollected > stagePrevCps) {
++                    if (v.checkpointsCollected == static_cast<unsigned>(stage[0])) {
++                        const auto &q = v.car.position;
++                        const float sx = q.x - stage[1], sy = q.y - stage[2], sz = q.z - stage[3];
++                        bool ok = std::sqrt(sx * sx + sy * sy + sz * sz) <= stage[4] && Speed(v.car) * 3.6f >= stage[6];
++                        for (float yy : recentY) if (yy >= stage[5]) ok = false;
++                        if (!ok) stageFail = true;
++                    }
++                    stagePrevCps = v.checkpointsCollected;
++                }
++                const unsigned cpsNow = stageFail ? 0u : v.checkpointsCollected;
+                 // FVLAB_NEED_CPS=n: the distance to the target only counts once n checkpoints are collected
+                 // (e.g. through a ring first); before that the run scores 1000 m + its CP shortfall
+-                if (v.checkpointsCollected >= needCps) {
++                if (cpsNow >= needCps) {
+                     // FVLAB_TARGET_MINKMH: arriving slowly (crashed, sliding on the side) is worth less:
+                     // +0.5 m per km/h below the minimum
+                     const float slow = std::max(0.0f, targetMinKmh - Speed(v.car) * 3.6f);
+@@ -366,23 +400,61 @@ int main(int argc, char **argv) {
+                         const float oz = std::max({landBox[2] - q.z, 0.0f, q.z - landBox[5]});
+                         const float below = std::max(0.0f, landBox[1] - q.y), above = std::max(0.0f, q.y - landBox[4]);
+                         const int wheels = v.car.wheelContact[0] + v.car.wheelContact[1] + v.car.wheelContact[2] + v.car.wheelContact[3];
+-                        const float d = (ox == 0.0f && oz == 0.0f && below == 0.0f && above == 0.0f && wheels >= 2)
+-                                            ? -Speed(v.car) * 3.6f
++                        // the landing counts only after >= 2 wheels stayed down inside the box for FVLAB_SPIKE_FILTER
++                        // ticks, at the filtered (lowest) speed of those ticks: a one-tick touchdown at 421 km/h
++                        // right before a crash to 78 km/h scored as a 421 km/h landing (seen in one search)
++                        // one wheel is enough once it has to be held (a line may ride one wheel to the CP)
++                        const bool inBox = ox == 0.0f && oz == 0.0f && below == 0.0f && above == 0.0f && wheels >= 1;
++                        landRun = inBox ? landRun + 1 : 0;
++                        const float d = (inBox && landRun > spikeTicks)
++                                            ? -filteredKmh(Speed(v.car) * 3.6f)
+                                             : std::sqrt(ox * ox + oz * oz) + 3.0f * below + above + 0.5f * slow;
+                         sc.minDist = std::min(sc.minDist, d);
+                     } else {
+                         sc.minDist = std::min(sc.minDist, std::sqrt(dx * dx + dy * dy + dz * dz) + 0.5f * slow);
+                     }
+                 } else {
+-                    sc.minDist = std::min(sc.minDist, 1000.0f + 100.0f * static_cast<float>(needCps - v.checkpointsCollected));
++                    sc.minDist = std::min(sc.minDist, 1000.0f + 100.0f * static_cast<float>(needCps - cpsNow));
+                 }
+                 // FVLAB_GOAL_CPS=n: collecting the n-th checkpoint is the goal: -1000 minus the km/h at that moment
+                 // (beats any distance), so a run that crashes into the CP gate's pillar no longer counts as "there"
+                 static const unsigned goalCps = std::getenv("FVLAB_GOAL_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_GOAL_CPS"))) : 0u;
+                 // FVLAB_GOAL_KMH_MS=w: instead score the time of collection: -100000 + ms - w per km/h (earliest wins)
+                 static const float goalKmhMs = std::getenv("FVLAB_GOAL_KMH_MS") ? std::strtof(std::getenv("FVLAB_GOAL_KMH_MS"), nullptr) : -1.0f;
+-                if (goalCps > 0 && v.checkpointsCollected >= goalCps) {
+-                    const float kmh = Speed(v.car) * 3.6f;
++                // FVLAB_GOAL_NEAR=x,y,z,r: the goal CP counts only if the car is within r metres of (x, y, z) on the tick
++                // it is collected (GOAL_CPS alone accepts any n-th CP: a search for one bug CP took a different CP instead)
++                static const std::vector<float> goalNear = [] {
++                    std::vector<float> g(4);
++                    const char *s = std::getenv("FVLAB_GOAL_NEAR");
++                    if (!s || std::sscanf(s, "%f,%f,%f,%f", &g[0], &g[1], &g[2], &g[3]) != 4) return std::vector<float>{};
++                    return g;
++                }();
++                recentY.push_back(v.car.position.y);
++                if (recentY.size() > 50) recentY.erase(recentY.begin());
++                if (v.checkpointsCollected > prevCps) {
++                    if (!goalNear.empty() && v.checkpointsCollected == goalCps) {
++                        const auto &q = v.car.position;
++                        const float gx = q.x - goalNear[0], gy = q.y - goalNear[1], gz = q.z - goalNear[2];
++                        goalHit = std::sqrt(gx * gx + gy * gy + gz * gz) <= goalNear[3];
++                        // FVLAB_GOAL_RISING=v: ... and the car must move up at >= v m/s (a bug CP from below; in one
++                        // search it otherwise slid down the banked road edge into the CP from above)
++                        static const float goalRising = std::getenv("FVLAB_GOAL_RISING") ? std::strtof(std::getenv("FVLAB_GOAL_RISING"), nullptr) : -1e9f;
++                        if (v.car.linearSpeed.y < goalRising) goalHit = false;
++                        // FVLAB_GOAL_MINKMH=k: ... at >= k km/h (a slow hop over the road edge after hitting the deck
++                        // from above also rises into the trigger)
++                        static const float goalMinKmh = std::getenv("FVLAB_GOAL_MINKMH") ? std::strtof(std::getenv("FVLAB_GOAL_MINKMH"), nullptr) : 0.0f;
++                        if (Speed(v.car) * 3.6f < goalMinKmh) goalHit = false;
++                        // FVLAB_GOAL_MAXY=y: ... and the car stayed below y over the 500 ms before (it came from below)
++                        static const float goalMaxY = std::getenv("FVLAB_GOAL_MAXY") ? std::strtof(std::getenv("FVLAB_GOAL_MAXY"), nullptr) : 1e9f;
++                        for (float yy : recentY) if (yy >= goalMaxY) goalHit = false;
++                    }
++                    prevCps = v.checkpointsCollected;
++                }
++                // scored once, on the tick the goal CP is collected, with the spike filter: before, every later tick
++                // counted, so the best speed after the CP (or a contact spike) passed as "speed at the CP"
++                if (goalCps > 0 && cpsNow >= goalCps && (goalNear.empty() || goalHit) && !goalScored) {
++                    goalScored = true;
++                    const float kmh = filteredKmh(Speed(v.car) * 3.6f);
+                     sc.minDist = std::min(sc.minDist, goalKmhMs >= 0.0f
+                                                           ? -100000.0f + static_cast<float>(v.timeMs) - goalKmhMs * std::min(kmh, 1000.0f)
+                                                           : -1000.0f - kmh);
+@@ -408,7 +480,12 @@ int main(int argc, char **argv) {
+                     }
+                 }
+                 const std::int64_t now = static_cast<std::int64_t>(v.timeMs);
+-                if (boostAt < 0 && Speed(v.car) * 3.6f >= boostKmh) {
++                // the boost tick uses the spike filter (FVLAB_SPIKE_FILTER): a one-tick contact spike to 1000 km/h
++                // counted as "the boost" (seen once: 627 -> 1000 -> 396 km/h) and won on BOOST_DIR
++                // FVLAB_BOOST_FROM=ms: the boost tick is looked for from this race time on (a window that opens before
++                // a checkpoint flies at ~470 km/h, which counted as "the uber" at the window start)
++                static const std::int64_t boostFrom = std::getenv("FVLAB_BOOST_FROM") ? std::atoll(std::getenv("FVLAB_BOOST_FROM")) : 0;
++                if (boostAt < 0 && now >= boostFrom && filteredKmh(Speed(v.car) * 3.6f) >= boostKmh) {
+                     boostAt = now;
+                     if (!boostBox.empty()) {
+                         const auto &q = v.car.position;
+@@ -418,6 +495,27 @@ int main(int argc, char **argv) {
+                         boostPenalty += boostBoxW * std::sqrt(ox * ox + oy * oy + oz * oz);
+                     }
+                 }
++                // FVLAB_VIA=x,y,z,sx,sy,sz (TMI corner + size): a soft guide box the car should pass through, with no
++                // speed or event condition (e.g. after a checkpoint: uber, flick or noseboost, whatever gives the angle to
++                // the next hit and checkpoint). Scores FVLAB_VIA_W (default 1) per metre of the closest approach.
++                static const std::vector<float> viaBox = [] {
++                    std::vector<float> b(6);
++                    const char *s = std::getenv("FVLAB_VIA");
++                    if (!s || std::sscanf(s, "%f,%f,%f,%f,%f,%f", &b[0], &b[1], &b[2], &b[3], &b[4], &b[5]) != 6) return std::vector<float>{};
++                    return b;
++                }();
++                if (viaBox.size() == 6 && now >= boostFrom) {
++                    const auto &q = v.car.position;
++                    const float ox = std::max({viaBox[0] - q.x, 0.0f, q.x - viaBox[0] - viaBox[3]});
++                    const float oy = std::max({viaBox[1] - q.y, 0.0f, q.y - viaBox[1] - viaBox[4]});
++                    const float oz = std::max({viaBox[2] - q.z, 0.0f, q.z - viaBox[2] - viaBox[5]});
++                    // FVLAB_VIA_MINKMH / FVLAB_VIA_KMHW: also 0.5 (KMHW) per km/h below MINKMH on that tick, so the
++                    // box is reached with speed for the uber (a hard turn reached it at 216 km/h)
++                    static const float viaMinKmh = std::getenv("FVLAB_VIA_MINKMH") ? std::strtof(std::getenv("FVLAB_VIA_MINKMH"), nullptr) : 0.0f;
++                    static const float viaKmhW = std::getenv("FVLAB_VIA_KMHW") ? std::strtof(std::getenv("FVLAB_VIA_KMHW"), nullptr) : 0.5f;
++                    const float slowVia = std::max(0.0f, viaMinKmh - filteredKmh(Speed(v.car) * 3.6f));
++                    viaMin = std::min(viaMin, std::sqrt(ox * ox + oy * oy + oz * oz) + viaKmhW * slowVia);
++                }
+                 if (boostDirW > 0.0f && boostAt >= 0 && now == boostAt + 100) {
+                     const float tx = fx - v.car.position.x, tz = fz - v.car.position.z;
+                     const float vx = v.car.linearSpeed.x, vz = v.car.linearSpeed.z;
+@@ -479,6 +577,10 @@ int main(int argc, char **argv) {
+                 const bool rearUp = !v.car.wheelContact[2] && !v.car.wheelContact[3] && PoseOf(v.car).pitchDeg > 45.0f;
+                 if (chainObjective && now >= chainFrom && chainDoneAt < 0 && !chainWps.empty()) {
+                     if (!rearUp) chainPenalty += chainOffW;
++                    // FVLAB_CHAIN_AIR_W=w: + w per tick with no front wheel on the ground. A nose chain stays on the
++                    // ground (A01 TAS); rearUp alone also rewards hopping into the air with the nose down.
++                    static const float chainAirW = std::getenv("FVLAB_CHAIN_AIR_W") ? std::strtof(std::getenv("FVLAB_CHAIN_AIR_W"), nullptr) : 0.0f;
++                    if (!front) chainPenalty += chainAirW;
+                     chainPenalty += 0.01f * std::max(0.0f, chainMinKmh - Speed(v.car) * 3.6f);
+                     while (chainNext < chainWps.size()) {
+                         const auto &w = chainWps[chainNext];
+@@ -497,7 +599,8 @@ int main(int argc, char **argv) {
+                 // 440 km/h "gear" needs longer, the guides evaluate 0.3-0.7 s)
+                 static const std::int64_t gainMs = std::getenv("FVLAB_GAIN_MS") ? std::atoll(std::getenv("FVLAB_GAIN_MS")) : 300;
+                 if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : gainMs) && (noseLow || rearUp)) {
+-                    sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
++                    // spike-filtered (FVLAB_SPIKE_FILTER): a one-tick 2691 km/h contact spike counted as +2070 gain
++                    sc.noseGain = std::max(sc.noseGain, filteredKmh(Speed(v.car) * 3.6f) - landKmh);
+                 }
+                 // FVLAB_NOSE_LOSS=w: + w per km/h lost in the 300 ms after the landing. Without it, a body hit at a
+                 // perfect nose angle that bounces the car off (453 -> 373 km/h, no boost) beats every real nose
+@@ -506,6 +609,21 @@ int main(int argc, char **argv) {
+                 // kerb 0.4 s after the landing needs longer)
+                 static const std::int64_t lossMs = std::getenv("FVLAB_LOSS_MS") ? std::atoll(std::getenv("FVLAB_LOSS_MS")) : 300;
+                 if (landedAt >= 0 && now <= landedAt + lossMs) noseLoss = std::max(noseLoss, landKmh - Speed(v.car) * 3.6f);
++                // FVLAB_NOSE_HOLD=w[,deg]: - w per tick of the longest run after the landing with a front wheel down,
++                // both rear wheels up and the nose at least deg (default 82) down. One observed boost came after ~1 s
++                // at 83-87 deg; the inflatable nose rides fall off after 0.4-0.6 s without a boost, and the plain gain
++                // has no gradient towards a longer ride.
++                static const std::vector<float> noseHold = [] {
++                    std::vector<float> h{0.0f, 82.0f};
++                    const char *s = std::getenv("FVLAB_NOSE_HOLD");
++                    if (s) std::sscanf(s, "%f,%f", &h[0], &h[1]);
++                    return h;
++                }();
++                if (noseHold[0] > 0.0f && landedAt >= 0 && now <= landedAt + gainMs) {
++                    const bool held = front && !v.car.wheelContact[2] && !v.car.wheelContact[3] && PoseOf(v.car).pitchDeg >= noseHold[1];
++                    holdRun = held ? holdRun + 1 : 0;
++                    holdBest = std::max(holdBest, holdRun);
++                }
+                 // FVLAB_NOSE_DIR=x,z,w,ms: ms after the landing, + w per degree between the horizontal velocity and
+                 // the direction to (x, z) (steer the nose ride / boost towards the next CP)
+                 static const std::vector<float> noseDir = [] {
+@@ -549,8 +667,27 @@ int main(int argc, char **argv) {
+                     if (poseWheels[i] == 'L' && v.car.wheelContact[i]) ++wrongWheels;
+                 }
+                 const float underKmh = std::max(poseMinKmh - Speed(v.car) * 3.6f, 0.0f);
+-                const float posePenalty = poseSoft > 0.0f ? poseSoft * (wrongWheels + underKmh / 50.0f) : 0.0f;
+-                if (noseposObjective && now >= evalFrom && now <= evalTo && v.checkpointsCollected >= needCps &&
++                float posePenalty = poseSoft > 0.0f ? poseSoft * (wrongWheels + underKmh / 50.0f) : 0.0f;
++                //   FVLAB_POSE_KMH_W=w  + w per km/h below FVLAB_POSE_MINKMH instead of POSE_SOFT/50 (in one search: with
++                //                      0.4 per km/h the search kept a 210 km/h pose below the ~230 km/h uber minimum)
++                static const float poseKmhW = std::getenv("FVLAB_POSE_KMH_W") ? std::strtof(std::getenv("FVLAB_POSE_KMH_W"), nullptr) : -1.0f;
++                if (poseKmhW >= 0.0f && poseSoft > 0.0f) posePenalty += (poseKmhW - poseSoft / 50.0f) * underKmh;
++                //   FVLAB_POSE_BOX=x0,z0,x1,z1,w  the pose must be inside this ground rectangle: + w per metre
++                //                      outside (e.g. a noseboost on one stretch of the route, not just anywhere)
++                static const std::vector<float> poseBox = [] {
++                    std::vector<float> b(5);
++                    const char *s = std::getenv("FVLAB_POSE_BOX");
++                    if (!s || std::sscanf(s, "%f,%f,%f,%f,%f", &b[0], &b[1], &b[2], &b[3], &b[4]) != 5) return std::vector<float>{};
++                    return b;
++                }();
++                if (!poseBox.empty()) {
++                    const auto &q = v.car.position;
++                    const float ox = std::max({poseBox[0] - q.x, 0.0f, q.x - poseBox[2]});
++                    const float oz = std::max({poseBox[1] - q.z, 0.0f, q.z - poseBox[3]});
++                    posePenalty += poseBox[4] * std::sqrt(ox * ox + oz * oz);
++                }
++                // cpsNow, not checkpointsCollected: with FVLAB_STAGE a pose after a CP taken the wrong way does not count
++                if (noseposObjective && now >= evalFrom && now <= evalTo && cpsNow >= needCps &&
+                     (poseSoft > 0.0f || (wrongWheels == 0 && underKmh == 0.0f))) {
+                     const Pose p = PoseOf(v.car);
+                     const Mat3 r = FromQuat(v.car.rotationX, v.car.rotationY, v.car.rotationZ, v.car.rotationW);
+@@ -623,6 +760,8 @@ int main(int argc, char **argv) {
+                 }
+                 static const float noseLossW = std::getenv("FVLAB_NOSE_LOSS") ? std::strtof(std::getenv("FVLAB_NOSE_LOSS"), nullptr) : 0.0f;
+                 if (landedAt >= 0) sc.noseErr += noseLossW * noseLoss;
++                static const float noseHoldW = std::getenv("FVLAB_NOSE_HOLD") ? std::strtof(std::getenv("FVLAB_NOSE_HOLD"), nullptr) : 0.0f;
++                if (landedAt >= 0) sc.noseErr -= noseHoldW * holdBest;
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+                                            : sc.noseErr - 0.5 * sc.noseGain + 0.05 * sc.minDist;
+             } else {
+@@ -637,6 +776,11 @@ int main(int argc, char **argv) {
+                 static const double wheelieW = std::getenv("FVLAB_WHEELIE_WEIGHT") ? std::atof(std::getenv("FVLAB_WHEELIE_WEIGHT")) : 0.0;
+                 if (sc.finishMs <= 0) sc.value -= wheelieW * std::min(wheelieBest, 25);
+                 sc.noseGain = static_cast<float>(wheelieBest);  // reported for the wheelie objective
++                if (viaMin < 1e8f) {
++                    static const float viaW = std::getenv("FVLAB_VIA_W") ? std::strtof(std::getenv("FVLAB_VIA_W"), nullptr) : 1.0f;
++                    sc.value += viaW * viaMin;
++                    sc.noseErr = viaMin;  // reported as "nose"
++                }
+                 if (!boostBox.empty() || boostDirW > 0.0f) {
+                     if (boostAt < 0) boostPenalty = 500.0f;
+                     sc.value += boostPenalty;
+@@ -1071,6 +1215,69 @@ int main(int argc, char **argv) {
+         return 0;
+     }
+ 
++    // fvlab PACKS REPLAY triggers X Y Z RADIUS [PURPOSES]: render triangles of the trigger-like instances (default
++    // purposes 4 = Helper and 5 = CheckpointTrigger; PURPOSES e.g. "4,5") with a vertex within RADIUS of (X,Y,Z),
++    // in world coordinates (worldTransform x mesh vertex). One "#" line per instance with its block and world bounds.
++    if (mode == "triggers" && argc >= 8) {
++        const float cx = std::strtof(argv[4], nullptr), cy = std::strtof(argv[5], nullptr),
++                    cz = std::strtof(argv[6], nullptr), rad = std::strtof(argv[7], nullptr);
++        std::vector<int> purposes{4, 5};
++        if (argc >= 9) {
++            purposes.clear();
++            std::string s(argv[8]);
++            std::size_t p = 0;
++            while (p < s.size()) {
++                purposes.push_back(std::atoi(s.c_str() + p));
++                p = s.find(',', p);
++                if (p == std::string::npos) break;
++                ++p;
++            }
++        }
++        auto scene = sandbox.ReadRenderScene();
++        if (!scene || !scene.Value()) return Fail("render scene");
++        const auto &rs = *scene.Value();
++        auto world = [](const PhysicsSandboxTransform &w, const Vector3 &v) {
++            return Vector3{w.translation.x + w.basisX.x * v.x + w.basisY.x * v.y + w.basisZ.x * v.z,
++                           w.translation.y + w.basisX.y * v.x + w.basisY.y * v.y + w.basisZ.y * v.z,
++                           w.translation.z + w.basisX.z * v.x + w.basisY.z * v.y + w.basisZ.z * v.z};
++        };
++        auto near = [&](const Vector3 &p) {
++            const float dx = p.x - cx, dy = p.y - cy, dz = p.z - cz;
++            return dx * dx + dy * dy + dz * dz < rad * rad;
++        };
++        std::printf("purpose,ax,ay,az,bx,by,bz,cx,cy,cz\n");
++        for (const auto &inst : rs.instances) {
++            const int pu = static_cast<int>(inst.purpose);
++            if (std::find(purposes.begin(), purposes.end(), pu) == purposes.end()) continue;
++            if (inst.meshIndex >= rs.meshes.size()) continue;
++            const auto &mesh = rs.meshes[inst.meshIndex];
++            std::vector<Vector3> wv;
++            wv.reserve(mesh.vertices.size());
++            bool any = false;
++            Vector3 lo{1e30f, 1e30f, 1e30f}, hi{-1e30f, -1e30f, -1e30f};
++            for (const auto &v : mesh.vertices) {
++                const Vector3 p = world(inst.worldTransform, v.position);
++                wv.push_back(p);
++                any = any || near(p);
++                lo = Vector3{std::min(lo.x, p.x), std::min(lo.y, p.y), std::min(lo.z, p.z)};
++                hi = Vector3{std::max(hi.x, p.x), std::max(hi.y, p.y), std::max(hi.z, p.z)};
++            }
++            if (!any) continue;
++            std::printf("# purpose %d block %s component %u mesh %u: %zu vertices, %zu triangles, world bounds "
++                        "(%.2f, %.2f, %.2f) .. (%.2f, %.2f, %.2f)\n",
++                        pu, inst.provenance.blockName.c_str(), inst.provenance.componentIndex, inst.meshIndex,
++                        mesh.vertices.size(), mesh.indices.size() / 3, lo.x, lo.y, lo.z, hi.x, hi.y, hi.z);
++            for (std::size_t i = 0; i + 2 < mesh.indices.size(); i += 3) {
++                const auto ia = mesh.indices[i], ib = mesh.indices[i + 1], ic = mesh.indices[i + 2];
++                if (ia >= wv.size() || ib >= wv.size() || ic >= wv.size()) continue;
++                const Vector3 &a = wv[ia], &b = wv[ib], &c = wv[ic];
++                std::printf("%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f\n", pu, a.x, a.y, a.z, b.x, b.y, b.z,
++                            c.x, c.y, c.z);
++            }
++        }
++        return 0;
++    }
++
+     // fvlab PACKS REPLAY scene X Y Z RADIUS: collision triangles with a vertex within RADIUS of (X,Y,Z)
+     if (mode == "scene" && argc >= 8) {
+         const float cx = std::strtof(argv[4], nullptr), cy = std::strtof(argv[5], nullptr),
+-- 
+2.52.0.windows.1
+

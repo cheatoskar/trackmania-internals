@@ -23,6 +23,14 @@ Each file starts with a one-line description. All are the author's own code (MIT
 | gbx/lzo1x.ts | non-GPL LZO1X decompressor | own website code |
 | physics/dump_tuning.py | read car tuning/material/wheel data from the running game | own physics RE project |
 | physics/to_script.py, script_to_csv.py | fvlab CSV <-> TMInterface script | own physics RE project |
+| physics/analyze_trace.py, run_report.py, find_kicks.py, multicontact.py, summarize_traces.py | FV_TRACE CSV analysis: phases, speed gains, kicks, multi-contact wheels, one line per trace | own physics RE project |
+| tas/fvlab_env.py, fvlab_env.ps1 | find fvlab.exe (`FVLAB_BIN`) and the TMUF Packs (`TM_PACKS`) | written for this repo |
+| tas/map_analysis.py | start/finish/checkpoints from `fvlab blocks`, shortest CP order, driven order, top-down plot | own physics RE project |
+| tas/find_tricks.py, trick_catalog.py | trick finder over whole replays (boosts, nose phases, ramm kicks, flicks, flights) and the markdown catalogue | own physics RE project |
+| tas/scan_tas_ubers.py, kerb_survey.py | kept speed gains in TAS replays; road-border stretches aimed at a checkpoint | own physics RE project |
+| tas/touch_probe.py, touch_grid.py, body_corners.py | per-tick touch analysis with collision triangles, steer grid at a touch, body corners | own physics RE project |
+| tas/robustness.py, splice_csv.py | knife-edge test of a line; join two input CSVs | own physics RE project |
+| tas/opt_rounds.ps1, uber_rounds.ps1, multi_rounds.ps1, watch_opt.ps1 | island rounds of fvlab `opt`/`uber` searches (results re-scored in a fresh process), live view | own physics RE project |
 
 ## Worth knowing, not copied
 
@@ -30,6 +38,5 @@ Each file starts with a one-line description. All are the author's own code (MIT
 |---|---|---|
 | eswc-autosave (`src/{autosave,tmxcopy,online,loader}.cpp`) | ESWC hooks, C++ single-ghost converter, TLS 1.0 fix, CRT-free dinput8 loader | published separately; read there |
 | tm-physics-re (`map_symbols.py`, `port_tmuf.py`, trace helpers) | produced `data/symbols_*.csv`, more RE/trace helpers | project-specific, hard-coded paths |
-| ForeverValidator search/probe patches (fvlab) | offline physics search/probe tool | big; upstream MIT project |
 | TMNF-C (`tools/ghidra_scripts/*.java`, tracer) | map import, vtable export, inline-hook tracer | third-party (MIT); read there |
 | TrackManiaForeverOpenXR (`src/large_address_aware.cpp`) | safe LAA flag patch with backup | third-party; read there |

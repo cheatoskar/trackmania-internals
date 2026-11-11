@@ -1,0 +1,36 @@
+From 38ab517f2dd969f91f441515a7018acdbacbae02 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 19:23:12 +0100
+Subject: [PATCH 20/28] fvlab: weight switch for the boost box
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 72b1288..dad3738 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -262,6 +262,8 @@ int main(int argc, char **argv) {
+             }();
+             static const float boostDirW = std::getenv("FVLAB_BOOST_DIR") ? std::strtof(std::getenv("FVLAB_BOOST_DIR"), nullptr) : 0.0f;
+             static const float boostKmh = std::getenv("FVLAB_BOOST_KMH") ? std::strtof(std::getenv("FVLAB_BOOST_KMH"), nullptr) : 600.0f;
++            // FVLAB_BOOST_BOX_W: penalty per metre outside the box (default 3; raise it above a CP goal's 1000)
++            static const float boostBoxW = std::getenv("FVLAB_BOOST_BOX_W") ? std::strtof(std::getenv("FVLAB_BOOST_BOX_W"), nullptr) : 3.0f;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return sc;
+@@ -326,7 +328,7 @@ int main(int argc, char **argv) {
+                         const float ox = std::max({boostBox[0] - q.x, 0.0f, q.x - boostBox[0] - boostBox[3]});
+                         const float oy = std::max({boostBox[1] - q.y, 0.0f, q.y - boostBox[1] - boostBox[4]});
+                         const float oz = std::max({boostBox[2] - q.z, 0.0f, q.z - boostBox[2] - boostBox[5]});
+-                        boostPenalty += 3.0f * std::sqrt(ox * ox + oy * oy + oz * oz);
++                        boostPenalty += boostBoxW * std::sqrt(ox * ox + oy * oy + oz * oz);
+                     }
+                 }
+                 if (boostDirW > 0.0f && boostAt >= 0 && now == boostAt + 100) {
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,45 @@
+From 49c98de65af7a678ae65d2119236602dd92aca82 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 20:24:03 +0100
+Subject: [PATCH 05/28] fvlab: scene mode
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 312d28d..ce68677 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -117,6 +117,26 @@ int main(int argc, char **argv) {
+         }
+     };
+ 
++    // fvlab PACKS REPLAY scene X Y Z RADIUS: collision triangles with a vertex within RADIUS of (X,Y,Z)
++    if (mode == "scene" && argc >= 8) {
++        const float cx = std::strtof(argv[4], nullptr), cy = std::strtof(argv[5], nullptr),
++                    cz = std::strtof(argv[6], nullptr), rad = std::strtof(argv[7], nullptr);
++        auto scene = sandbox.ReadScene();
++        if (!scene) return Fail("scene");
++        auto near = [&](const Vector3 &p) {
++            const float dx = p.x - cx, dy = p.y - cy, dz = p.z - cz;
++            return dx * dx + dy * dy + dz * dz < rad * rad;
++        };
++        std::printf("ax,ay,az,bx,by,bz,cx,cy,cz\n");
++        for (const auto &t : scene.Value().collisionTriangles) {
++            if (near(t.a) || near(t.b) || near(t.c)) {
++                std::printf("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f\n", t.a.x, t.a.y, t.a.z, t.b.x,
++                            t.b.y, t.b.z, t.c.x, t.c.y, t.c.z);
++            }
++        }
++        return 0;
++    }
++
+     if (mode == "inputs") {
+         auto events = sandbox.ReadInputs();
+         if (!events) return Fail("inputs");
+-- 
+2.52.0.windows.1
+

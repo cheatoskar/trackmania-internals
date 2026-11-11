@@ -1,0 +1,45 @@
+From b5700f113bc978ea2e166d84a74f59263c202e4d Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Sat, 31 Oct 2026 20:19:47 +0100
+Subject: [PATCH 24/28] fvlab: FVLAB_EXP_MINKMH counts the near-uber exponent
+ only at ticks with enough speed
+
+---
+ tools/fvlab.cpp | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 9235136..d0977b0 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -293,10 +293,18 @@ int main(int argc, char **argv) {
+             static const float boostKmh = std::getenv("FVLAB_BOOST_KMH") ? std::strtof(std::getenv("FVLAB_BOOST_KMH"), nullptr) : 600.0f;
+             // FVLAB_BOOST_BOX_W: penalty per metre outside the box (default 3; raise it above a CP goal's 1000)
+             static const float boostBoxW = std::getenv("FVLAB_BOOST_BOX_W") ? std::strtof(std::getenv("FVLAB_BOOST_BOX_W"), nullptr) : 3.0f;
++            // FVLAB_EXP_MINKMH=k: the near-uber exponent of a tick counts only while the car has >= k km/h, so a crash
++            // or slow crawling contacts (which also raise the exponent) do not rank as uber set-ups
++            static const float expMinKmh = std::getenv("FVLAB_EXP_MINKMH") ? std::strtof(std::getenv("FVLAB_EXP_MINKMH"), nullptr) : 0.0f;
++            float gatedExp = -1e30f;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return sc;
+                 const auto &v = st.Value();
++                if (expMinKmh > 0.0f) {
++                    if (Speed(v.car) * 3.6f >= expMinKmh) gatedExp = std::max(gatedExp, tmphys_probe::maxExponent);
++                    tmphys_probe::maxExponent = -1e30f;
++                }
+                 const float dx = v.car.position.x - fx, dy = v.car.position.y - fy, dz = v.car.position.z - fz;
+                 // FVLAB_NEED_CPS=n: the distance to the target only counts once n checkpoints are collected
+                 // (e.g. through a ring first); before that the run scores 1000 m + its CP shortfall
+@@ -527,7 +535,7 @@ int main(int argc, char **argv) {
+                 if (v.timeMs >= static_cast<std::uint64_t>(to + horizon)) break;
+                 if (!sandbox.AdvanceTicks(1)) break;
+             }
+-            sc.maxExp = tmphys_probe::maxExponent;
++            sc.maxExp = expMinKmh > 0.0f ? gatedExp : tmphys_probe::maxExponent;
+             // FVLAB_NOSE_NOLAND_KMH=w: without a front-wheel landing the nose error is 1000 - w * (km/h at the end)
+             // instead of 1000 - 5 per air tick, so runs that crash the body (no landing, speed gone) rank below
+             // runs that keep the speed
+-- 
+2.52.0.windows.1
+

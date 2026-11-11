@@ -1,0 +1,106 @@
+From 27af75bebcecdef8f3c49d6070eced2f40b1772a Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 18:21:32 +0100
+Subject: [PATCH 03/28] fvlab: random search and replay modes
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 82 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index dd55f5c..19d3fdb 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -201,5 +201,87 @@ int main(int argc, char **argv) {
+         }
+         return 0;
+     }
++
++    // fvlab PACKS REPLAY random SEED STARTS TICKS GAIN_KMH
++    //   From STARTS evenly spaced replay times, drive TICKS ticks with random gas/brake/steer
++    //   (new random input every 50-300 ms) and print every tick whose speed gain exceeds GAIN_KMH.
++    // fvlab PACKS REPLAY replay SEED START_MS TICKS
++    //   Re-runs one random variant (same generator) so it can be traced with FV_TRACE.
++    if ((mode == "random" && argc >= 8) || (mode == "replay" && argc >= 7)) {
++        const std::uint32_t seed = std::strtoul(argv[4], nullptr, 10);
++        auto baseInputs = sandbox.ReadInputs();
++        if (!baseInputs) return Fail("inputs");
++        std::int32_t endMs = 0;
++        for (const auto &e : baseInputs.Value()) endMs = std::max(endMs, e.timeMs);
++        std::vector<std::int32_t> starts;
++        std::uint32_t ticks = 0;
++        float gainLimit = 0;
++        if (mode == "random") {
++            const int count = std::atoi(argv[5]);
++            ticks = std::strtoul(argv[6], nullptr, 10);
++            gainLimit = std::strtof(argv[7], nullptr);
++            for (int i = 0; i < count; ++i) {
++                starts.push_back((1000 + (endMs - 3000) * i / std::max(1, count)) / 10 * 10);
++            }
++        } else {
++            starts.push_back(std::atoi(argv[5]));
++            ticks = std::strtoul(argv[6], nullptr, 10);
++        }
++        std::printf("start,seed,timeMs,kmh_before,kmh_after,gain,gas,brake,steer,contacts\n");
++        auto restart = sandbox.CaptureState();
++        if (!restart) return Fail("capture");
++        for (std::int32_t start : starts) {
++            if (!sandbox.RestoreState(restart.Value())) return Fail("restore");
++            sandbox.ReplaceInputs(baseInputs.Value());
++            if (!advanceTo(static_cast<std::uint64_t>(start))) {
++                std::fprintf(stderr, "advance %d failed\n", start);
++                continue;
++            }
++            std::uint32_t rng = seed * 2654435761u + static_cast<std::uint32_t>(start);
++            auto next = [&rng]() {
++                rng ^= rng << 13;
++                rng ^= rng >> 17;
++                rng ^= rng << 5;
++                return rng;
++            };
++            std::vector<PhysicsSandboxInputEvent> win;
++            for (std::int32_t t = start; t < start + static_cast<std::int32_t>(ticks) * 10;) {
++                auto mk = [&](PhysicsSandboxInputAction a, bool on) {
++                    PhysicsSandboxInputEvent e;
++                    e.timeMs = t;
++                    e.action = a;
++                    e.value.kind = PhysicsSandboxInputValueKind::Switch;
++                    e.value.switchState = on ? PhysicsSandboxSwitchState::Pressed : PhysicsSandboxSwitchState::Released;
++                    return e;
++                };
++                win.push_back(mk(PhysicsSandboxInputAction::Accelerate, (next() % 100) < 80));
++                win.push_back(mk(PhysicsSandboxInputAction::Brake, (next() % 100) < 45));
++                win.push_back(Steer(t, static_cast<AnalogInputState>(static_cast<int>(next() % 131073) - 65536)));
++                t += 50 + static_cast<std::int32_t>((next() % 6) * 50);
++            }
++            auto replaced = sandbox.ReplaceInputWindow(start, start + ticks * 10, win);
++            if (!replaced) {
++                std::fprintf(stderr, "window %d: %s\n", start, replaced.Error().diagnostic.c_str());
++                continue;
++            }
++            float prev = Speed(sandbox.ReadState().Value().car) * 3.6f;
++            for (std::uint32_t i = 0; i < ticks; ++i) {
++                auto r = sandbox.AdvanceTicks(1);
++                if (!r) break;
++                const auto &s = r.Value();
++                float kmh = Speed(s.car) * 3.6f;
++                if (mode == "replay" || kmh - prev > gainLimit) {
++                    std::printf("%d,%u,%llu,%.1f,%.1f,%.1f,%.2f,%.2f,%.3f,%d%d%d%d\n", start, seed,
++                                static_cast<unsigned long long>(s.timeMs), prev, kmh, kmh - prev, s.accelerate,
++                                s.brake, s.steering, s.car.wheelContact[0], s.car.wheelContact[1],
++                                s.car.wheelContact[2], s.car.wheelContact[3]);
++                }
++                prev = kmh;
++                if (s.raceCompleted) break;
++            }
++            std::fflush(stdout);
++        }
++        return 0;
++    }
+     return Fail("bad mode or arguments");
+ }
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,128 @@
+From 018590c6969d52ceef32dd8977959e2406811c44 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 23:19:51 +0100
+Subject: [PATCH 09/28] fvlab: noselow objective, boost gain, long gas lifts
+ and brake taps, finish tie-breaker (FVLAB_TARGET)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 58 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 52 insertions(+), 6 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 039bbc1..ad38204 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -193,8 +193,15 @@ int main(int argc, char **argv) {
+         // FVLAB_OBJECTIVE=nose: score the first landing after FVLAB_LAND_MIN ms (default TO): pitch error to
+         // 90° nose-down plus 30 per rear wheel on the ground, minus 0.5 per km/h gained in the 300 ms after it.
+         // FVLAB_RTA=1: keyboard steering only (-65536/0/65536) and >= 50 ms between events of one action.
+-        const bool noseObjective = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nose";
++        // FVLAB_OBJECTIVE=noselow: lowest landing speed at the first front-wheel landing after FVLAB_LAND_MIN
++        // from which the car still reaches 950 km/h within 600 ms (a noseboost); runs without a boost score
++        // 10000 + landing speed - gain, so only boosting runs can replace a boosting best.
++        const bool noseLow = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "noselow";
++        const bool noseObjective = noseLow || (std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nose");
+         const bool rta = std::getenv("FVLAB_RTA") != nullptr;
++        // FVLAB_BOOST_GAIN=<km/h>: for noselow, a boost counts when the speed rises by this much within 600 ms
++        // (default: reaching 950 km/h)
++        const float boostGain = std::getenv("FVLAB_BOOST_GAIN") ? std::strtof(std::getenv("FVLAB_BOOST_GAIN"), nullptr) : 0.0f;
+         const std::int64_t landMin = std::getenv("FVLAB_LAND_MIN") ? std::atoll(std::getenv("FVLAB_LAND_MIN")) : to;
+         struct Score { double value; double finishMs; float minDist; float maxExp; float maxKmh; float noseErr; float noseGain; };
+         auto run = [&](const std::vector<PhysicsSandboxInputEvent> &cand) -> Score {
+@@ -221,7 +228,8 @@ int main(int argc, char **argv) {
+                     const Pose p = PoseOf(v.car);
+                     sc.noseErr = std::fabs(90.0f - p.pitchDeg) + 30.0f * (v.car.wheelContact[2] + v.car.wheelContact[3]);
+                 }
+-                if (landedAt >= 0 && now <= landedAt + 300) sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
++                if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : 300)) sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
++                if (noseLow && landedAt >= 0 && now > landedAt + 600) break;
+                 if (landedAt == now) pullsAtLanding = tmphys_probe::donutPulls;
+                 if (landedAt >= 0 && now == landedAt + 100 && tmphys_probe::donutPulls == pullsAtLanding) {
+                     sc.noseErr += 40.0f;  // the donut (nosebug) did not start after the landing
+@@ -240,7 +248,13 @@ int main(int argc, char **argv) {
+             // FVLAB_SPEED_WEIGHT (default 0.1) scales the speed bonus; 0 = distance (and near-uber exponent) only,
+             // so a weaker, flatter uber is not penalised once one exists.
+             static const double speedWeight = std::getenv("FVLAB_SPEED_WEIGHT") ? std::atof(std::getenv("FVLAB_SPEED_WEIGHT")) : 0.1;
+-            if (noseObjective) {
++            if (noseLow) {
++                sc.noseErr = landKmh;  // reported as "nose": the landing speed
++                sc.value = landedAt < 0 ? 1e9
++                           : ((boostGain > 0 ? sc.noseGain >= boostGain : landKmh + sc.noseGain >= 950.0f)
++                                  ? landKmh
++                                  : 10000.0 + landKmh - sc.noseGain);
++            } else if (noseObjective) {
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+                                            : sc.noseErr - 0.5 * sc.noseGain + 0.05 * sc.minDist;
+             } else {
+@@ -302,6 +316,20 @@ int main(int argc, char **argv) {
+                 const std::int32_t t = from + uniform(0, std::max(0, (to - from) / 10 - 1)) * 10;
+                 if (cand.empty() || kind < 15) {
+                     cand.push_back(Steer(t, uniform(0, 2) == 0 ? (uniform(0, 1) ? 65536 : -65536) : uniform(-65536, 65536)));
++                } else if (kind < 25 && noseLow) {
++                    // lift off the gas (or tap the brake) for 10 ms .. FVLAB_LIFT_MAX ms (default 100):
++                    // lowers the speed without breaking the run
++                    static const int liftMax = std::getenv("FVLAB_LIFT_MAX") ? std::atoi(std::getenv("FVLAB_LIFT_MAX")) : 100;
++                    const bool brakeTap = uniform(0, 9) < 3;
++                    PhysicsSandboxInputEvent e;
++                    e.timeMs = t;
++                    e.action = brakeTap ? PhysicsSandboxInputAction::Brake : PhysicsSandboxInputAction::Accelerate;
++                    e.value.kind = PhysicsSandboxInputValueKind::Switch;
++                    e.value.switchState = brakeTap ? PhysicsSandboxSwitchState::Pressed : PhysicsSandboxSwitchState::Released;
++                    cand.push_back(e);
++                    e.timeMs = std::min(to - 10, t + uniform(1, std::max(1, liftMax / 10)) * 10);
++                    e.value.switchState = brakeTap ? PhysicsSandboxSwitchState::Released : PhysicsSandboxSwitchState::Pressed;
++                    cand.push_back(e);
+                 } else if (kind < 25) {
+                     PhysicsSandboxInputEvent e;
+                     e.timeMs = t;
+@@ -358,6 +386,10 @@ int main(int argc, char **argv) {
+         const int segments = std::max(1, std::atoi(argv[7]));
+         const double seconds = std::atof(argv[8]);
+         const std::string outPath = argv[9];
++        // FVLAB_TARGET="x,y,z": tie-breaker point for finishes without a sub-tick time estimate
++        float target[3] = {0, 0, 0};
++        const bool hasTarget = std::getenv("FVLAB_TARGET") != nullptr &&
++                               std::sscanf(std::getenv("FVLAB_TARGET"), "%f,%f,%f", &target[0], &target[1], &target[2]) == 3;
+ 
+         auto base = sandbox.ReadInputs();
+         if (!base) return Fail("inputs");
+@@ -406,6 +438,7 @@ int main(int argc, char **argv) {
+                 return 1e30;
+             }
+             std::size_t nextSeg = static_cast<std::size_t>(k) + 1;
++            float prevTargetDist = 5.0f;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return 1e30;
+@@ -418,10 +451,23 @@ int main(int argc, char **argv) {
+                     }
+                 }
+                 if (v.raceCompleted) {
+-                    if (v.finishTime && v.finishTime->IsValid()) return static_cast<double>(v.finishTime->estimatedNs);
+-                    return v.finishTimeMs ? *v.finishTimeMs * 1e6 : 1e30;
++                    // an estimate sitting on the tick start (ns % 10 ms <= 1) carries no sub-tick information
++                    if (v.finishTime && v.finishTime->IsValid() &&
++                        !(hasTarget && v.finishTime->estimatedNs % 10000000u <= 1u)) {
++                        return static_cast<double>(v.finishTime->estimatedNs);
++                    }
++                    // No sub-tick estimate (e.g. finishing while falling onto the block): break ties inside the
++                    // tick with the distance to FVLAB_TARGET one tick before the finish, worth < 1 tick.
++                    return v.finishTimeMs ? *v.finishTimeMs * 1e6 + std::min(prevTargetDist, 5.0f) * 1.9e6 : 1e30;
++                }
++                if (hasTarget) {
++                    const float dx = v.car.position.x - target[0], dy = v.car.position.y - target[1],
++                                dz = v.car.position.z - target[2];
++                    prevTargetDist = std::sqrt(dx * dx + dy * dy + dz * dz);
+                 }
+-                if (static_cast<double>(v.timeMs) * 1e6 > limitNs || v.timeMs >= static_cast<std::uint64_t>(endMs)) return 1e30;
++                // with the tie-breaker a run may end in the same tick as the best and still be better
++                if (static_cast<double>(v.timeMs) * 1e6 > limitNs + (hasTarget ? 1e7 : 0.0) ||
++                    v.timeMs >= static_cast<std::uint64_t>(endMs)) return 1e30;
+                 if (!sandbox.AdvanceTicks(1)) return 1e30;
+             }
+         };
+-- 
+2.52.0.windows.1
+

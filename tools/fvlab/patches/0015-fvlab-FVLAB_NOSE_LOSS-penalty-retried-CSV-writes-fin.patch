@@ -1,0 +1,190 @@
+From 8be45b7702e679b0c7c49070b3b2c6b23305cbb6 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 14:25:40 +0100
+Subject: [PATCH 15/28] fvlab: FVLAB_NOSE_LOSS penalty, retried CSV writes,
+ final write, FVLAB_LEAKTEST
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 82 +++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 76 insertions(+), 6 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index ca17d41..3500e2d 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -21,6 +21,7 @@
+ #include <fstream>
+ #include <iterator>
+ #include <string>
++#include <thread>
+ #include <vector>
+ 
+ using namespace forevervalidator;
+@@ -87,6 +88,26 @@ PhysicsSandboxInputEvent Steer(std::int32_t timeMs, AnalogInputState value) {
+     return e;
+ }
+ 
++// Time-sorted events: keep only the last event per (time, action). Two events of one action on the same
++// millisecond are ambiguous: the search and a reload from CSV (or TMInterface) may apply a different one.
++void KeepLastPerTick(std::vector<PhysicsSandboxInputEvent> &events) {
++    std::vector<PhysicsSandboxInputEvent> kept;
++    kept.reserve(events.size());
++    for (const auto &e : events) {
++        if (!kept.empty() && kept.back().timeMs == e.timeMs) {
++            auto it = std::find_if(kept.rbegin(), kept.rend(), [&](const auto &k) {
++                return k.timeMs != e.timeMs || k.action == e.action;
++            });
++            if (it != kept.rend() && it->timeMs == e.timeMs && it->action == e.action) {
++                *it = e;
++                continue;
++            }
++        }
++        kept.push_back(e);
++    }
++    events = std::move(kept);
++}
++
+ int Fail(const char *what) {
+     std::fprintf(stderr, "fvlab: %s\n", what);
+     return 1;
+@@ -212,6 +233,7 @@ int main(int argc, char **argv) {
+             tmphys_probe::maxMagnitude = 0.0f;
+             std::int64_t landedAt = -1;
+             float landKmh = 0;
++            float noseLoss = 0;
+             unsigned pullsAtLanding = 0;
+             static const float targetMinKmh = std::getenv("FVLAB_TARGET_MINKMH") ? std::strtof(std::getenv("FVLAB_TARGET_MINKMH"), nullptr) : 0.0f;
+             static const unsigned needCps =std::getenv("FVLAB_NEED_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_NEED_CPS"))) : 0u;
+@@ -290,6 +312,10 @@ int main(int argc, char **argv) {
+                 if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : 300) && (noseLow || rearUp)) {
+                     sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
+                 }
++                // FVLAB_NOSE_LOSS=w: + w per km/h lost in the 300 ms after the landing. Without it, a body hit at a
++                // perfect nose angle that bounces the car off (453 -> 373 km/h, no boost) beats every real nose
++                // ride with a few degrees more error.
++                if (landedAt >= 0 && now <= landedAt + 300) noseLoss = std::max(noseLoss, landKmh - Speed(v.car) * 3.6f);
+                 if (noseLow && landedAt >= 0 && now > landedAt + 600) break;
+                 if (landedAt == now) pullsAtLanding = tmphys_probe::donutPulls;
+                 if (landedAt >= 0 && now == landedAt + 100 && tmphys_probe::donutPulls == pullsAtLanding) {
+@@ -317,6 +343,8 @@ int main(int argc, char **argv) {
+                                   : 10000.0 + landKmh - sc.noseGain);
+             } else if (noseObjective) {
+                 if (landedAt < 0) sc.noseErr = 1000.0f - 5.0f * std::min(airTicks, 100);
++                static const float noseLossW = std::getenv("FVLAB_NOSE_LOSS") ? std::strtof(std::getenv("FVLAB_NOSE_LOSS"), nullptr) : 0.0f;
++                if (landedAt >= 0) sc.noseErr += noseLossW * noseLoss;
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+                                            : sc.noseErr - 0.5 * sc.noseGain + 0.05 * sc.minDist;
+             } else {
+@@ -350,8 +378,17 @@ int main(int argc, char **argv) {
+             std::vector<PhysicsSandboxInputEvent> all = fixed;
+             all.insert(all.end(), best.begin(), best.end());
+             std::stable_sort(all.begin(), all.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
+-            FILE *f = std::fopen(outPath.c_str(), "w");
+-            if (f == nullptr) return;
++            // a reader (scp, a virus scan) can hold the file for a moment: retry, a silently skipped write leaves
++            // a CSV that does not match the reported best
++            FILE *f = nullptr;
++            for (int i = 0; i < 100 && f == nullptr; ++i) {
++                f = std::fopen(outPath.c_str(), "w");
++                if (f == nullptr) std::this_thread::sleep_for(std::chrono::milliseconds(20));
++            }
++            if (f == nullptr) {
++                std::fprintf(stderr, "could not write %s\n", outPath.c_str());
++                return;
++            }
+             std::fprintf(f, "timeMs,action,kind,switch,analog\n");
+             for (const auto &e : all) {
+                 std::fprintf(f, "%d,%d,%d,%d,%d\n", e.timeMs, static_cast<int>(e.action), static_cast<int>(e.value.kind),
+@@ -366,6 +403,15 @@ int main(int argc, char **argv) {
+                     bestScore.noseErr, bestScore.noseGain, best.size());
+         std::fflush(stdout);
+         writeBest();
++        if (std::getenv("FVLAB_LEAKTEST") && std::string(std::getenv("FVLAB_LEAKTEST")) == "base") {
++            // same inputs again, then after a run with all window inputs removed, then again
++            const Score again = run(best);
++            const Score other = run(std::vector<PhysicsSandboxInputEvent>{});
++            const Score after = run(best);
++            std::printf("leaktest: base %.4f again %.4f empty-window %.4f after %.4f\n", bestScore.value, again.value,
++                        other.value, after.value);
++            return 0;
++        }
+         const auto t0 = std::chrono::steady_clock::now();
+         std::uint64_t attempts = 0;
+         for (;;) {
+@@ -413,6 +459,7 @@ int main(int argc, char **argv) {
+             }
+             cand.erase(std::remove_if(cand.begin(), cand.end(), [](const auto &e) { return e.timeMs < 0; }), cand.end());
+             std::stable_sort(cand.begin(), cand.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            KeepLastPerTick(cand);
+             makeHuman(cand);
+             ++attempts;
+             const Score sc = run(cand);
+@@ -427,6 +474,11 @@ int main(int argc, char **argv) {
+                 std::fflush(stdout);
+             }
+         }
++        writeBest();
++        if (std::getenv("FVLAB_LEAKTEST")) {
++            const Score re = run(best);
++            std::printf("recheck in process: %.4f (search said %.4f)\n", re.value, bestScore.value);
++        }
+         std::printf("done: %llu attempts, best %.6f ms score %.4f finish %.2f closest %.1f m exp %.2f max %.0f km/h\n",
+                     static_cast<unsigned long long>(attempts),
+                     bestScore.finishMs > 0 ? bestScore.finishMs : bestScore.value, bestScore.value,
+@@ -555,6 +607,11 @@ int main(int argc, char **argv) {
+                         // FVLAB_TRIGGER_SPEED: highest speed at the entry instead; printed "ms" = 2000 - km/h,
+                         // the entry time only breaks ties
+                         if (triggerSpeed) return (2000.0 - Speed(v.car) * 3.6) * 1e6 + enterMs;
++                        // FVLAB_TRIGGER_KMH_MS=w: entry time minus w ms per km/h at the entry (time and speed
++                        // both count; printed "ms" is shifted by -w*km/h)
++                        static const double kmhMs =
++                                std::getenv("FVLAB_TRIGGER_KMH_MS") ? std::atof(std::getenv("FVLAB_TRIGGER_KMH_MS")) : 0.0;
++                        if (kmhMs != 0.0) return (enterMs - kmhMs * Speed(v.car) * 3.6) * 1e6;
+                         return enterMs * 1e6;
+                     }
+                     for (int i = 0; i < 3; ++i) prevPos[i] = p[i];
+@@ -565,15 +622,27 @@ int main(int argc, char **argv) {
+                                 dz = v.car.position.z - target[2];
+                     prevTargetDist = std::sqrt(dx * dx + dy * dy + dz * dz);
+                 }
+-                // with the tie-breaker a run may end in the same tick as the best and still be better
+-                if ((!triggerSpeed && static_cast<double>(v.timeMs) * 1e6 > limitNs + (hasTarget ? 1e7 : 0.0)) ||
++                // with the tie-breaker a run may end in the same tick as the best and still be better;
++                // with FVLAB_TRIGGER_KMH_MS the score is shifted by up to -w*1000 (speed below 1000 km/h)
++                static const double kmhSlackNs =
++                        std::getenv("FVLAB_TRIGGER_KMH_MS") ? std::atof(std::getenv("FVLAB_TRIGGER_KMH_MS")) * 1000.0 * 1e6 : 0.0;
++                if ((!triggerSpeed && static_cast<double>(v.timeMs) * 1e6 > limitNs + kmhSlackNs + (hasTarget ? 1e7 : 0.0)) ||
+                     v.timeMs >= static_cast<std::uint64_t>(endMs)) return 1e30;
+                 if (!sandbox.AdvanceTicks(1)) return 1e30;
+             }
+         };
+         auto writeBest = [&]() {
+-            FILE *f = std::fopen(outPath.c_str(), "w");
+-            if (f == nullptr) return;
++            // a reader (scp, a virus scan) can hold the file for a moment: retry, a silently skipped write leaves
++            // a CSV that does not match the reported best
++            FILE *f = nullptr;
++            for (int i = 0; i < 100 && f == nullptr; ++i) {
++                f = std::fopen(outPath.c_str(), "w");
++                if (f == nullptr) std::this_thread::sleep_for(std::chrono::milliseconds(20));
++            }
++            if (f == nullptr) {
++                std::fprintf(stderr, "could not write %s\n", outPath.c_str());
++                return;
++            }
+             std::fprintf(f, "timeMs,action,kind,switch,analog\n");
+             for (const auto &e : merged(best)) {
+                 std::fprintf(f, "%d,%d,%d,%d,%d\n", e.timeMs, static_cast<int>(e.action), static_cast<int>(e.value.kind),
+@@ -621,6 +690,7 @@ int main(int argc, char **argv) {
+             }
+             cand.erase(std::remove_if(cand.begin(), cand.end(), [](const auto &e) { return e.timeMs < 0; }), cand.end());
+             std::stable_sort(cand.begin(), cand.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            KeepLastPerTick(cand);
+             ++attempts;
+             const double ns = run(cand, k, bestNs, nullptr);
+             if (ns < bestNs) {
+-- 
+2.52.0.windows.1
+

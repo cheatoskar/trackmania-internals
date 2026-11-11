@@ -1,0 +1,64 @@
+From c190bfbddf67471e1dfefb358b6bf0d7ee08cda5 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Sun, 1 Nov 2026 00:21:38 +0100
+Subject: [PATCH 26/28] fvlab: FVLAB_RAW_KMH_WEIGHT (unfiltered peak as
+ guidance) and FVLAB_WHEELIE_WEIGHT (rear-wheel ride, the TAS uber recipe)
+
+---
+ tools/fvlab.cpp | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 641fd6d..59f5c6b 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -256,6 +256,8 @@ int main(int argc, char **argv) {
+         struct Score { double value; double finishMs; float minDist; float maxExp; float maxKmh; float noseErr; float noseGain; };
+         auto run = [&](const std::vector<PhysicsSandboxInputEvent> &cand) -> Score {
+             Score sc{1e30, 0, 1e30f, -1e30f, 0, 1e9f, 0};
++            float rawMaxKmh = 0.0f;  // unfiltered peak speed (FVLAB_RAW_KMH_WEIGHT)
++            int wheelieRun = 0, wheelieBest = 0;  // FVLAB_WHEELIE_WEIGHT
+             if (!sandbox.RestoreState(start.Value())) return sc;
+             // (from, to): the tick at `from` is already applied in the start state, a base event at `to` must stay
+             if (!sandbox.ReplaceInputWindow(from + 10, to - 10, cand)) return sc;
+@@ -384,6 +386,22 @@ int main(int argc, char **argv) {
+                 static const bool spikeFilter = std::getenv("FVLAB_SPIKE_FILTER") && std::atoi(std::getenv("FVLAB_SPIKE_FILTER")) != 0;
+                 const float tickKmh = spikeFilter ? std::min(Speed(v.car) * 3.6f, lastKmh) : Speed(v.car) * 3.6f;
+                 sc.maxKmh = std::max(sc.maxKmh, tickKmh);
++                rawMaxKmh = std::max(rawMaxKmh, Speed(v.car) * 3.6f);
++                // FVLAB_WHEELIE_WEIGHT=w: the uber recipe of the public TMN TASes (C0, D-2, F-9, Pro A-1, ...): the car
++                // rides 10-20 ticks on the rear wheels only, nose up 2-20 deg, roll under 30 deg, >= 230 km/h, gas and
++                // brake held, then a front wheel touches and the speed jumps to 770-1000 km/h. Rewards the longest such
++                // ride (up to 25 ticks); the speed jump itself is paid by SPEED_WEIGHT
++                {
++                    const Pose wp = PoseOf(v.car);
++                    const bool rearOnly = (v.car.wheelContact[2] || v.car.wheelContact[3]) && !v.car.wheelContact[0] &&
++                                          !v.car.wheelContact[1];
++                    if (rearOnly && wp.pitchDeg <= -2.0f && wp.pitchDeg >= -20.0f && std::fabs(wp.rollDeg) < 30.0f &&
++                        Speed(v.car) * 3.6f >= 230.0f) {
++                        wheelieBest = std::max(wheelieBest, ++wheelieRun);
++                    } else {
++                        wheelieRun = 0;
++                    }
++                }
+                 const std::int64_t now = static_cast<std::int64_t>(v.timeMs);
+                 if (boostAt < 0 && Speed(v.car) * 3.6f >= boostKmh) {
+                     boostAt = now;
+@@ -602,6 +620,14 @@ int main(int argc, char **argv) {
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+                                            : sc.minDist - speedWeight * std::min(sc.maxKmh, 1000.0f) -
+                                                      expWeight * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
++                // FVLAB_RAW_KMH_WEIGHT=w (with FVLAB_SPIKE_FILTER): w points per km/h of the unfiltered peak, so contact
++                // spikes (an inflatable gives 251 -> 774 -> 264 km/h) guide the search towards a spike the car keeps,
++                // which the filtered peak (SPEED_WEIGHT) then rewards fully
++                static const double rawKmhW = std::getenv("FVLAB_RAW_KMH_WEIGHT") ? std::atof(std::getenv("FVLAB_RAW_KMH_WEIGHT")) : 0.0;
++                if (sc.finishMs <= 0) sc.value -= rawKmhW * std::min(rawMaxKmh, 3000.0f);
++                static const double wheelieW = std::getenv("FVLAB_WHEELIE_WEIGHT") ? std::atof(std::getenv("FVLAB_WHEELIE_WEIGHT")) : 0.0;
++                if (sc.finishMs <= 0) sc.value -= wheelieW * std::min(wheelieBest, 25);
++                sc.noseGain = static_cast<float>(wheelieBest);  // reported for the wheelie objective
+                 if (!boostBox.empty() || boostDirW > 0.0f) {
+                     if (boostAt < 0) boostPenalty = 500.0f;
+                     sc.value += boostPenalty;
+-- 
+2.52.0.windows.1
+

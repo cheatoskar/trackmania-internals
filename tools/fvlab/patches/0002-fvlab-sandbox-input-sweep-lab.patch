@@ -1,0 +1,243 @@
+From ac02e43b685f3e19fcc992ab5dac0e9f680e5ba6 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 17:57:21 +0100
+Subject: [PATCH 02/28] fvlab: sandbox input sweep lab
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ CMakeLists.txt  |   5 ++
+ tools/fvlab.cpp | 205 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 210 insertions(+)
+ create mode 100644 tools/fvlab.cpp
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d5afb02..d7aef18 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -554,6 +554,11 @@ endif()
+ if(FOREVERVALIDATOR_BUILD_BENCHMARKS)
+     enable_testing()
+ 
++    # tm-physics-re: input sweep lab on the physics sandbox
++    add_executable(fvlab tools/fvlab.cpp)
++    target_include_directories(fvlab PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
++    target_link_libraries(fvlab PRIVATE forevervalidator_native forevervalidator_core)
++    forevervalidator_configure_target(fvlab)
+     add_executable(optimized_cpu_benchmark
+         tools/optimized_cpu_benchmark.cpp)
+     target_include_directories(optimized_cpu_benchmark PRIVATE
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+new file mode 100644
+index 0000000..dd55f5c
+--- /dev/null
++++ b/tools/fvlab.cpp
+@@ -0,0 +1,205 @@
++// tm-physics-re lab: input sweeps on top of the experimental physics sandbox.
++//
++// fvlab PACKS REPLAY seam T0_MS T_STEER_FROM_MS T_STEER_TO_MS HORIZON_TICKS
++//   Restores the replay state at T0 - (T0 - T_STEER_FROM) and replaces the steering between
++//   T_STEER_FROM and T_STEER_TO with a constant value from a sweep, then reports for each value the
++//   maximum nose-down pitch angle, peak pitch/roll rates (car space) and the speed after HORIZON ticks.
++// fvlab PACKS REPLAY probe T0_MS TICKS
++//   Prints the state every tick from T0 for TICKS ticks (position, speed, pitch/roll, wheel contacts).
++
++#include <forevervalidator/experimental/physics_sandbox.h>
++#include <forevervalidator/input_state.h>
++#include <forevervalidator/native.h>
++
++#include <algorithm>
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <cstdlib>
++#include <fstream>
++#include <iterator>
++#include <string>
++#include <vector>
++
++using namespace forevervalidator;
++using namespace forevervalidator::experimental;
++
++namespace {
++
++struct Mat3 {
++    float m[3][3];
++};
++
++Mat3 FromQuat(float x, float y, float z, float w) {
++    Mat3 r{};
++    r.m[0][0] = 1 - 2 * (y * y + z * z);
++    r.m[0][1] = 2 * (x * y - z * w);
++    r.m[0][2] = 2 * (x * z + y * w);
++    r.m[1][0] = 2 * (x * y + z * w);
++    r.m[1][1] = 1 - 2 * (x * x + z * z);
++    r.m[1][2] = 2 * (y * z - x * w);
++    r.m[2][0] = 2 * (x * z - y * w);
++    r.m[2][1] = 2 * (y * z + x * w);
++    r.m[2][2] = 1 - 2 * (x * x + y * y);
++    return r;
++}
++
++struct Pose {
++    float pitchDeg;  // nose down positive
++    float rollDeg;
++    float localW[3];  // angular speed in car space
++};
++
++Pose PoseOf(const PhysicsSandboxCarState &c) {
++    Mat3 r = FromQuat(c.rotationX, c.rotationY, c.rotationZ, c.rotationW);
++    // columns: car x (left), y (up), z (forward) in world
++    float fwdY = r.m[1][2];
++    float leftY = r.m[1][0];
++    Pose p{};
++    p.pitchDeg = std::asin(std::clamp(-fwdY, -1.0f, 1.0f)) * 57.29578f;
++    p.rollDeg = std::asin(std::clamp(leftY, -1.0f, 1.0f)) * 57.29578f;
++    const Vector3 &w = c.angularSpeed;
++    for (int i = 0; i < 3; ++i) {
++        p.localW[i] = r.m[0][i] * w.x + r.m[1][i] * w.y + r.m[2][i] * w.z;
++    }
++    return p;
++}
++
++float Speed(const PhysicsSandboxCarState &c) {
++    return std::sqrt(c.linearSpeed.x * c.linearSpeed.x + c.linearSpeed.y * c.linearSpeed.y +
++                     c.linearSpeed.z * c.linearSpeed.z);
++}
++
++PhysicsSandboxInputEvent Steer(std::int32_t timeMs, AnalogInputState value) {
++    PhysicsSandboxInputEvent e;
++    e.timeMs = timeMs;
++    e.action = PhysicsSandboxInputAction::Steer;
++    e.value.kind = PhysicsSandboxInputValueKind::Analog;
++    e.value.analog = value;
++    return e;
++}
++
++int Fail(const char *what) {
++    std::fprintf(stderr, "fvlab: %s\n", what);
++    return 1;
++}
++
++}  // namespace
++
++int main(int argc, char **argv) {
++    if (argc < 4) {
++        return Fail("usage: fvlab PACKS REPLAY seam|probe ...");
++    }
++    std::ifstream in(argv[2], std::ios::binary);
++    std::vector<std::uint8_t> replay((std::istreambuf_iterator<char>(in)), {});
++    if (replay.empty()) return Fail("cannot read replay");
++    auto source = OpenInstalledPackDirectory(argv[1]);
++    if (!source) return Fail("cannot open packs");
++    PhysicsSandboxOptions options;
++    options.backend = SimulationBackend::Reference;
++    auto created = CreatePhysicsSandbox(std::move(source).Value(), options);
++    if (!created) return Fail("cannot create sandbox");
++    PhysicsSandbox sandbox = std::move(created).Value();
++    ByteView view{reinterpret_cast<const std::byte *>(replay.data()), replay.size()};
++    auto loaded = sandbox.LoadReplay(view, ReplayIdentity{argv[2]});
++    if (!loaded) {
++        std::fprintf(stderr, "%s\n", loaded.Error().diagnostic.c_str());
++        return Fail("cannot load replay");
++    }
++    const std::string mode = argv[3];
++
++    auto advanceTo = [&](std::uint64_t timeMs) -> bool {
++        for (;;) {
++            auto s = sandbox.ReadState();
++            if (!s) return false;
++            if (s.Value().timeMs >= timeMs) return true;
++            if (!sandbox.AdvanceTicks(1)) return false;
++        }
++    };
++
++    if (mode == "probe" && argc >= 6) {
++        const std::uint64_t t0 = std::strtoull(argv[4], nullptr, 10);
++        const std::uint32_t ticks = std::strtoul(argv[5], nullptr, 10);
++        if (!advanceTo(t0)) return Fail("advance");
++        std::printf("timeMs,kmh,px,py,pz,pitch,roll,wx_l,wy_l,wz_l,contacts,gas,brake,steer\n");
++        for (std::uint32_t i = 0; i < ticks; ++i) {
++            auto s = sandbox.ReadState().Value();
++            Pose p = PoseOf(s.car);
++            std::printf("%llu,%.2f,%.3f,%.3f,%.3f,%.2f,%.2f,%.3f,%.3f,%.3f,%d%d%d%d,%.2f,%.2f,%.3f\n",
++                        static_cast<unsigned long long>(s.timeMs), Speed(s.car) * 3.6f,
++                        s.car.position.x, s.car.position.y, s.car.position.z, p.pitchDeg, p.rollDeg,
++                        p.localW[0], p.localW[1], p.localW[2], s.car.wheelContact[0],
++                        s.car.wheelContact[1], s.car.wheelContact[2], s.car.wheelContact[3],
++                        s.accelerate, s.brake, s.steering);
++            std::printf("    q,%.6f,%.6f,%.6f,%.6f\n", s.car.rotationX, s.car.rotationY,
++                        s.car.rotationZ, s.car.rotationW);
++            if (!sandbox.AdvanceTicks(1)) break;
++        }
++        return 0;
++    }
++
++    if (mode == "seam" && argc >= 8) {
++        const std::int64_t t0 = std::strtoll(argv[4], nullptr, 10);
++        const std::int64_t steerFrom = std::strtoll(argv[5], nullptr, 10);
++        const std::int64_t steerTo = std::strtoll(argv[6], nullptr, 10);
++        const std::uint32_t horizon = std::strtoul(argv[7], nullptr, 10);
++        if (!advanceTo(static_cast<std::uint64_t>(std::min(t0, steerFrom)) - 10)) return Fail("advance");
++        auto snapshot = sandbox.CaptureState();
++        if (!snapshot) return Fail("capture");
++        auto baseInputs = sandbox.ReadInputs();
++        if (!baseInputs) return Fail("inputs");
++        // last steer value before steerTo, restored at steerTo
++        AnalogInputState lastSteer = 0;
++        for (const auto &e : baseInputs.Value()) {
++            if (e.action == PhysicsSandboxInputAction::Steer && e.timeMs <= steerTo &&
++                e.value.kind == PhysicsSandboxInputValueKind::Analog) {
++                lastSteer = e.value.analog;
++            }
++        }
++        std::printf("steer,max_pitch_down,min_pitch,max_abs_roll,peak_wx,peak_wz,kmh_end,airborne_ticks\n");
++        auto envInt = [](const char *name, int fallback) {
++            const char *value = std::getenv(name);
++            return value != nullptr ? std::atoi(value) : fallback;
++        };
++        const int steerMin = envInt("FVLAB_STEER_MIN", -65536);
++        const int steerMax = envInt("FVLAB_STEER_MAX", 65536);
++        const int steerStep = std::max(1, envInt("FVLAB_STEER_STEP", 4096));
++        for (int v = steerMin; v <= steerMax; v += steerStep) {
++            std::vector<PhysicsSandboxInputEvent> win;
++            win.push_back(Steer(static_cast<std::int32_t>(steerFrom), v));
++            win.push_back(Steer(static_cast<std::int32_t>(steerTo), lastSteer));
++            auto restored = sandbox.RestoreState(snapshot.Value());
++            if (!restored) {
++                std::fprintf(stderr, "%s\n", restored.Error().diagnostic.c_str());
++                return Fail("restore");
++            }
++            auto replaced = sandbox.ReplaceInputWindow(steerFrom, steerTo, win);
++            if (!replaced) {
++                std::fprintf(stderr, "%s\n", replaced.Error().diagnostic.c_str());
++                return Fail("window");
++            }
++            float maxPitch = -1e9f, minPitch = 1e9f, maxRoll = 0, peakWx = 0, peakWz = 0;
++            int air = 0;
++            PhysicsSandboxStateView s{};
++            for (std::uint32_t i = 0; i < horizon; ++i) {
++                auto r = sandbox.AdvanceTicks(1);
++                if (!r) break;
++                s = r.Value();
++                Pose p = PoseOf(s.car);
++                maxPitch = std::max(maxPitch, p.pitchDeg);
++                minPitch = std::min(minPitch, p.pitchDeg);
++                maxRoll = std::max(maxRoll, std::fabs(p.rollDeg));
++                if (std::fabs(p.localW[0]) > std::fabs(peakWx)) peakWx = p.localW[0];
++                if (std::fabs(p.localW[2]) > std::fabs(peakWz)) peakWz = p.localW[2];
++                bool any = s.car.wheelContact[0] || s.car.wheelContact[1] || s.car.wheelContact[2] ||
++                           s.car.wheelContact[3];
++                if (!any) ++air;
++            }
++            std::printf("%d,%.2f,%.2f,%.2f,%.3f,%.3f,%.1f,%d\n", v, maxPitch, minPitch, maxRoll, peakWx,
++                        peakWz, Speed(s.car) * 3.6f, air);
++            std::fflush(stdout);
++        }
++        return 0;
++    }
++    return Fail("bad mode or arguments");
++}
+-- 
+2.52.0.windows.1
+

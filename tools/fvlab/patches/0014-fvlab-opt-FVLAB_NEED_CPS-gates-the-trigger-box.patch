@@ -1,0 +1,28 @@
+From 06c67bce0f56018d593796f6fc76e817d25dce0a Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 13:04:34 +0100
+Subject: [PATCH 14/28] fvlab opt: FVLAB_NEED_CPS gates the trigger box
+
+---
+ tools/fvlab.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index abf5554..ca17d41 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -536,6 +536,11 @@ int main(int argc, char **argv) {
+                     const float p[3] = {v.car.position.x, v.car.position.y, v.car.position.z};
+                     bool inside = true;
+                     for (int i = 0; i < 3; ++i) inside = inside && p[i] >= trig[i] && p[i] <= trig[i] + trig[i + 3];
++                    // FVLAB_NEED_CPS=n: the box only counts once n checkpoints are collected (a box behind a CP
++                    // line is otherwise reached by passing next to or under the CP)
++                    static const unsigned optNeedCps =
++                            std::getenv("FVLAB_NEED_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_NEED_CPS"))) : 0u;
++                    inside = inside && v.checkpointsCollected >= optNeedCps;
+                     if (inside) {
+                         if (!havePrev) return static_cast<double>(v.timeMs) * 1e6;
+                         float tEnter = 0.0f;  // fraction of the segment prev -> p where the box is entered
+-- 
+2.52.0.windows.1
+

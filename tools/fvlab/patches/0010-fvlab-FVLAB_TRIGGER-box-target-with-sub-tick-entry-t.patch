@@ -1,0 +1,82 @@
+From 0e1b3f790ed05efcf63b1987c7f2232a833f91c0 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 00:17:43 +0100
+Subject: [PATCH 10/28] fvlab: FVLAB_TRIGGER box target with sub-tick entry
+ time; nose gain only on the nose
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index ad38204..a1c869c 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -228,7 +228,12 @@ int main(int argc, char **argv) {
+                     const Pose p = PoseOf(v.car);
+                     sc.noseErr = std::fabs(90.0f - p.pitchDeg) + 30.0f * (v.car.wheelContact[2] + v.car.wheelContact[3]);
+                 }
+-                if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : 300)) sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
++                // gain counts only while the rear wheels are off the ground (a kick after the car has fallen back
++                // onto its wheels is an uber, not a nose boost); noselow keeps the plain 600 ms window
++                const bool rearUp = !v.car.wheelContact[2] && !v.car.wheelContact[3] && PoseOf(v.car).pitchDeg > 45.0f;
++                if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : 300) && (noseLow || rearUp)) {
++                    sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
++                }
+                 if (noseLow && landedAt >= 0 && now > landedAt + 600) break;
+                 if (landedAt == now) pullsAtLanding = tmphys_probe::donutPulls;
+                 if (landedAt >= 0 && now == landedAt + 100 && tmphys_probe::donutPulls == pullsAtLanding) {
+@@ -388,6 +393,11 @@ int main(int argc, char **argv) {
+         const std::string outPath = argv[9];
+         // FVLAB_TARGET="x,y,z": tie-breaker point for finishes without a sub-tick time estimate
+         float target[3] = {0, 0, 0};
++        // FVLAB_TRIGGER="x,y,z,sx,sy,sz": optimise the earliest entry into this box instead of the finish
++        float trig[6] = {0, 0, 0, 0, 0, 0};
++        const bool hasTrigger = std::getenv("FVLAB_TRIGGER") != nullptr &&
++                                std::sscanf(std::getenv("FVLAB_TRIGGER"), "%f,%f,%f,%f,%f,%f", &trig[0], &trig[1],
++                                            &trig[2], &trig[3], &trig[4], &trig[5]) == 6;
+         const bool hasTarget = std::getenv("FVLAB_TARGET") != nullptr &&
+                                std::sscanf(std::getenv("FVLAB_TARGET"), "%f,%f,%f", &target[0], &target[1], &target[2]) == 3;
+ 
+@@ -439,6 +449,8 @@ int main(int argc, char **argv) {
+             }
+             std::size_t nextSeg = static_cast<std::size_t>(k) + 1;
+             float prevTargetDist = 5.0f;
++            float prevPos[3] = {0, 0, 0};
++            bool havePrev = false;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return 1e30;
+@@ -460,6 +472,27 @@ int main(int argc, char **argv) {
+                     // tick with the distance to FVLAB_TARGET one tick before the finish, worth < 1 tick.
+                     return v.finishTimeMs ? *v.finishTimeMs * 1e6 + std::min(prevTargetDist, 5.0f) * 1.9e6 : 1e30;
+                 }
++                if (hasTrigger) {
++                    // FVLAB_TRIGGER box (TMInterface style: corner + size): "finish" when the car position enters
++                    // it; the entry time is interpolated along the last tick's segment for a sub-tick score
++                    const float p[3] = {v.car.position.x, v.car.position.y, v.car.position.z};
++                    bool inside = true;
++                    for (int i = 0; i < 3; ++i) inside = inside && p[i] >= trig[i] && p[i] <= trig[i] + trig[i + 3];
++                    if (inside) {
++                        if (!havePrev) return static_cast<double>(v.timeMs) * 1e6;
++                        float tEnter = 0.0f;  // fraction of the segment prev -> p where the box is entered
++                        for (int i = 0; i < 3; ++i) {
++                            const float d = p[i] - prevPos[i];
++                            if (std::fabs(d) < 1e-6f) continue;
++                            const float lo = (trig[i] - prevPos[i]) / d, hi = (trig[i] + trig[i + 3] - prevPos[i]) / d;
++                            tEnter = std::max(tEnter, std::min(lo, hi));
++                        }
++                        tEnter = std::clamp(tEnter, 0.0f, 1.0f);
++                        return (static_cast<double>(v.timeMs) - 10.0 + 10.0 * tEnter) * 1e6;
++                    }
++                    for (int i = 0; i < 3; ++i) prevPos[i] = p[i];
++                    havePrev = true;
++                }
+                 if (hasTarget) {
+                     const float dx = v.car.position.x - target[0], dy = v.car.position.y - target[1],
+                                 dz = v.car.position.z - target[2];
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,84 @@
+From 6a29e0a38f9ed82a4800a46fab7d0a341443ab60 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 19:08:26 +0100
+Subject: [PATCH 19/28] fvlab: boost box and boost direction for uber searches
+
+FVLAB_BOOST_BOX places the first tick at FVLAB_BOOST_KMH in a box and
+FVLAB_BOOST_DIR scores the heading 100 ms after it against the target.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 4d4af2a..72b1288 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -241,12 +241,27 @@ int main(int argc, char **argv) {
+             float noseLoss = 0;
+             float noseposBest = 5000.0f;
+             float lastKmh = 0.0f;  // speed at the last simulated tick (FVLAB_NOSE_NOLAND_KMH)
++            std::int64_t boostAt = -1;  // first tick at FVLAB_BOOST_KMH (FVLAB_BOOST_BOX / FVLAB_BOOST_DIR)
++            float boostPenalty = 0.0f;
+             unsigned pullsAtLanding = 0;
+             static const float targetMinKmh = std::getenv("FVLAB_TARGET_MINKMH") ? std::strtof(std::getenv("FVLAB_TARGET_MINKMH"), nullptr) : 0.0f;
+             static const unsigned needCps =std::getenv("FVLAB_NEED_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_NEED_CPS"))) : 0u;
+             bool airborne = false;
+             int airTicks = 0;  // gradient while no landing exists yet: more air time = closer to a flight
+             static const float noseMinKmh = std::getenv("FVLAB_NOSE_MINKMH") ? std::strtof(std::getenv("FVLAB_NOSE_MINKMH"), nullptr) : 0.0f;
++            // FVLAB_BOOST_BOX=x,y,z,sx,sy,sz (TMInterface corner + size): the first tick at FVLAB_BOOST_KMH
++            // (default 600) must be in this box, + 3 per metre outside (where on the road the noseboost fires).
++            // FVLAB_BOOST_DIR=w: 100 ms after that tick, + w per degree between the horizontal velocity and the
++            // direction to the target point (aim the boost; the distance alone has no gradient while a small
++            // input change can kill the boost). Without a boost: + 500. Both add to the uber score.
++            static const std::vector<float> boostBox = [] {
++                std::vector<float> b(6);
++                const char *s = std::getenv("FVLAB_BOOST_BOX");
++                if (!s || std::sscanf(s, "%f,%f,%f,%f,%f,%f", &b[0], &b[1], &b[2], &b[3], &b[4], &b[5]) != 6) return std::vector<float>{};
++                return b;
++            }();
++            static const float boostDirW = std::getenv("FVLAB_BOOST_DIR") ? std::strtof(std::getenv("FVLAB_BOOST_DIR"), nullptr) : 0.0f;
++            static const float boostKmh = std::getenv("FVLAB_BOOST_KMH") ? std::strtof(std::getenv("FVLAB_BOOST_KMH"), nullptr) : 600.0f;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return sc;
+@@ -304,6 +319,22 @@ int main(int argc, char **argv) {
+                 }
+                 sc.maxKmh = std::max(sc.maxKmh, Speed(v.car) * 3.6f);
+                 const std::int64_t now = static_cast<std::int64_t>(v.timeMs);
++                if (boostAt < 0 && Speed(v.car) * 3.6f >= boostKmh) {
++                    boostAt = now;
++                    if (!boostBox.empty()) {
++                        const auto &q = v.car.position;
++                        const float ox = std::max({boostBox[0] - q.x, 0.0f, q.x - boostBox[0] - boostBox[3]});
++                        const float oy = std::max({boostBox[1] - q.y, 0.0f, q.y - boostBox[1] - boostBox[4]});
++                        const float oz = std::max({boostBox[2] - q.z, 0.0f, q.z - boostBox[2] - boostBox[5]});
++                        boostPenalty += 3.0f * std::sqrt(ox * ox + oy * oy + oz * oz);
++                    }
++                }
++                if (boostDirW > 0.0f && boostAt >= 0 && now == boostAt + 100) {
++                    const float tx = fx - v.car.position.x, tz = fz - v.car.position.z;
++                    const float vx = v.car.linearSpeed.x, vz = v.car.linearSpeed.z;
++                    const float n = std::sqrt((tx * tx + tz * tz) * (vx * vx + vz * vz));
++                    boostPenalty += boostDirW * (n > 1e-6f ? std::acos(std::clamp((tx * vx + tz * vz) / n, -1.0f, 1.0f)) * 57.29578f : 180.0f);
++                }
+                 const bool front = v.car.wheelContact[0] || v.car.wheelContact[1];
+                 // a landing needs a flight first: from a car that is still rolling at LAND_MIN, the first
+                 // front contact is just driving on
+@@ -446,6 +477,11 @@ int main(int argc, char **argv) {
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+                                            : sc.minDist - speedWeight * std::min(sc.maxKmh, 1000.0f) -
+                                                      expWeight * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
++                if (!boostBox.empty() || boostDirW > 0.0f) {
++                    if (boostAt < 0) boostPenalty = 500.0f;
++                    sc.value += boostPenalty;
++                    sc.noseErr = boostPenalty;  // reported as "nose"
++                }
+             }
+             return sc;
+         };
+-- 
+2.52.0.windows.1
+

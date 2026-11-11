@@ -1,0 +1,300 @@
+From e0439ec138164843753628400946d9d7e401d037 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 17:44:01 +0100
+Subject: [PATCH 01/28] Opt-in CSV traces: FV_TRACE, FV_TRACE_DONUT,
+ FV_TRACE_IMPULSE, FV_TRACE_STEP
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ src/engine/physics/world/physics_step.cpp     | 35 ++++++++
+ src/engine/scene/scene_vehicle_car.h          |  5 ++
+ .../scene/scene_vehicle_car_feedback.cpp      | 83 +++++++++++++++++++
+ .../scene/scene_vehicle_car_handling.cpp      | 24 ++++++
+ src/engine/scene/scene_vehicle_car_wheels.cpp | 31 ++++++-
+ 5 files changed, 176 insertions(+), 2 deletions(-)
+
+diff --git a/src/engine/physics/world/physics_step.cpp b/src/engine/physics/world/physics_step.cpp
+index 0ad1223..94236db 100644
+--- a/src/engine/physics/world/physics_step.cpp
++++ b/src/engine/physics/world/physics_step.cpp
+@@ -26,6 +26,37 @@ static u32 ComputeSubstepCount(
+     return Binary32::TruncateToUint32Modulo(scaled) + 1u;
+ }
+ 
++
++#include <cmath>
++#include <cstdio>
++#include <cstdlib>
++// tm-physics-re: FV_TRACE_STEP=<csv> logs |v| after integration and after collision response.
++static void TmTraceStep(CHmsDyna *dyna, int stage, u32 contacts) {
++    static std::FILE *file = nullptr;
++    static bool opened = false;
++    if (!opened) {
++        opened = true;
++        const char *path = std::getenv("FV_TRACE_STEP");
++        if (path != nullptr && path[0] != '\0') {
++            file = std::fopen(path, "w");
++            if (file != nullptr) {
++                std::fprintf(file, "tick,stage,speed,vx,vy,vz,wlen,collisions\n");
++            }
++        }
++    }
++    if (file == nullptr) {
++        return;
++    }
++    GmVec3 v;
++    GmVec3 w;
++    dyna->GetLinearSpeed(v);
++    dyna->GetAngularSpeed(w);
++    std::fprintf(file, "%u,%d,%.5g,%.5g,%.5g,%.5g,%.5g,%u\n",
++                 CMwCmdBufferCore::Current()->Timer().GetTickTime(), stage,
++                 std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z), v.x, v.y, v.z,
++                 std::sqrt(w.x * w.x + w.y * w.y + w.z * w.z), contacts);
++}
++
+ void CHmsZoneDynamic::PhysicsStep2() {
+     // The command core owns the simulation clock used by every physics consumer.
+     float dt = secondsFromMwTimeForPhysicsStep2(
+@@ -94,9 +125,11 @@ void CHmsZoneDynamic::PhysicsStep2() {
+                     NotifyBeforeCollisionSubstep(*corpus, splitDt);
+                     ComputeCorpusForces(corpus, splitDt);
+                     dyna->DoPreCollisionDynamic(splitDt);
++                    TmTraceStep(dyna, 1, 0u);
+                     collisionBuffer_.Clear();
+                     collisionManagerZone->DetectCollisionsCorpus(collisionBuffer_, corpus);
+                     ComputeCollisionResponse();
++                    TmTraceStep(dyna, 2, 0u);
+                     dyna->DoPostCollisionDynamic();
+                     NotifyAfterCollisionSubstep(*corpus, splitDt);
+                     remainingDt = ((remainingDt) - (splitDt));
+@@ -106,9 +139,11 @@ void CHmsZoneDynamic::PhysicsStep2() {
+             NotifyBeforeCollisionSubstep(*corpus, remainingDt);
+             ComputeCorpusForces(corpus, remainingDt);
+             dyna->DoPreCollisionDynamic(remainingDt);
++            TmTraceStep(dyna, 1, 0u);
+             collisionBuffer_.Clear();
+             collisionManagerZone->DetectCollisionsCorpus(collisionBuffer_, corpus);
+             ComputeCollisionResponse();
++            TmTraceStep(dyna, 2, 0u);
+             dyna->DoPostCollisionDynamic();
+             NotifyAfterCollisionSubstep(*corpus, remainingDt);
+             dyna->CopyTempToState();
+diff --git a/src/engine/scene/scene_vehicle_car.h b/src/engine/scene/scene_vehicle_car.h
+index d17fbce..57e0c55 100644
+--- a/src/engine/scene/scene_vehicle_car.h
++++ b/src/engine/scene/scene_vehicle_car.h
+@@ -299,6 +299,11 @@ public:
+   void BeginRaceSimulation(void);
+   void AfterContacts(void);
+   void ComputeForces(float dt);
++  // tm-physics-re: one CSV row per ComputeForces call when FV_TRACE is set.
++  void TraceComputeForces(float dt, u32 tick, const GmVec3 &linearSpeed,
++                          const GmVec3 &angularSpeed, float visualSteerYaw,
++                          const CSceneVehicleMaterial::SBlendableVals &vals,
++                          int hasGroundMaterial, int phaseBefore);
+   virtual void OtherUpdateAsync(void);
+   virtual void OtherVehicleForces(void);
+   virtual void OtherVehiclePhysics(void);
+diff --git a/src/engine/scene/scene_vehicle_car_feedback.cpp b/src/engine/scene/scene_vehicle_car_feedback.cpp
+index 0eddcda..3f0a2d2 100644
+--- a/src/engine/scene/scene_vehicle_car_feedback.cpp
++++ b/src/engine/scene/scene_vehicle_car_feedback.cpp
+@@ -3,6 +3,31 @@
+ #include "engine/scene/scene_vehicle_car_internal.h"
+ using namespace SceneVehicleCarDynamics;
+ 
++#include <cmath>
++#include <cstdio>
++#include <cstdlib>
++
++// tm-physics-re trace: FV_TRACE=<csv path> writes one row per ComputeForces call.
++static std::FILE *TmPhysicsTraceFile() {
++  static bool opened = false;
++  static std::FILE *file = nullptr;
++  if (!opened) {
++    opened = true;
++    const char *path = std::getenv("FV_TRACE");
++    if (path != nullptr && path[0] != '\0') {
++      file = std::fopen(path, "w");
++      if (file != nullptr) {
++        std::fprintf(file,
++                     "tick,call,dt,px,py,pz,kmh,vx,vy,vz,wx,wy,wz,gas,brake,steer,steer_yaw,"
++                     "phase_before,phase,cx,cy,cz,dist_center,base_r,target_r,"
++                     "blend0,blend1,blend2,blend3,has_ground,body_contacts,wheel_contacts,"
++                     "fl_c,fl_m,fl_s,fr_c,fr_m,fr_s,rr_c,rr_m,rr_s,rl_c,rl_m,rl_s,fl_n,fl_d,fl_nx,fl_ny,fl_nz,fr_n,fr_d,fr_nx,fr_ny,fr_nz,rr_n,rr_d,rr_nx,rr_ny,rr_nz,rl_n,rl_d,rl_nx,rl_ny,rl_nz,fx,fy,fz,ix,iy,iz\n");
++      }
++    }
++  }
++  return file;
++}
++
+ void CSceneVehicleCar::UpdateBodyContactSnapshot() {
+   CSceneVehicleCar::SVehicleCarState *frame = &frameHistory.physicsCurrent;
+   if (contacts.bodyContactCount == 0) {
+@@ -960,6 +985,7 @@ void CSceneVehicleCar::SaveAndClearAccumulatedFeedback(GmVec3 &savedForce,
+ }
+ 
+ void CSceneVehicleCar::ComputeForces(float dt) {
++  const int tracePhaseBefore = static_cast<int>(gearedDrive.burnoutPhase);
+ 
+   GmVec3 savedForce;
+   GmVec3 savedImpulse;
+@@ -1037,8 +1063,65 @@ void CSceneVehicleCar::ComputeForces(float dt) {
+     OtherVehicleForces();
+   }
+ 
++  if (TmPhysicsTraceFile() != nullptr) {
++    TraceComputeForces(dt, tick, linearSpeed, angularSpeed, visualSteerYaw,
++                       materialVals, hasGroundMaterial, tracePhaseBefore);
++  }
+   UpdateFeedbackTail(tuning, dt, linearSpeed, savedForce, savedImpulse,
+                      surfaceFeedback);
+   ClearWheelContactScratch();
+   ResetPerTickContactFeedback();
+ }
++
++void CSceneVehicleCar::TraceComputeForces(
++    float dt, u32 tick, const GmVec3 &linearSpeed, const GmVec3 &angularSpeed,
++    float visualSteerYaw, const CSceneVehicleMaterial::SBlendableVals &vals,
++    int hasGroundMaterial, int phaseBefore) {
++  std::FILE *file = TmPhysicsTraceFile();
++  static u32 lastTick = 0xffffffffu;
++  static int call = 0;
++  call = (tick == lastTick) ? call + 1 : 0;
++  lastTick = tick;
++  const GmVec3 pos = HmsItem()->CorpusAt(0u)->GetLocation()->translation;
++  const GmVec3 c = gearedDrive.burnoutCenter;
++  const float dx = c.x - pos.x, dy = c.y - pos.y, dz = c.z - pos.z;
++  const float speed = std::sqrt(linearSpeed.x * linearSpeed.x +
++                                linearSpeed.y * linearSpeed.y +
++                                linearSpeed.z * linearSpeed.z);
++  std::fprintf(file,
++               "%u,%d,%.6g,%.4f,%.4f,%.4f,%.3f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,"
++               "%.3g,%.3g,%.4g,%.5g,%d,%d,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,"
++               "%.3g,%.3g,%.3g,%.3g,%d,%u,%u",
++               tick, call, dt, pos.x, pos.y, pos.z, speed * 3.6f, linearSpeed.x,
++               linearSpeed.y, linearSpeed.z, angularSpeed.x, angularSpeed.y,
++               angularSpeed.z, controls.lowSpeedGateA, controls.lowSpeedGateB,
++               controls.steeringControl, visualSteerYaw, phaseBefore,
++               static_cast<int>(gearedDrive.burnoutPhase), c.x, c.y, c.z,
++               std::sqrt(dx * dx + dy * dy + dz * dz), gearedDrive.burnoutBaseRadius,
++               gearedDrive.burnoutTargetRadius, vals.x, vals.y, vals.z, vals.w,
++               hasGroundMaterial, contacts.bodyContactCount, contacts.wheelContactCount);
++  for (size_t i = 0; i < 4; ++i) {
++    if (i < wheels.size()) {
++      const SSimulationWheel::SRealTimeState &rt = wheels[i].realTimeState;
++      std::fprintf(file, ",%d,%d,%d", rt.contactPresent ? 1 : 0,
++                   static_cast<int>(rt.contactMaterial), rt.slipping ? 1 : 0);
++    } else {
++      std::fprintf(file, ",,,");
++    }
++  }
++  for (size_t i = 0; i < 4; ++i) {
++    if (i < wheels.size()) {
++      const SSimulationWheel::SRealTimeState &rt = wheels[i].realTimeState;
++      std::fprintf(file, ",%u,%.4f,%.4f,%.4f,%.4f", rt.contactNormalSampleCount,
++                   rt.damperAbsorb, rt.accumulatedContactNormal.x,
++                   rt.accumulatedContactNormal.y, rt.accumulatedContactNormal.z);
++    } else {
++      std::fprintf(file, ",,,,,");
++    }
++  }
++  std::fprintf(file, ",%.5g,%.5g,%.5g,%.5g,%.5g,%.5g", forceAccumulators.force.x,
++               forceAccumulators.force.y, forceAccumulators.force.z,
++               forceAccumulators.impulse.x, forceAccumulators.impulse.y,
++               forceAccumulators.impulse.z);
++  std::fputc('\n', file);
++}
+diff --git a/src/engine/scene/scene_vehicle_car_handling.cpp b/src/engine/scene/scene_vehicle_car_handling.cpp
+index 4e450bc..3a1afe3 100644
+--- a/src/engine/scene/scene_vehicle_car_handling.cpp
++++ b/src/engine/scene/scene_vehicle_car_handling.cpp
+@@ -1,5 +1,7 @@
+ // Geared-drive handling, slip memory, and burnout dynamics.
+ 
++#include <cstdio>
++#include <cstdlib>
+ #include "engine/scene/scene_vehicle_car_internal.h"
+ using namespace SceneVehicleCarDynamics;
+ 
+@@ -373,6 +375,28 @@ void CSceneVehicleCar::ApplyCircularBurnoutForces(
+     float expCorrection = CIexp(correctionExponent);
+     float tangentSpeedSq = tangentSpeedWide * tangentSpeedWide;
+     float correctionMagnitude = (tangentSpeedSq / radius) * expCorrection;
++    {  // tm-physics-re: FV_TRACE_DONUT=<csv> logs the donut pull terms
++      static std::FILE *donutTrace = nullptr;
++      static bool donutOpened = false;
++      if (!donutOpened) {
++        donutOpened = true;
++        const char *path = std::getenv("FV_TRACE_DONUT");
++        if (path != nullptr && path[0] != '\0') {
++          donutTrace = std::fopen(path, "w");
++          if (donutTrace != nullptr) {
++            std::fprintf(donutTrace, "tick,radius,base_r,target_r,v_t,v_r,exponent,exp,magnitude,lin_x,lin_y,lin_z\n");
++          }
++        }
++      }
++      if (donutTrace != nullptr) {
++        std::fprintf(donutTrace, "%u,%.5g,%.5g,%.5g,%.5g,%.5g,%.5g,%.5g,%.5g,%.5g,%.5g,%.5g\n",
++                     CMwCmdBufferCore::Current()->Timer().GetTickTime(), radius,
++                     gearedDrive.burnoutBaseRadius, gearedDrive.burnoutTargetRadius, tangentSpeed,
++                     radialSpeed, correctionExponent, expCorrection, correctionMagnitude,
++                     linearSpeed.x, linearSpeed.y, linearSpeed.z);
++        std::fflush(donutTrace);
++      }
++    }
+     GmVec3 correction = SceneVehicleMath::Scale(radialDir, correctionMagnitude);
+     AddVehicleCentralForce(correction);
+   }
+diff --git a/src/engine/scene/scene_vehicle_car_wheels.cpp b/src/engine/scene/scene_vehicle_car_wheels.cpp
+index e5431b1..9450f74 100644
+--- a/src/engine/scene/scene_vehicle_car_wheels.cpp
++++ b/src/engine/scene/scene_vehicle_car_wheels.cpp
+@@ -1,5 +1,8 @@
+ // Wheel suspension, contact absorption, and impulse application.
+ 
++#include <cmath>
++#include <cstdio>
++#include <cstdlib>
+ #include "engine/scene/scene_vehicle_car_internal.h"
+ using namespace SceneVehicleCarDynamics;
+ 
+@@ -200,8 +203,32 @@ void CSceneVehicleCar::AddVehicleImpulse(const GmVec3 &impulseLocal,
+   float invMass = 1.0f / params->mass;
+   GmVec3 candidateLinear =
+       this->BuildLinearSpeedAfterPointImpulse(*state, worldImpulse, invMass);
+-  if (this->RejectPointImpulseLinearSpeedGrowth(*state, candidateLinear,
+-                                                *tuning)) {
++  const int tmRejected = this->RejectPointImpulseLinearSpeedGrowth(*state, candidateLinear, *tuning);
++  {  // tm-physics-re: FV_TRACE_IMPULSE=<csv> logs every point impulse
++    static std::FILE *impTrace = nullptr;
++    static bool impOpened = false;
++    if (!impOpened) {
++      impOpened = true;
++      const char *path = std::getenv("FV_TRACE_IMPULSE");
++      if (path != nullptr && path[0] != '\0') {
++        impTrace = std::fopen(path, "w");
++        if (impTrace != nullptr) {
++          std::fprintf(impTrace, "tick,v_before,v_after,rejected,jx,jy,jz,px,py,pz\n");
++        }
++      }
++    }
++    if (impTrace != nullptr) {
++      const GmVec3 &v0 = state->linearSpeed;
++      std::fprintf(impTrace, "%u,%.5g,%.5g,%d,%.5g,%.5g,%.5g,%.4g,%.4g,%.4g\n",
++                   CMwCmdBufferCore::Current()->Timer().GetTickTime(),
++                   std::sqrt(v0.x * v0.x + v0.y * v0.y + v0.z * v0.z),
++                   std::sqrt(candidateLinear.x * candidateLinear.x + candidateLinear.y * candidateLinear.y +
++                             candidateLinear.z * candidateLinear.z),
++                   tmRejected, impulseLocal.x, impulseLocal.y, impulseLocal.z,
++                   pointLocal.x, pointLocal.y, pointLocal.z);
++    }
++  }
++  if (tmRejected) {
+     candidateLinear = SceneVehicleMath::Zero();
+   }
+   state->linearSpeed = candidateLinear;
+-- 
+2.52.0.windows.1
+

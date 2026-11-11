@@ -1,0 +1,56 @@
+From 3041eb49ddebb46f85cdd58a32a4ec14124644ca Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 22:06:13 +0100
+Subject: [PATCH 07/28] fvlab: configurable speed weight for uber score
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 0cafa14..40a2da4 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
+     //   Search for an uber towards a target point (finish). Mutates steer, gas and brake events in
+     //   [FROM, TO) of the current best and simulates until TO + HORIZON or the finish. Score (lower is
+     //   better): finished -> finish time - 1e6; otherwise the closest distance to (FX,FY,FZ) reached,
+-    //   minus 0.5 per km/h of peak speed and 5 per unit of the largest donut-pull exponent (capped at 6),
++    //   minus 0.1 per km/h of peak speed (capped at 1000) and 5 per unit of the largest donut-pull exponent (capped at 6),
+     //   so ubers and near-ubers are rewarded before they point at the target.
+     if (mode == "uber" && argc >= 13) {
+         std::uint32_t rng = static_cast<std::uint32_t>(std::strtoul(argv[4], nullptr, 10)) * 2654435761u + 777u;
+@@ -213,9 +213,13 @@ int main(int argc, char **argv) {
+                 if (!sandbox.AdvanceTicks(1)) break;
+             }
+             sc.maxExp = tmphys_probe::maxExponent;
+-            // an uber shows up as top speed: 1 km/h of peak speed is worth 0.5 m of distance to the target
++            // Peak speed counts only up to the 1000 km/h cap (post-kick spikes above it never move the car),
++            // 0.1 m per km/h, so once an uber exists the distance to the target decides.
++            // FVLAB_SPEED_WEIGHT (default 0.1) scales the speed bonus; 0 = distance (and near-uber exponent) only,
++            // so a weaker, flatter uber is not penalised once one exists.
++            static const double speedWeight = std::getenv("FVLAB_SPEED_WEIGHT") ? std::atof(std::getenv("FVLAB_SPEED_WEIGHT")) : 0.1;
+             sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+-                                       : sc.minDist - 0.5 * sc.maxKmh -
++                                       : sc.minDist - speedWeight * std::min(sc.maxKmh, 1000.0f) -
+                                                  5.0 * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
+             return sc;
+         };
+@@ -282,8 +286,10 @@ int main(int argc, char **argv) {
+                 std::fflush(stdout);
+             }
+         }
+-        std::printf("done: %llu attempts, best %.6f ms\n", static_cast<unsigned long long>(attempts),
+-                    bestScore.finishMs > 0 ? bestScore.finishMs : bestScore.value);
++        std::printf("done: %llu attempts, best %.6f ms score %.4f finish %.2f closest %.1f m exp %.2f max %.0f km/h\n",
++                    static_cast<unsigned long long>(attempts),
++                    bestScore.finishMs > 0 ? bestScore.finishMs : bestScore.value, bestScore.value,
++                    bestScore.finishMs, bestScore.minDist, bestScore.maxExp, bestScore.maxKmh);
+         return 0;
+     }
+ 
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,73 @@
+From db3eac4d920e63651c946734a506dc0b944a520a Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Sat, 31 Oct 2026 17:40:44 +0100
+Subject: [PATCH 22/28] fvlab: generalised pose target
+ (FVLAB_POSE_WHEELS/PITCH/ROLL/YAW/MINKMH) and nose start without a flight
+ (FVLAB_NOSE_ONPITCH)
+
+---
+ tools/fvlab.cpp | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 9d7517d..77f4b89 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -373,7 +373,13 @@ int main(int argc, char **argv) {
+                     airborne = true;
+                     if (landedAt < 0) ++airTicks;
+                 }
+-                if (noseObjective && landedAt < 0 && now >= landMin && front && airborne) {
++                // FVLAB_NOSE_ONPITCH=deg: the nose phase may also start without a flight, on the first tick with a
++                // front wheel down, both rear wheels up and the nose at least that far down (a ramm or a rear wheel
++                // on a road border tips the car onto one front wheel while it keeps rolling: D-0, A15, C0 TAS)
++                static const float noseOnPitch = std::getenv("FVLAB_NOSE_ONPITCH") ? std::strtof(std::getenv("FVLAB_NOSE_ONPITCH"), nullptr) : 0.0f;
++                const bool tipped = noseOnPitch > 0.0f && front && !v.car.wheelContact[2] && !v.car.wheelContact[3] &&
++                                    PoseOf(v.car).pitchDeg >= noseOnPitch;
++                if (noseObjective && landedAt < 0 && now >= landMin && front && (noseOnPitch > 0.0f ? tipped : airborne)) {
+                     landedAt = now;
+                     landKmh = Speed(v.car) * 3.6f;
+                     const Pose p = PoseOf(v.car);
+@@ -461,8 +467,27 @@ int main(int argc, char **argv) {
+                 // FVLAB_EVAL_FROM and FVLAB_EVAL_TO, angle = |90 - nose down| + |roll| + heading error beyond 90 deg
+                 // from the horizontal velocity; below FVLAB_ANGLE_MIN (default 5) the tick scores minus its km/h,
+                 // above it 1000 + angle. The best tick counts. A set-up stage before the landing search.
+-                if (noseposObjective && now >= evalFrom && now <= evalTo && v.checkpointsCollected >= needCps &&
+-                    !v.car.wheelContact[0] && !v.car.wheelContact[1] && !v.car.wheelContact[2] && !v.car.wheelContact[3]) {
++                // Generalised pose target (after Sai-Moen's RammFinder wheel states and the Nosepos+ presets):
++                //   FVLAB_POSE_WHEELS  4 chars in wheelContact order (as `probe` prints contacts): G = must touch,
++                //                      L = must be lifted, ? = any; default LLLL (in the air)
++                //   FVLAB_POSE_PITCH   target nose-down pitch (default 90; Nosepos+ uber set-up: -25)
++                //   FVLAB_POSE_ROLL    target roll (default 0)
++                //   FVLAB_POSE_YAW     target angle between heading and velocity (default: anything up to 90 is free;
++                //                      Nosepos+ uber set-up: 90)
++                //   FVLAB_POSE_MINKMH  the tick counts only at this speed or more (a nose position below ~390 km/h
++                //                      cannot be ridden up to the ~478 km/h boost)
++                static const std::string poseWheels = std::getenv("FVLAB_POSE_WHEELS") ? std::getenv("FVLAB_POSE_WHEELS") : "LLLL";
++                static const float posePitch = std::getenv("FVLAB_POSE_PITCH") ? std::strtof(std::getenv("FVLAB_POSE_PITCH"), nullptr) : 90.0f;
++                static const float poseRoll = std::getenv("FVLAB_POSE_ROLL") ? std::strtof(std::getenv("FVLAB_POSE_ROLL"), nullptr) : 0.0f;
++                static const float poseYaw = std::getenv("FVLAB_POSE_YAW") ? std::strtof(std::getenv("FVLAB_POSE_YAW"), nullptr) : -1.0f;
++                static const float poseMinKmh = std::getenv("FVLAB_POSE_MINKMH") ? std::strtof(std::getenv("FVLAB_POSE_MINKMH"), nullptr) : 0.0f;
++                bool wheelsOk = true;
++                for (int i = 0; i < 4 && i < static_cast<int>(poseWheels.size()); ++i) {
++                    if (poseWheels[i] == 'G' && !v.car.wheelContact[i]) wheelsOk = false;
++                    if (poseWheels[i] == 'L' && v.car.wheelContact[i]) wheelsOk = false;
++                }
++                if (noseposObjective && now >= evalFrom && now <= evalTo && v.checkpointsCollected >= needCps && wheelsOk &&
++                    Speed(v.car) * 3.6f >= poseMinKmh) {
+                     const Pose p = PoseOf(v.car);
+                     const Mat3 r = FromQuat(v.car.rotationX, v.car.rotationY, v.car.rotationZ, v.car.rotationW);
+                     // heading: forward + up projected on the ground (forward when level, up when nose down)
+@@ -473,7 +498,8 @@ int main(int argc, char **argv) {
+                         const float c = (hx * vx + hz * vz) / std::sqrt((hx * hx + hz * hz) * (vx * vx + vz * vz));
+                         heading = std::acos(std::clamp(c, -1.0f, 1.0f)) * 57.29578f;
+                     }
+-                    const float angle = std::fabs(90.0f - p.pitchDeg) + std::fabs(p.rollDeg) + std::max(heading - 90.0f, 0.0f);
++                    const float yawErr = poseYaw < 0.0f ? std::max(heading - 90.0f, 0.0f) : std::fabs(heading - poseYaw);
++                    const float angle = std::fabs(posePitch - p.pitchDeg) + std::fabs(p.rollDeg - poseRoll) + yawErr;
+                     static const float angleMin = std::getenv("FVLAB_ANGLE_MIN") ? std::strtof(std::getenv("FVLAB_ANGLE_MIN"), nullptr) : 5.0f;
+                     const float tickValue = angle < angleMin ? -Speed(v.car) * 3.6f : 1000.0f + angle;
+                     if (tickValue < noseposBest) {
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,138 @@
+From 50e4c6d3d1a34b3c3b909713f2c9bf1ee7ddbd39 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 22:18:38 +0100
+Subject: [PATCH 08/28] fvlab: nose objective and RTA input constraints for the
+ uber search
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 69 ++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 60 insertions(+), 9 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 40a2da4..039bbc1 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -190,13 +190,22 @@ int main(int argc, char **argv) {
+         if (!advanceTo(static_cast<std::uint64_t>(from))) return Fail("advance");
+         auto start = sandbox.CaptureState();
+         if (!start) return Fail("capture");
+-        struct Score { double value; double finishMs; float minDist; float maxExp; float maxKmh; };
++        // FVLAB_OBJECTIVE=nose: score the first landing after FVLAB_LAND_MIN ms (default TO): pitch error to
++        // 90° nose-down plus 30 per rear wheel on the ground, minus 0.5 per km/h gained in the 300 ms after it.
++        // FVLAB_RTA=1: keyboard steering only (-65536/0/65536) and >= 50 ms between events of one action.
++        const bool noseObjective = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nose";
++        const bool rta = std::getenv("FVLAB_RTA") != nullptr;
++        const std::int64_t landMin = std::getenv("FVLAB_LAND_MIN") ? std::atoll(std::getenv("FVLAB_LAND_MIN")) : to;
++        struct Score { double value; double finishMs; float minDist; float maxExp; float maxKmh; float noseErr; float noseGain; };
+         auto run = [&](const std::vector<PhysicsSandboxInputEvent> &cand) -> Score {
+-            Score sc{1e30, 0, 1e30f, -1e30f, 0};
++            Score sc{1e30, 0, 1e30f, -1e30f, 0, 1e9f, 0};
+             if (!sandbox.RestoreState(start.Value())) return sc;
+             if (!sandbox.ReplaceInputWindow(from, to, cand)) return sc;
+             tmphys_probe::maxExponent = -1e30f;
+             tmphys_probe::maxMagnitude = 0.0f;
++            std::int64_t landedAt = -1;
++            float landKmh = 0;
++            unsigned pullsAtLanding = 0;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return sc;
+@@ -204,6 +213,19 @@ int main(int argc, char **argv) {
+                 const float dx = v.car.position.x - fx, dy = v.car.position.y - fy, dz = v.car.position.z - fz;
+                 sc.minDist = std::min(sc.minDist, std::sqrt(dx * dx + dy * dy + dz * dz));
+                 sc.maxKmh = std::max(sc.maxKmh, Speed(v.car) * 3.6f);
++                const std::int64_t now = static_cast<std::int64_t>(v.timeMs);
++                const bool front = v.car.wheelContact[0] || v.car.wheelContact[1];
++                if (noseObjective && landedAt < 0 && now >= landMin && front) {
++                    landedAt = now;
++                    landKmh = Speed(v.car) * 3.6f;
++                    const Pose p = PoseOf(v.car);
++                    sc.noseErr = std::fabs(90.0f - p.pitchDeg) + 30.0f * (v.car.wheelContact[2] + v.car.wheelContact[3]);
++                }
++                if (landedAt >= 0 && now <= landedAt + 300) sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
++                if (landedAt == now) pullsAtLanding = tmphys_probe::donutPulls;
++                if (landedAt >= 0 && now == landedAt + 100 && tmphys_probe::donutPulls == pullsAtLanding) {
++                    sc.noseErr += 40.0f;  // the donut (nosebug) did not start after the landing
++                }
+                 if (v.raceCompleted) {
+                     sc.finishMs = v.finishTime && v.finishTime->IsValid() ? v.finishTime->estimatedNs / 1e6
+                                                                           : (v.finishTimeMs ? *v.finishTimeMs : 1e9);
+@@ -218,11 +240,36 @@ int main(int argc, char **argv) {
+             // FVLAB_SPEED_WEIGHT (default 0.1) scales the speed bonus; 0 = distance (and near-uber exponent) only,
+             // so a weaker, flatter uber is not penalised once one exists.
+             static const double speedWeight = std::getenv("FVLAB_SPEED_WEIGHT") ? std::atof(std::getenv("FVLAB_SPEED_WEIGHT")) : 0.1;
+-            sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+-                                       : sc.minDist - speedWeight * std::min(sc.maxKmh, 1000.0f) -
+-                                                 5.0 * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
++            if (noseObjective) {
++                sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
++                                           : sc.noseErr - 0.5 * sc.noseGain + 0.05 * sc.minDist;
++            } else {
++                sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
++                                           : sc.minDist - speedWeight * std::min(sc.maxKmh, 1000.0f) -
++                                                     5.0 * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
++            }
+             return sc;
+         };
++        // keyboard-only and human spacing for FVLAB_RTA
++        auto makeHuman = [&](std::vector<PhysicsSandboxInputEvent> &cand) {
++            if (!rta) return;
++            for (auto &e : cand) {
++                if (e.action == PhysicsSandboxInputAction::Steer) {
++                    e.value.analog = e.value.analog > 21845 ? 65536 : e.value.analog < -21845 ? -65536 : 0;
++                }
++            }
++            std::stable_sort(cand.begin(), cand.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            std::array<std::int32_t, 16> last;
++            last.fill(-100000);
++            std::vector<PhysicsSandboxInputEvent> kept;
++            for (const auto &e : cand) {
++                auto &l = last[static_cast<std::size_t>(e.action) & 15u];
++                if (e.timeMs - l < 50) continue;
++                l = e.timeMs;
++                kept.push_back(e);
++            }
++            cand = std::move(kept);
++        };
+         auto writeBest = [&]() {
+             std::vector<PhysicsSandboxInputEvent> all = fixed;
+             all.insert(all.end(), best.begin(), best.end());
+@@ -236,9 +283,11 @@ int main(int argc, char **argv) {
+             }
+             std::fclose(f);
+         };
++        makeHuman(best);
+         Score bestScore = run(best);
+-        std::printf("base: score %.2f finish %.2f ms, closest %.1f m, max exponent %.2f, max %.0f km/h, %zu events\n",
+-                    bestScore.value, bestScore.finishMs, bestScore.minDist, bestScore.maxExp, bestScore.maxKmh, best.size());
++        std::printf("base: score %.2f finish %.2f ms, closest %.1f m, max exponent %.2f, max %.0f km/h, nose %.1f gain %.1f, %zu events\n",
++                    bestScore.value, bestScore.finishMs, bestScore.minDist, bestScore.maxExp, bestScore.maxKmh,
++                    bestScore.noseErr, bestScore.noseGain, best.size());
+         std::fflush(stdout);
+         writeBest();
+         const auto t0 = std::chrono::steady_clock::now();
+@@ -274,15 +323,17 @@ int main(int argc, char **argv) {
+             }
+             cand.erase(std::remove_if(cand.begin(), cand.end(), [](const auto &e) { return e.timeMs < 0; }), cand.end());
+             std::stable_sort(cand.begin(), cand.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            makeHuman(cand);
+             ++attempts;
+             const Score sc = run(cand);
+             if (sc.value < bestScore.value) {
+                 best = cand;
+                 bestScore = sc;
+                 writeBest();
+-                std::printf("%.1f s, attempt %llu: %.6f ms (segment 0) score %.2f finish %.2f closest %.1f m exp %.2f max %.0f km/h\n",
++                std::printf("%.1f s, attempt %llu: %.6f ms (segment 0) score %.2f finish %.2f closest %.1f m exp %.2f max %.0f km/h nose %.1f gain %.1f\n",
+                             elapsed, static_cast<unsigned long long>(attempts),
+-                            sc.finishMs > 0 ? sc.finishMs : sc.value, sc.value, sc.finishMs, sc.minDist, sc.maxExp, sc.maxKmh);
++                            sc.finishMs > 0 ? sc.finishMs : sc.value, sc.value, sc.finishMs, sc.minDist, sc.maxExp, sc.maxKmh,
++                            sc.noseErr, sc.noseGain);
+                 std::fflush(stdout);
+             }
+         }
+-- 
+2.52.0.windows.1
+

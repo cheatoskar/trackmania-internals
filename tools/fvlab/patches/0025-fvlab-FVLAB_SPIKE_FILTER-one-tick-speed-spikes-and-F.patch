@@ -1,0 +1,67 @@
+From d36474a060b0949faf39f17c3f7ffac2fc4a858f Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Sat, 31 Oct 2026 23:19:30 +0100
+Subject: [PATCH 25/28] fvlab: FVLAB_SPIKE_FILTER (one-tick speed spikes) and
+ FVLAB_EXP_KEEP_MS (exponent only if the speed holds)
+
+---
+ tools/fvlab.cpp | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index d0977b0..641fd6d 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -297,12 +297,34 @@ int main(int argc, char **argv) {
+             // or slow crawling contacts (which also raise the exponent) do not rank as uber set-ups
+             static const float expMinKmh = std::getenv("FVLAB_EXP_MINKMH") ? std::strtof(std::getenv("FVLAB_EXP_MINKMH"), nullptr) : 0.0f;
+             float gatedExp = -1e30f;
++            // FVLAB_EXP_KEEP_MS=m (with FVLAB_EXP_MINKMH): a gated exponent counts only if m ms later the car is at least
++            // as fast as before that tick; a hard impact raises the exponent as well but costs speed, an uber gains it
++            static const int expKeepMs = std::getenv("FVLAB_EXP_KEEP_MS") ? std::atoi(std::getenv("FVLAB_EXP_KEEP_MS")) : 0;
++            struct PendingExp { std::int64_t due; float exp; float kmhBefore; };
++            std::vector<PendingExp> pendingExp;
+             for (;;) {
+                 auto st = sandbox.ReadState();
+                 if (!st) return sc;
+                 const auto &v = st.Value();
+                 if (expMinKmh > 0.0f) {
+-                    if (Speed(v.car) * 3.6f >= expMinKmh) gatedExp = std::max(gatedExp, tmphys_probe::maxExponent);
++                    static const bool spikeGate = std::getenv("FVLAB_SPIKE_FILTER") && std::atoi(std::getenv("FVLAB_SPIKE_FILTER")) != 0;
++                    const float gateKmh = spikeGate ? std::min(Speed(v.car) * 3.6f, lastKmh) : Speed(v.car) * 3.6f;
++                    const std::int64_t tnow = static_cast<std::int64_t>(v.timeMs);
++                    const float kmhNow = Speed(v.car) * 3.6f;
++                    if (expKeepMs > 0) {
++                        for (auto it = pendingExp.begin(); it != pendingExp.end();) {
++                            if (tnow >= it->due) {
++                                if (kmhNow >= it->kmhBefore) gatedExp = std::max(gatedExp, it->exp);
++                                it = pendingExp.erase(it);
++                            } else {
++                                ++it;
++                            }
++                        }
++                        if (gateKmh >= expMinKmh && tmphys_probe::maxExponent > -1e29f)
++                            pendingExp.push_back({tnow + expKeepMs, tmphys_probe::maxExponent, lastKmh});
++                    } else if (gateKmh >= expMinKmh) {
++                        gatedExp = std::max(gatedExp, tmphys_probe::maxExponent);
++                    }
+                     tmphys_probe::maxExponent = -1e30f;
+                 }
+                 const float dx = v.car.position.x - fx, dy = v.car.position.y - fy, dz = v.car.position.z - fz;
+@@ -356,7 +378,12 @@ int main(int argc, char **argv) {
+                                                           ? -100000.0f + static_cast<float>(v.timeMs) - goalKmhMs * std::min(kmh, 1000.0f)
+                                                           : -1000.0f - kmh);
+                 }
+-                sc.maxKmh = std::max(sc.maxKmh, Speed(v.car) * 3.6f);
++                // FVLAB_SPIKE_FILTER=1: a tick's speed counts only as min(this tick, the tick before), so the one-tick
++                // speed spikes of hard contacts (e.g. 251 -> 774 -> 264 km/h at an inflatable) neither raise the peak
++                // speed nor pass FVLAB_EXP_MINKMH; a real uber accelerates over many ticks
++                static const bool spikeFilter = std::getenv("FVLAB_SPIKE_FILTER") && std::atoi(std::getenv("FVLAB_SPIKE_FILTER")) != 0;
++                const float tickKmh = spikeFilter ? std::min(Speed(v.car) * 3.6f, lastKmh) : Speed(v.car) * 3.6f;
++                sc.maxKmh = std::max(sc.maxKmh, tickKmh);
+                 const std::int64_t now = static_cast<std::int64_t>(v.timeMs);
+                 if (boostAt < 0 && Speed(v.car) * 3.6f >= boostKmh) {
+                     boostAt = now;
+-- 
+2.52.0.windows.1
+

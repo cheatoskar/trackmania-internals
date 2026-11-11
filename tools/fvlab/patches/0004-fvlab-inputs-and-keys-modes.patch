@@ -1,0 +1,102 @@
+From a3b00b8e9fde07f2c60778ae4d10192f23bf1f6e Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 19:48:46 +0100
+Subject: [PATCH 04/28] fvlab: inputs and keys modes
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 70 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 19d3fdb..312d28d 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -117,6 +117,18 @@ int main(int argc, char **argv) {
+         }
+     };
+ 
++    if (mode == "inputs") {
++        auto events = sandbox.ReadInputs();
++        if (!events) return Fail("inputs");
++        std::printf("timeMs,action,kind,switch,analog\n");
++        for (const auto &e : events.Value()) {
++            std::printf("%d,%d,%d,%d,%d\n", e.timeMs, static_cast<int>(e.action),
++                        static_cast<int>(e.value.kind), static_cast<int>(e.value.switchState),
++                        static_cast<int>(e.value.analog));
++        }
++        return 0;
++    }
++
+     if (mode == "probe" && argc >= 6) {
+         const std::uint64_t t0 = std::strtoull(argv[4], nullptr, 10);
+         const std::uint32_t ticks = std::strtoul(argv[5], nullptr, 10);
+@@ -138,6 +150,64 @@ int main(int argc, char **argv) {
+         return 0;
+     }
+ 
++    // fvlab PACKS REPLAY keys FROM_MS TO_MS HORIZON_TICKS
++    //   Keyboard steering test: inside [FROM, TO) the steering is replaced by full left / none / full
++    //   right (a), switched once to (b) at time ts (every 10 ms); gas/brake events stay as recorded.
++    //   Prints a, b, ts and the speed after HORIZON ticks from FROM.
++    if (mode == "keys" && argc >= 7) {
++        const std::int32_t from = std::atoi(argv[4]);
++        const std::int32_t to = std::atoi(argv[5]);
++        const std::uint32_t horizon = std::strtoul(argv[6], nullptr, 10);
++        if (!advanceTo(static_cast<std::uint64_t>(from) - 10)) return Fail("advance");
++        auto snapshot = sandbox.CaptureState();
++        auto baseInputs = sandbox.ReadInputs();
++        if (!snapshot || !baseInputs) return Fail("capture");
++        AnalogInputState lastSteer = 0;
++        std::vector<PhysicsSandboxInputEvent> kept;
++        for (const auto &e : baseInputs.Value()) {
++            if (e.action == PhysicsSandboxInputAction::Steer && e.timeMs <= to) lastSteer = e.value.analog;
++            if (e.action != PhysicsSandboxInputAction::Steer && e.timeMs >= from && e.timeMs < to) kept.push_back(e);
++        }
++        if (std::getenv("FVLAB_HOLD") != nullptr) {
++            // simplest human input: gas and brake held down through the whole window
++            kept.clear();
++            for (auto action : {PhysicsSandboxInputAction::Accelerate, PhysicsSandboxInputAction::Brake}) {
++                PhysicsSandboxInputEvent e;
++                e.timeMs = from;
++                e.action = action;
++                e.value.kind = PhysicsSandboxInputValueKind::Switch;
++                e.value.switchState = PhysicsSandboxSwitchState::Pressed;
++                kept.push_back(e);
++            }
++        }
++        std::printf("a,b,ts,kmh_end,kmh_max\n");
++        const AnalogInputState keys[3] = {-65536, 0, 65536};
++        for (AnalogInputState a : keys) {
++            for (AnalogInputState b : keys) {
++                for (std::int32_t ts = from; ts < to; ts += 10) {
++                    if (a == b && ts != from) continue;
++                    std::vector<PhysicsSandboxInputEvent> win = kept;
++                    win.push_back(Steer(from, a));
++                    if (ts != from) win.push_back(Steer(ts, b));
++                    win.push_back(Steer(to, lastSteer));
++                    std::stable_sort(win.begin(), win.end(),
++                                     [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++                    if (!sandbox.RestoreState(snapshot.Value())) return Fail("restore");
++                    if (!sandbox.ReplaceInputWindow(from, to + 10, win)) return Fail("window");
++                    float vmax = 0, v = 0;
++                    for (std::uint32_t i = 0; i < horizon; ++i) {
++                        auto r = sandbox.AdvanceTicks(1);
++                        if (!r) break;
++                        v = Speed(r.Value().car) * 3.6f;
++                        vmax = std::max(vmax, v);
++                    }
++                    std::printf("%d,%d,%d,%.1f,%.1f\n", a, b, ts, v, vmax);
++                }
++            }
++        }
++        return 0;
++    }
++
+     if (mode == "seam" && argc >= 8) {
+         const std::int64_t t0 = std::strtoll(argv[4], nullptr, 10);
+         const std::int64_t steerFrom = std::strtoll(argv[5], nullptr, 10);
+-- 
+2.52.0.windows.1
+

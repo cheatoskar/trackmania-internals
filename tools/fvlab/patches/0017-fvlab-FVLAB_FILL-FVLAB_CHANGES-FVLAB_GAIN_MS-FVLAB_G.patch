@@ -1,0 +1,106 @@
+From e0188bffda7cc01b922c59d3128109c3fd98b48f Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 16:08:39 +0100
+Subject: [PATCH 17/28] fvlab: FVLAB_FILL, FVLAB_CHANGES, FVLAB_GAIN_MS,
+ FVLAB_GOAL_CPS/GOAL_KMH_MS, FVLAB_EXP_WEIGHT
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 45 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 42 insertions(+), 3 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 7f7a98c..001354b 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -290,6 +290,17 @@ int main(int argc, char **argv) {
+                 } else {
+                     sc.minDist = std::min(sc.minDist, 1000.0f + 100.0f * static_cast<float>(needCps - v.checkpointsCollected));
+                 }
++                // FVLAB_GOAL_CPS=n: collecting the n-th checkpoint is the goal: -1000 minus the km/h at that moment
++                // (beats any distance), so a run that crashes into the CP gate's pillar no longer counts as "there"
++                static const unsigned goalCps = std::getenv("FVLAB_GOAL_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_GOAL_CPS"))) : 0u;
++                // FVLAB_GOAL_KMH_MS=w: instead score the time of collection: -100000 + ms - w per km/h (earliest wins)
++                static const float goalKmhMs = std::getenv("FVLAB_GOAL_KMH_MS") ? std::strtof(std::getenv("FVLAB_GOAL_KMH_MS"), nullptr) : -1.0f;
++                if (goalCps > 0 && v.checkpointsCollected >= goalCps) {
++                    const float kmh = Speed(v.car) * 3.6f;
++                    sc.minDist = std::min(sc.minDist, goalKmhMs >= 0.0f
++                                                          ? -100000.0f + static_cast<float>(v.timeMs) - goalKmhMs * std::min(kmh, 1000.0f)
++                                                          : -1000.0f - kmh);
++                }
+                 sc.maxKmh = std::max(sc.maxKmh, Speed(v.car) * 3.6f);
+                 const std::int64_t now = static_cast<std::int64_t>(v.timeMs);
+                 const bool front = v.car.wheelContact[0] || v.car.wheelContact[1];
+@@ -319,7 +330,10 @@ int main(int argc, char **argv) {
+                 // gain counts only while the rear wheels are off the ground (a kick after the car has fallen back
+                 // onto its wheels is an uber, not a nose boost); noselow keeps the plain 600 ms window
+                 const bool rearUp = !v.car.wheelContact[2] && !v.car.wheelContact[3] && PoseOf(v.car).pitchDeg > 45.0f;
+-                if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : 300) && (noseLow || rearUp)) {
++                // FVLAB_GAIN_MS: how long after the landing the gain counts (default 300; a slow nose start near the
++                // 440 km/h "gear" needs longer, the guides evaluate 0.3-0.7 s)
++                static const std::int64_t gainMs = std::getenv("FVLAB_GAIN_MS") ? std::atoll(std::getenv("FVLAB_GAIN_MS")) : 300;
++                if (landedAt >= 0 && now <= landedAt + (noseLow ? 600 : gainMs) && (noseLow || rearUp)) {
+                     sc.noseGain = std::max(sc.noseGain, Speed(v.car) * 3.6f - landKmh);
+                 }
+                 // FVLAB_NOSE_LOSS=w: + w per km/h lost in the 300 ms after the landing. Without it, a body hit at a
+@@ -369,6 +383,9 @@ int main(int argc, char **argv) {
+             // FVLAB_SPEED_WEIGHT (default 0.1) scales the speed bonus; 0 = distance (and near-uber exponent) only,
+             // so a weaker, flatter uber is not penalised once one exists.
+             static const double speedWeight = std::getenv("FVLAB_SPEED_WEIGHT") ? std::atof(std::getenv("FVLAB_SPEED_WEIGHT")) : 0.1;
++            // FVLAB_EXP_WEIGHT (default 5): bonus per unit of the near-uber exponent; 0 once no uber is wanted (a
++            // noseboost to a CP: donut pulls there are noise that outweighs metres of distance)
++            static const double expWeight = std::getenv("FVLAB_EXP_WEIGHT") ? std::atof(std::getenv("FVLAB_EXP_WEIGHT")) : 5.0;
+             if (noseposObjective) {
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6 : noseposBest;
+             } else if (noseLow) {
+@@ -386,7 +403,7 @@ int main(int argc, char **argv) {
+             } else {
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+                                            : sc.minDist - speedWeight * std::min(sc.maxKmh, 1000.0f) -
+-                                                     5.0 * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
++                                                     expWeight * std::clamp(static_cast<double>(sc.maxExp), 0.0, 6.0);
+             }
+             return sc;
+         };
+@@ -432,6 +449,26 @@ int main(int argc, char **argv) {
+             }
+             std::fclose(f);
+         };
++        // FVLAB_FILL=1 (TMInterface's "fill missing steering input"): one steer event on every tick of the window
++        // with the value held there, so a value change moves exactly one tick. The community default for
++        // noseboosts and ubers.
++        if (std::getenv("FVLAB_FILL")) {
++            std::int32_t held = 0;
++            for (const auto &e : fixed) {
++                if (e.action == PhysicsSandboxInputAction::Steer && e.timeMs <= from) held = e.value.analog;
++            }
++            std::stable_sort(best.begin(), best.end(), [](const auto &l, const auto &r) { return l.timeMs < r.timeMs; });
++            std::vector<PhysicsSandboxInputEvent> filled;
++            std::size_t i = 0;
++            for (std::int32_t t = from + 10; t < to; t += 10) {
++                for (; i < best.size() && best[i].timeMs <= t; ++i) {
++                    if (best[i].action == PhysicsSandboxInputAction::Steer) held = best[i].value.analog;
++                    else filled.push_back(best[i]);
++                }
++                filled.push_back(Steer(t, held));
++            }
++            best = std::move(filled);
++        }
+         makeHuman(best);
+         Score bestScore = run(best);
+         std::printf("base: score %.2f finish %.2f ms, closest %.1f m, max exponent %.2f, max %.0f km/h, nose %.1f gain %.1f, %zu events\n",
+@@ -464,7 +501,9 @@ int main(int argc, char **argv) {
+             if (elapsed > seconds) break;
+             const bool kick = kickStall > 0.0 && elapsed - lastImprove > kickStall;
+             std::vector<PhysicsSandboxInputEvent> cand = kick ? best : cur;
+-            const int changes = kick ? uniform(8, 20) : uniform(1, 4);
++            // FVLAB_CHANGES=n: 1..n changes per attempt (default 4; the guides use 10-20 for noseboosts in short windows)
++            static const int maxChanges = std::getenv("FVLAB_CHANGES") ? std::max(1, std::atoi(std::getenv("FVLAB_CHANGES"))) : 4;
++            const int changes = kick ? uniform(8, 20) : uniform(1, maxChanges);
+             for (int c = 0; c < changes; ++c) {
+                 const int kind = uniform(0, 99);
+                 const std::int32_t t = from + 10 + uniform(0, std::max(0, (to - from) / 10 - 2)) * 10;
+-- 
+2.52.0.windows.1
+

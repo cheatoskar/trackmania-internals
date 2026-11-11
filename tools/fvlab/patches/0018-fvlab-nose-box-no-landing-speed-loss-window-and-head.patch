@@ -1,0 +1,108 @@
+From 37bd420852cb6f52c98a27c0ff3a1eeca229ad62 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 18:04:02 +0100
+Subject: [PATCH 18/28] fvlab: nose box, no-landing speed, loss window and
+ heading term
+
+FVLAB_NOSE_BOX limits the nose landing to a box, FVLAB_NOSE_NOLAND_KMH
+scores flights without a landing by their final speed, FVLAB_LOSS_MS sets
+the loss window and FVLAB_NOSE_DIR adds the heading error to a point.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 001354b..4d4af2a 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -240,6 +240,7 @@ int main(int argc, char **argv) {
+             float landKmh = 0;
+             float noseLoss = 0;
+             float noseposBest = 5000.0f;
++            float lastKmh = 0.0f;  // speed at the last simulated tick (FVLAB_NOSE_NOLAND_KMH)
+             unsigned pullsAtLanding = 0;
+             static const float targetMinKmh = std::getenv("FVLAB_TARGET_MINKMH") ? std::strtof(std::getenv("FVLAB_TARGET_MINKMH"), nullptr) : 0.0f;
+             static const unsigned needCps =std::getenv("FVLAB_NEED_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_NEED_CPS"))) : 0u;
+@@ -319,6 +320,21 @@ int main(int argc, char **argv) {
+                     // -0.8 deg, two landings without a boost at 4.4 and 9.6 deg)
+                     static const float noseRollW = std::getenv("FVLAB_NOSE_ROLL") ? std::strtof(std::getenv("FVLAB_NOSE_ROLL"), nullptr) : 0.0f;
+                     sc.noseErr += noseRollW * std::fabs(p.rollDeg);
++                    // FVLAB_NOSE_BOX=x,y,z,sx,sy,sz (TMInterface corner + size): the landing must be in this box,
++                    // + 3 per metre outside (e.g. the floor of a ring CP)
++                    static const std::vector<float> noseBox = [] {
++                        std::vector<float> b(6);
++                        const char *s = std::getenv("FVLAB_NOSE_BOX");
++                        if (!s || std::sscanf(s, "%f,%f,%f,%f,%f,%f", &b[0], &b[1], &b[2], &b[3], &b[4], &b[5]) != 6) return std::vector<float>{};
++                        return b;
++                    }();
++                    if (!noseBox.empty()) {
++                        const auto &q = v.car.position;
++                        const float ox = std::max({noseBox[0] - q.x, 0.0f, q.x - noseBox[0] - noseBox[3]});
++                        const float oy = std::max({noseBox[1] - q.y, 0.0f, q.y - noseBox[1] - noseBox[4]});
++                        const float oz = std::max({noseBox[2] - q.z, 0.0f, q.z - noseBox[2] - noseBox[5]});
++                        sc.noseErr += 3.0f * std::sqrt(ox * ox + oy * oy + oz * oz);
++                    }
+                     // FVLAB_NOSE_MINKMH: a nose landing after crashing the speed away is worthless
+                     if (landKmh < noseMinKmh) sc.noseErr += noseMinKmh - landKmh;
+                     // FVLAB_NEED_CPS also gates the nose landing (e.g. the ring must be taken before it)
+@@ -339,7 +355,25 @@ int main(int argc, char **argv) {
+                 // FVLAB_NOSE_LOSS=w: + w per km/h lost in the 300 ms after the landing. Without it, a body hit at a
+                 // perfect nose angle that bounces the car off (453 -> 373 km/h, no boost) beats every real nose
+                 // ride with a few degrees more error.
+-                if (landedAt >= 0 && now <= landedAt + 300) noseLoss = std::max(noseLoss, landKmh - Speed(v.car) * 3.6f);
++                // FVLAB_LOSS_MS: how long after the landing the loss counts (default 300; a turn that bounces off a
++                // kerb 0.4 s after the landing needs longer)
++                static const std::int64_t lossMs = std::getenv("FVLAB_LOSS_MS") ? std::atoll(std::getenv("FVLAB_LOSS_MS")) : 300;
++                if (landedAt >= 0 && now <= landedAt + lossMs) noseLoss = std::max(noseLoss, landKmh - Speed(v.car) * 3.6f);
++                // FVLAB_NOSE_DIR=x,z,w,ms: ms after the landing, + w per degree between the horizontal velocity and
++                // the direction to (x, z) (steer the nose ride / boost towards the next CP)
++                static const std::vector<float> noseDir = [] {
++                    std::vector<float> d(4);
++                    const char *s = std::getenv("FVLAB_NOSE_DIR");
++                    if (!s || std::sscanf(s, "%f,%f,%f,%f", &d[0], &d[1], &d[2], &d[3]) != 4) return std::vector<float>{};
++                    return d;
++                }();
++                if (!noseDir.empty() && landedAt >= 0 && now == landedAt + static_cast<std::int64_t>(noseDir[3])) {
++                    const float tx = noseDir[0] - v.car.position.x, tz = noseDir[1] - v.car.position.z;
++                    const float vx = v.car.linearSpeed.x, vz = v.car.linearSpeed.z;
++                    const float n = std::sqrt((tx * tx + tz * tz) * (vx * vx + vz * vz));
++                    const float deg = n > 1e-6f ? std::acos(std::clamp((tx * vx + tz * vz) / n, -1.0f, 1.0f)) * 57.29578f : 180.0f;
++                    sc.noseErr += noseDir[2] * deg;
++                }
+                 // FVLAB_OBJECTIVE=nosepos (after Shweetz's TMInterface plugin BfNoseposPlus): in the air between
+                 // FVLAB_EVAL_FROM and FVLAB_EVAL_TO, angle = |90 - nose down| + |roll| + heading error beyond 90 deg
+                 // from the horizontal velocity; below FVLAB_ANGLE_MIN (default 5) the tick scores minus its km/h,
+@@ -374,10 +408,15 @@ int main(int argc, char **argv) {
+                                                                           : (v.finishTimeMs ? *v.finishTimeMs : 1e9);
+                     break;
+                 }
++                lastKmh = Speed(v.car) * 3.6f;
+                 if (v.timeMs >= static_cast<std::uint64_t>(to + horizon)) break;
+                 if (!sandbox.AdvanceTicks(1)) break;
+             }
+             sc.maxExp = tmphys_probe::maxExponent;
++            // FVLAB_NOSE_NOLAND_KMH=w: without a front-wheel landing the nose error is 1000 - w * (km/h at the end)
++            // instead of 1000 - 5 per air tick, so runs that crash the body (no landing, speed gone) rank below
++            // runs that keep the speed
++            static const float noLandW = std::getenv("FVLAB_NOSE_NOLAND_KMH") ? std::strtof(std::getenv("FVLAB_NOSE_NOLAND_KMH"), nullptr) : 0.0f;
+             // Peak speed counts only up to the 1000 km/h cap (post-kick spikes above it never move the car),
+             // 0.1 m per km/h, so once an uber exists the distance to the target decides.
+             // FVLAB_SPEED_WEIGHT (default 0.1) scales the speed bonus; 0 = distance (and near-uber exponent) only,
+@@ -395,7 +434,10 @@ int main(int argc, char **argv) {
+                                   ? landKmh
+                                   : 10000.0 + landKmh - sc.noseGain);
+             } else if (noseObjective) {
+-                if (landedAt < 0) sc.noseErr = 1000.0f - 5.0f * std::min(airTicks, 100);
++                if (landedAt < 0) {
++                    sc.noseErr = noLandW > 0.0f ? 1000.0f - noLandW * std::min(lastKmh, 1000.0f)
++                                                : 1000.0f - 5.0f * std::min(airTicks, 100);
++                }
+                 static const float noseLossW = std::getenv("FVLAB_NOSE_LOSS") ? std::strtof(std::getenv("FVLAB_NOSE_LOSS"), nullptr) : 0.0f;
+                 if (landedAt >= 0) sc.noseErr += noseLossW * noseLoss;
+                 sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6
+-- 
+2.52.0.windows.1
+

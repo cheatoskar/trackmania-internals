@@ -1,0 +1,68 @@
+From 4d4f51e92967ad0a157f7a152c815204bb924424 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Sun, 1 Nov 2026 11:31:25 +0100
+Subject: [PATCH 27/28] fvlab: FVLAB_SPIKE_FILTER=n takes the minimum speed
+ over n ticks
+
+---
+ tools/fvlab.cpp | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 59f5c6b..fcd9dfe 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -268,6 +268,14 @@ int main(int argc, char **argv) {
+             float noseLoss = 0;
+             float noseposBest = 5000.0f;
+             float lastKmh = 0.0f;  // speed at the last simulated tick (FVLAB_NOSE_NOLAND_KMH)
++            // FVLAB_SPIKE_FILTER=n: a tick's speed counts as the minimum over this tick and the n ticks before it
++            // (n = 1: the old two-tick filter; a kerb uber holds its speed for many ticks, a contact spike does not)
++            static const int spikeTicks = std::getenv("FVLAB_SPIKE_FILTER") ? std::max(0, std::atoi(std::getenv("FVLAB_SPIKE_FILTER"))) : 0;
++            std::vector<float> recentKmh;
++            auto filteredKmh = [&](float cur) {
++                for (float k : recentKmh) cur = std::min(cur, k);
++                return cur;
++            };
+             std::int64_t boostAt = -1;  // first tick at FVLAB_BOOST_KMH (FVLAB_BOOST_BOX / FVLAB_BOOST_DIR)
+             float boostPenalty = 0.0f;
+             std::size_t chainNext = 0;  // FVLAB_OBJECTIVE=chain: next waypoint, penalties, time of the last one
+@@ -309,8 +317,7 @@ int main(int argc, char **argv) {
+                 if (!st) return sc;
+                 const auto &v = st.Value();
+                 if (expMinKmh > 0.0f) {
+-                    static const bool spikeGate = std::getenv("FVLAB_SPIKE_FILTER") && std::atoi(std::getenv("FVLAB_SPIKE_FILTER")) != 0;
+-                    const float gateKmh = spikeGate ? std::min(Speed(v.car) * 3.6f, lastKmh) : Speed(v.car) * 3.6f;
++                    const float gateKmh = filteredKmh(Speed(v.car) * 3.6f);
+                     const std::int64_t tnow = static_cast<std::int64_t>(v.timeMs);
+                     const float kmhNow = Speed(v.car) * 3.6f;
+                     if (expKeepMs > 0) {
+@@ -380,11 +387,9 @@ int main(int argc, char **argv) {
+                                                           ? -100000.0f + static_cast<float>(v.timeMs) - goalKmhMs * std::min(kmh, 1000.0f)
+                                                           : -1000.0f - kmh);
+                 }
+-                // FVLAB_SPIKE_FILTER=1: a tick's speed counts only as min(this tick, the tick before), so the one-tick
+-                // speed spikes of hard contacts (e.g. 251 -> 774 -> 264 km/h at an inflatable) neither raise the peak
+-                // speed nor pass FVLAB_EXP_MINKMH; a real uber accelerates over many ticks
+-                static const bool spikeFilter = std::getenv("FVLAB_SPIKE_FILTER") && std::atoi(std::getenv("FVLAB_SPIKE_FILTER")) != 0;
+-                const float tickKmh = spikeFilter ? std::min(Speed(v.car) * 3.6f, lastKmh) : Speed(v.car) * 3.6f;
++                // FVLAB_SPIKE_FILTER=n (see recentKmh): one-tick speed spikes of hard contacts (e.g. 251 -> 774 -> 264 km/h
++                // at an inflatable) neither raise the peak speed nor pass FVLAB_EXP_MINKMH
++                const float tickKmh = filteredKmh(Speed(v.car) * 3.6f);
+                 sc.maxKmh = std::max(sc.maxKmh, tickKmh);
+                 rawMaxKmh = std::max(rawMaxKmh, Speed(v.car) * 3.6f);
+                 // FVLAB_WHEELIE_WEIGHT=w: the uber recipe of the public TMN TASes (C0, D-2, F-9, Pro A-1, ...): the car
+@@ -577,6 +582,10 @@ int main(int argc, char **argv) {
+                     break;
+                 }
+                 lastKmh = Speed(v.car) * 3.6f;
++                if (spikeTicks > 0) {
++                    recentKmh.push_back(lastKmh);
++                    if (static_cast<int>(recentKmh.size()) > spikeTicks) recentKmh.erase(recentKmh.begin());
++                }
+                 if (v.timeMs >= static_cast<std::uint64_t>(to + horizon)) break;
+                 if (!sandbox.AdvanceTicks(1)) break;
+             }
+-- 
+2.52.0.windows.1
+

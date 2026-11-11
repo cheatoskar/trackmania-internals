@@ -1,0 +1,54 @@
+From 364c2d05907da0e60b1bdec6e703130b50f176ee Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 02:59:25 +0100
+Subject: [PATCH 13/28] fvlab uber: FVLAB_LAND_BOX landing target
+
+---
+ tools/fvlab.cpp | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 22e645c..abf5554 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -229,7 +229,36 @@ int main(int argc, char **argv) {
+                     // FVLAB_TARGET_MINKMH: arriving slowly (crashed, sliding on the side) is worth less:
+                     // +0.5 m per km/h below the minimum
+                     const float slow = std::max(0.0f, targetMinKmh - Speed(v.car) * 3.6f);
+-                    sc.minDist = std::min(sc.minDist, std::sqrt(dx * dx + dy * dy + dz * dz) + 0.5f * slow);
++                    // FVLAB_LAND_BOX=x0,y0,z0,x1,y1,z1: the target is a landing on a surface, not a point. Two or
++                    // more wheels on the ground inside the box score minus the km/h there; otherwise the distance
++                    // to the box, with being below it counted 3x (flying under a road is not "close")
++                    static const std::vector<float> landBox = [] {
++                        std::vector<float> b;
++                        if (const char *s = std::getenv("FVLAB_LAND_BOX")) {
++                            std::string str(s);
++                            std::size_t p = 0;
++                            while (b.size() < 6 && p <= str.size()) {
++                                b.push_back(std::strtof(str.c_str() + p, nullptr));
++                                p = str.find(',', p);
++                                if (p == std::string::npos) break;
++                                ++p;
++                            }
++                        }
++                        return b.size() == 6 ? b : std::vector<float>{};
++                    }();
++                    if (!landBox.empty()) {
++                        const auto &q = v.car.position;
++                        const float ox = std::max({landBox[0] - q.x, 0.0f, q.x - landBox[3]});
++                        const float oz = std::max({landBox[2] - q.z, 0.0f, q.z - landBox[5]});
++                        const float below = std::max(0.0f, landBox[1] - q.y), above = std::max(0.0f, q.y - landBox[4]);
++                        const int wheels = v.car.wheelContact[0] + v.car.wheelContact[1] + v.car.wheelContact[2] + v.car.wheelContact[3];
++                        const float d = (ox == 0.0f && oz == 0.0f && below == 0.0f && above == 0.0f && wheels >= 2)
++                                            ? -Speed(v.car) * 3.6f
++                                            : std::sqrt(ox * ox + oz * oz) + 3.0f * below + above + 0.5f * slow;
++                        sc.minDist = std::min(sc.minDist, d);
++                    } else {
++                        sc.minDist = std::min(sc.minDist, std::sqrt(dx * dx + dy * dy + dz * dz) + 0.5f * slow);
++                    }
+                 } else {
+                     sc.minDist = std::min(sc.minDist, 1000.0f + 100.0f * static_cast<float>(needCps - v.checkpointsCollected));
+                 }
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,207 @@
+From 6fd5336821c6f1eecc53a45805830761bcdd7871 Mon Sep 17 00:00:00 2001
+From: cheatoskar <140116603+cheatoskar@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 15:22:27 +0100
+Subject: [PATCH 16/28] fvlab: window (from, to) edge fix, FVLAB_KICK_STALL,
+ nosepos objective, FVLAB_NOSE_ROLL
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KM4cBXAuR6N7ACvaCZmUaz
+---
+ tools/fvlab.cpp | 81 ++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 70 insertions(+), 11 deletions(-)
+
+diff --git a/tools/fvlab.cpp b/tools/fvlab.cpp
+index 3500e2d..7f7a98c 100644
+--- a/tools/fvlab.cpp
++++ b/tools/fvlab.cpp
+@@ -205,7 +205,8 @@ int main(int argc, char **argv) {
+         if (!base) return Fail("inputs");
+         std::vector<PhysicsSandboxInputEvent> fixed, best;
+         for (const auto &e : base.Value()) {
+-            if (isControl(e.action) && e.timeMs >= from && e.timeMs < to) best.push_back(e);
++            // events exactly at `from` stay fixed: the captured start state has already applied that tick
++            if (isControl(e.action) && e.timeMs > from && e.timeMs < to) best.push_back(e);
+             else fixed.push_back(e);
+         }
+         if (!advanceTo(static_cast<std::uint64_t>(from))) return Fail("advance");
+@@ -220,6 +221,9 @@ int main(int argc, char **argv) {
+         const bool noseLow = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "noselow";
+         const bool noseObjective = noseLow || (std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nose");
+         const bool rta = std::getenv("FVLAB_RTA") != nullptr;
++        const bool noseposObjective = std::getenv("FVLAB_OBJECTIVE") != nullptr && std::string(std::getenv("FVLAB_OBJECTIVE")) == "nosepos";
++        const std::int64_t evalFrom = std::getenv("FVLAB_EVAL_FROM") ? std::atoll(std::getenv("FVLAB_EVAL_FROM")) : to;
++        const std::int64_t evalTo = std::getenv("FVLAB_EVAL_TO") ? std::atoll(std::getenv("FVLAB_EVAL_TO")) : to + horizon;
+         // FVLAB_BOOST_GAIN=<km/h>: for noselow, a boost counts when the speed rises by this much within 600 ms
+         // (default: reaching 950 km/h)
+         const float boostGain = std::getenv("FVLAB_BOOST_GAIN") ? std::strtof(std::getenv("FVLAB_BOOST_GAIN"), nullptr) : 0.0f;
+@@ -228,12 +232,14 @@ int main(int argc, char **argv) {
+         auto run = [&](const std::vector<PhysicsSandboxInputEvent> &cand) -> Score {
+             Score sc{1e30, 0, 1e30f, -1e30f, 0, 1e9f, 0};
+             if (!sandbox.RestoreState(start.Value())) return sc;
+-            if (!sandbox.ReplaceInputWindow(from, to, cand)) return sc;
++            // (from, to): the tick at `from` is already applied in the start state, a base event at `to` must stay
++            if (!sandbox.ReplaceInputWindow(from + 10, to - 10, cand)) return sc;
+             tmphys_probe::maxExponent = -1e30f;
+             tmphys_probe::maxMagnitude = 0.0f;
+             std::int64_t landedAt = -1;
+             float landKmh = 0;
+             float noseLoss = 0;
++            float noseposBest = 5000.0f;
+             unsigned pullsAtLanding = 0;
+             static const float targetMinKmh = std::getenv("FVLAB_TARGET_MINKMH") ? std::strtof(std::getenv("FVLAB_TARGET_MINKMH"), nullptr) : 0.0f;
+             static const unsigned needCps =std::getenv("FVLAB_NEED_CPS") ? static_cast<unsigned>(std::atoi(std::getenv("FVLAB_NEED_CPS"))) : 0u;
+@@ -298,6 +304,10 @@ int main(int argc, char **argv) {
+                     landKmh = Speed(v.car) * 3.6f;
+                     const Pose p = PoseOf(v.car);
+                     sc.noseErr = std::fabs(90.0f - p.pitchDeg) + 30.0f * (v.car.wheelContact[2] + v.car.wheelContact[3]);
++                    // FVLAB_NOSE_ROLL=w: + w per degree of roll at the landing (the confirmed noseboost landed at
++                    // -0.8 deg, two landings without a boost at 4.4 and 9.6 deg)
++                    static const float noseRollW = std::getenv("FVLAB_NOSE_ROLL") ? std::strtof(std::getenv("FVLAB_NOSE_ROLL"), nullptr) : 0.0f;
++                    sc.noseErr += noseRollW * std::fabs(p.rollDeg);
+                     // FVLAB_NOSE_MINKMH: a nose landing after crashing the speed away is worthless
+                     if (landKmh < noseMinKmh) sc.noseErr += noseMinKmh - landKmh;
+                     // FVLAB_NEED_CPS also gates the nose landing (e.g. the ring must be taken before it)
+@@ -316,6 +326,30 @@ int main(int argc, char **argv) {
+                 // perfect nose angle that bounces the car off (453 -> 373 km/h, no boost) beats every real nose
+                 // ride with a few degrees more error.
+                 if (landedAt >= 0 && now <= landedAt + 300) noseLoss = std::max(noseLoss, landKmh - Speed(v.car) * 3.6f);
++                // FVLAB_OBJECTIVE=nosepos (after Shweetz's TMInterface plugin BfNoseposPlus): in the air between
++                // FVLAB_EVAL_FROM and FVLAB_EVAL_TO, angle = |90 - nose down| + |roll| + heading error beyond 90 deg
++                // from the horizontal velocity; below FVLAB_ANGLE_MIN (default 5) the tick scores minus its km/h,
++                // above it 1000 + angle. The best tick counts. A set-up stage before the landing search.
++                if (noseposObjective && now >= evalFrom && now <= evalTo && v.checkpointsCollected >= needCps &&
++                    !v.car.wheelContact[0] && !v.car.wheelContact[1] && !v.car.wheelContact[2] && !v.car.wheelContact[3]) {
++                    const Pose p = PoseOf(v.car);
++                    const Mat3 r = FromQuat(v.car.rotationX, v.car.rotationY, v.car.rotationZ, v.car.rotationW);
++                    // heading: forward + up projected on the ground (forward when level, up when nose down)
++                    const float hx = r.m[0][2] + r.m[0][1], hz = r.m[2][2] + r.m[2][1];
++                    const float vx = v.car.linearSpeed.x, vz = v.car.linearSpeed.z;
++                    float heading = 0.0f;
++                    if (hx * hx + hz * hz > 1e-6f && vx * vx + vz * vz > 1e-6f) {
++                        const float c = (hx * vx + hz * vz) / std::sqrt((hx * hx + hz * hz) * (vx * vx + vz * vz));
++                        heading = std::acos(std::clamp(c, -1.0f, 1.0f)) * 57.29578f;
++                    }
++                    const float angle = std::fabs(90.0f - p.pitchDeg) + std::fabs(p.rollDeg) + std::max(heading - 90.0f, 0.0f);
++                    static const float angleMin = std::getenv("FVLAB_ANGLE_MIN") ? std::strtof(std::getenv("FVLAB_ANGLE_MIN"), nullptr) : 5.0f;
++                    const float tickValue = angle < angleMin ? -Speed(v.car) * 3.6f : 1000.0f + angle;
++                    if (tickValue < noseposBest) {
++                        noseposBest = tickValue;
++                        sc.noseErr = angle;
++                    }
++                }
+                 if (noseLow && landedAt >= 0 && now > landedAt + 600) break;
+                 if (landedAt == now) pullsAtLanding = tmphys_probe::donutPulls;
+                 if (landedAt >= 0 && now == landedAt + 100 && tmphys_probe::donutPulls == pullsAtLanding) {
+@@ -335,7 +369,9 @@ int main(int argc, char **argv) {
+             // FVLAB_SPEED_WEIGHT (default 0.1) scales the speed bonus; 0 = distance (and near-uber exponent) only,
+             // so a weaker, flatter uber is not penalised once one exists.
+             static const double speedWeight = std::getenv("FVLAB_SPEED_WEIGHT") ? std::atof(std::getenv("FVLAB_SPEED_WEIGHT")) : 0.1;
+-            if (noseLow) {
++            if (noseposObjective) {
++                sc.value = sc.finishMs > 0 ? sc.finishMs - 1e6 : noseposBest;
++            } else if (noseLow) {
+                 sc.noseErr = landKmh;  // reported as "nose": the landing speed
+                 sc.value = landedAt < 0 ? 1e9
+                            : ((boostGain > 0 ? sc.noseGain >= boostGain : landKmh + sc.noseGain >= 950.0f)
+@@ -414,14 +450,24 @@ int main(int argc, char **argv) {
+         }
+         const auto t0 = std::chrono::steady_clock::now();
+         std::uint64_t attempts = 0;
++        // FVLAB_KICK_STALL=s (iterated local search): the walker `cur` normally equals the best; after s seconds
++        // without an improvement of the walker it jumps to the best with 8-20 random changes and continues from
++        // there even if that is worse. Only the overall best is written. Gets a search out of a dead end that
++        // small steps never leave.
++        static const double kickStall = std::getenv("FVLAB_KICK_STALL") ? std::atof(std::getenv("FVLAB_KICK_STALL")) : 0.0;
++        std::vector<PhysicsSandboxInputEvent> cur = best;
++        Score curScore = bestScore;
++        double lastImprove = 0.0;
++        unsigned kicks = 0;
+         for (;;) {
+             const double elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+             if (elapsed > seconds) break;
+-            std::vector<PhysicsSandboxInputEvent> cand = best;
+-            const int changes = uniform(1, 4);
++            const bool kick = kickStall > 0.0 && elapsed - lastImprove > kickStall;
++            std::vector<PhysicsSandboxInputEvent> cand = kick ? best : cur;
++            const int changes = kick ? uniform(8, 20) : uniform(1, 4);
+             for (int c = 0; c < changes; ++c) {
+                 const int kind = uniform(0, 99);
+-                const std::int32_t t = from + uniform(0, std::max(0, (to - from) / 10 - 1)) * 10;
++                const std::int32_t t = from + 10 + uniform(0, std::max(0, (to - from) / 10 - 2)) * 10;
+                 if (cand.empty() || kind < 15) {
+                     cand.push_back(Steer(t, uniform(0, 2) == 0 ? (uniform(0, 1) ? 65536 : -65536) : uniform(-65536, 65536)));
+                 } else if (kind < 25 && noseLow) {
+@@ -451,7 +497,7 @@ int main(int argc, char **argv) {
+                         const int sigma = std::array<int, 4>{1000, 4000, 16000, 65536}[static_cast<std::size_t>(uniform(0, 3))];
+                         e.value.analog = std::clamp(e.value.analog + uniform(-sigma, sigma), -65536, 65536);
+                     } else if (kind < 95) {
+-                        e.timeMs = std::clamp(e.timeMs + uniform(-3, 3) * 10, from, to - 10);
++                        e.timeMs = std::clamp(e.timeMs + uniform(-3, 3) * 10, from + 10, to - 10);
+                     } else {
+                         e.timeMs = -1;
+                     }
+@@ -463,6 +509,16 @@ int main(int argc, char **argv) {
+             makeHuman(cand);
+             ++attempts;
+             const Score sc = run(cand);
++            if (kick) {
++                cur = cand;
++                curScore = sc;
++                lastImprove = elapsed;
++                ++kicks;
++            } else if (sc.value < curScore.value) {
++                cur = cand;
++                curScore = sc;
++                lastImprove = elapsed;
++            }
+             if (sc.value < bestScore.value) {
+                 best = cand;
+                 bestScore = sc;
+@@ -479,6 +535,7 @@ int main(int argc, char **argv) {
+             const Score re = run(best);
+             std::printf("recheck in process: %.4f (search said %.4f)\n", re.value, bestScore.value);
+         }
++        if (kickStall > 0.0) std::printf("kicks: %u\n", kicks);
+         std::printf("done: %llu attempts, best %.6f ms score %.4f finish %.2f closest %.1f m exp %.2f max %.0f km/h\n",
+                     static_cast<unsigned long long>(attempts),
+                     bestScore.finishMs > 0 ? bestScore.finishMs : bestScore.value, bestScore.value,
+@@ -515,7 +572,7 @@ int main(int argc, char **argv) {
+         if (!base) return Fail("inputs");
+         std::vector<PhysicsSandboxInputEvent> fixed, best;
+         for (const auto &e : base.Value()) {
+-            if (e.action == PhysicsSandboxInputAction::Steer && e.timeMs >= from && e.timeMs < to) {
++            if (e.action == PhysicsSandboxInputAction::Steer && e.timeMs > from && e.timeMs < to) {
+                 best.push_back(e);
+             } else {
+                 fixed.push_back(e);
+@@ -545,14 +602,16 @@ int main(int argc, char **argv) {
+             const PhysicsSandboxState &s0 = k == 0 ? start.Value() : cache[static_cast<std::size_t>(k)];
+             if (!sandbox.RestoreState(s0)) return 1e30;
+             std::vector<PhysicsSandboxInputEvent> all = merged(steer), win;
++            // the tick at the restored state's time is already applied; a base event at `to` must stay
++            const std::int32_t winFrom = segStart[static_cast<std::size_t>(k)] + 10;
+             for (const auto &e : all) {
+-                if (e.timeMs >= segStart[static_cast<std::size_t>(k)] && e.timeMs < to &&
++                if (e.timeMs >= winFrom && e.timeMs < to &&
+                     (e.action == PhysicsSandboxInputAction::Steer || e.action == PhysicsSandboxInputAction::Accelerate ||
+                      e.action == PhysicsSandboxInputAction::Gas || e.action == PhysicsSandboxInputAction::Brake)) {
+                     win.push_back(e);
+                 }
+             }
+-            auto replaced = sandbox.ReplaceInputWindow(segStart[static_cast<std::size_t>(k)], to, win);
++            auto replaced = sandbox.ReplaceInputWindow(winFrom, to - 10, win);
+             if (!replaced) {
+                 std::fprintf(stderr, "window: %s\n", replaced.Error().diagnostic.c_str());
+                 return 1e30;
+@@ -663,7 +722,7 @@ int main(int argc, char **argv) {
+             const double elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+             if (elapsed > seconds) break;
+             const int k = uniform(0, segments - 1);
+-            const std::int32_t a = segStart[static_cast<std::size_t>(k)];
++            const std::int32_t a = segStart[static_cast<std::size_t>(k)] + 10;  // not on the restored tick
+             const std::int32_t b = k + 1 < segments ? segStart[static_cast<std::size_t>(k) + 1] : to;
+             std::vector<PhysicsSandboxInputEvent> cand = best;
+             std::vector<std::size_t> inSeg;
+-- 
+2.52.0.windows.1
+
