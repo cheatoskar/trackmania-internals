@@ -21,7 +21,7 @@ Everything here is **knowledge, not game content**: no executables, assets, maps
 | TrackMania United Forever (TMUF) | `TmForever.exe` 2.11.26 | `4b9e8add` (2010-03-15), 10,493,952 bytes, SHA-256 `4b6a7b31d86766409e94101f1256cd61dffecb23ea497a40b6617506b2ced2d4` | addresses ported from TMNF with confidence, hook table column, VR mod layouts | medium (no map file; every port is byte-compared) |
 | TrackMania Nations ESWC | `TmNationsESWC.exe` 0.1.7.9 | unofficial 1.80 community build `5ce7272f` (2019-05-23), SHA-256 `983bd12724739dcb0f876aeb3a4259154b068940f5167f57ede750ca452d8068` | race end, replay save, input engine, render offsets, reflection, online TLS issue | medium |
 | TrackMania Sunrise (Win10 community repack) | `TmSunrise.exe` | `5cc8f0cf`, 7,904,768 bytes, SHA-256 `e59dfc7eaa5314e85b2b0df6f40ef7ba01a23bd5a9525f84407f5dff301df4fe` | race events, play-a-map path, input engine, reflection | light (static only, not run) |
-| TrackMania Original | — | — | only via the 2006 dedicated server and TMX notes | minimal |
+| TrackMania Original (Online Patch v2 community exe) | `TMORIGINAL.EXE` | `5d337477` (2019-07-20), 7,883,264 bytes, SHA-256 `75e129d769f4595ddde54a8ef484162915bc2bf998c1a2139cc963294fe8175e`; GreffMASTER's Online Patch v2 (2023) made from the community build without StarForce | exe identification, imports (dgVoodoo d3d9, m4d.dll), race events, play-a-map path, input port, reflection compared with Sunrise | light (static only, not run) |
 | ManiaPlanet / TrackMania 2 | `ManiaPlanet.exe` (x64) | last build 2019-11-19, `5dd42b7c`, SHA-256 `4af0e34a33b858c8e379e916c1e4f09c38f5744e0e8e207ae6648b8543e86b2b` | RVAs, class ids, D3D11 constant buffers, reflection table layout | light |
 | TMF dedicated server | `TrackmaniaServer` 2011-02-21 | — | XML-RPC (GBXRemote), limits, quirks, logs | medium |
 | 2006 dedicated server (TMN/TMS/TMO) | `TrackManiaServer` 2006-05-30 | zip SHA-256 `28d79550fdd18623c47d3a428af5ce8e150402b8c4c5fa0b45d3efa4e6bf783d` | command line, callbacks, available methods | medium |
@@ -39,6 +39,7 @@ ESWC builds are not interchangeable: the original 1.80 exe (SHA-256 `054778cc...
 | [games/tmuf/](games/tmuf/README.md) | TMUF specifics, porting method, VR-mod layouts |
 | [games/tmn-eswc/](games/tmn-eswc/) | [addresses.md](games/tmn-eswc/addresses.md), [engine-hooks.md](games/tmn-eswc/engine-hooks.md), [input.md](games/tmn-eswc/input.md) (DirectInput, bindings; ESWC + Sunrise) |
 | [games/tm-sunrise/](games/tm-sunrise/README.md) | Sunrise exe, play-a-map path, [race-events.md](games/tm-sunrise/race-events.md) |
+| [games/tm-original/](games/tm-original/README.md) | TM Original exe (Online Patch v2), [addresses.md](games/tm-original/addresses.md), [engine-hooks.md](games/tm-original/engine-hooks.md) (loader, dgVoodoo, D3D9, race hooks) |
 | [games/maniaplanet/](games/maniaplanet/engine.md) | ManiaPlanet.exe RVAs, class ids, D3D11 constant buffers |
 | [formats/](formats/) | [gbx.md](formats/gbx.md) (container, LZO, replay/ghost/challenge chunks, class ids), [replay-validable-eswc.md](formats/replay-validable-eswc.md) (format facts only) |
 | [physics/](physics/tmnf-physics.md) | Stadium physics: tick and substeps, Model6 forces, surfaces, caps, state layout, every known bug mechanic (nosebug, uberbug, bluebug, noseboost, bugslide ...), cross-checks with TMNF-C and ForeverValidator |
