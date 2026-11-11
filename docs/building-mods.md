@@ -61,7 +61,7 @@ Notes for your own inline hooks: copy whole instructions only, at least 5 bytes,
 
 ## Using an AI coding assistant (e.g. Claude Code)
 
-An assistant is good at the grind: reading decompiled functions, writing hook boilerplate, scripting Ghidra, comparing bytes. It is not an oracle for this game.
+This is how most of the mods behind this repository were built. With an agentic coding assistant (I use Claude Code with Claude Opus) and Ghidra connected over MCP, a mod like an in-game overlay, an autosave or a randomizer is a matter of hours, not weeks: the assistant reads the decompiled code, finds and verifies the addresses, writes the hooks, builds and tests. This repository exists to make that faster: it gives the assistant verified addresses and formats to start from instead of rediscovering them.
 
 ### Setup
 
@@ -118,25 +118,23 @@ The same pattern works for other domains: [trackmania-map-mcp](https://github.co
 For a mod with several parts (hooks, UI, tests, docs) one long chat gets slow and forgets details. What worked for me:
 
 - **One orchestrator session** on the strongest model (in Claude Code: Opus). It keeps the plan, reads the reports and decides; it does little editing itself.
-- **Helpers per bounded task** on a cheaper model (Sonnet; Haiku for tiny, exact edits): "find the race-end address in build X and verify the prologue", "write the settings page", "update the docs". Give each one the files to read, the goal, the checks to run and what not to touch. The orchestrator reviews every result; helpers report confidently even when wrong.
+- **Helpers per bounded task** on a cheaper model (Sonnet; Haiku for tiny, exact edits): "find the race-end address in build X and verify the prologue", "write the settings page", "update the docs". Give each one the files to read, the goal, the checks to run and what not to touch. The orchestrator reviews every result before it merges.
 - **Parallel helpers only on separate files**, ideally each in its own git worktree, and merge through the orchestrator. Two helpers editing the same file is the usual way to lose work.
 - **Several orchestrators** only for unrelated workstreams (e.g. one for the mod, one for a website), each with its own repository or worktree. They do not share memory: hand over through files in the repo (a plan, a changelog), not through chat.
 - **Watch the cost and your machine.** Each helper is a full session; builds and analysis runs from several helpers at once can make the PC unusable. Bundle related tasks into one helper instead of spawning many.
 
-### Good practices
+### What makes it work
 
-- **One change at a time.** One hook, one test, one commit. Small steps make a crash attributable.
-- **Verify every address yourself in Ghidra.** Open the function, read the first bytes, compare with the table and with the exe. Ask the assistant to show the bytes, then check them independently.
-- **Make it cite sources.** Every address it proposes must name a table row, a reflection entry or a Ghidra query result; "I think it is at ..." is not enough.
-- **Never let it run the game online.** Run the game yourself on the test copy, or let it run only offline test scripts. Do not give it any credentials.
-- **Keep secrets out.** No tokens, keys, account names or personal paths in prompts, notes or committed files; check logs before pasting them.
-- **Keep exes and assets out of the repo.** Do not let it commit game files, Ghidra projects or decompiled code.
-- **Review diffs.** Read what it changed before running it; a mod DLL runs inside the game process.
+- **Give it the exact build.** Addresses belong to one exe build; put the PE timestamp, size and hash into `CLAUDE.md` (the setup prompt does this). With the build pinned, the tables in this repository apply directly.
+- **Connect Ghidra.** With GhidraMCP the assistant reads the real bytes, xrefs and decompiled code of your exe instead of working from memory. Ask it to check the prologue bytes of every address it uses against the exe and to name its source (a table row here, a reflection entry or a Ghidra query); the templates refuse to hook when the bytes do not match, so a wrong address fails safely.
+- **Small steps.** One hook, one build, one test, one commit. If something crashes, the last step is the cause.
+- **Let it run the offline checks.** Builds, self-tests, log reading and the offline tools here (fvlab, the scripts) are things it can do on its own. You start the game on a test copy; it reads the logs afterwards.
+- **Restate the build and the rules in long sessions**, or start a fresh session with the `CLAUDE.md`; that keeps TMNF/TMUF and ESWC/Sunrise details apart.
+- **Review the diff before running it.** A mod DLL runs inside the game process.
 
-### Limits
+### Rules for any mod, with or without AI
 
-- It **hallucinates addresses, struct offsets and function names**, especially for a build it has not seen, and presents a plausible number as certain. Always check prologue bytes against the exe.
-- It does not know which build you have unless you tell it; TMNF/TMUF confusion is easy.
-- Decompiler output can be wrong (calling conventions, `thiscall`, stack arguments); a hook built on a misread signature crashes at runtime.
-- It cannot judge TMX moderation or anti-cheat questions; follow the written rules.
-- Long sessions drift; restate the build and the rules when a session gets long.
+- **Never test experimental hooks online**, and do not give the assistant game or account credentials.
+- **Keep secrets and personal paths out** of prompts, notes and committed files.
+- **Keep game files out of the repo:** no exes, assets, Ghidra projects or decompiled code.
+- **Online play follows the server and TMX rules** ([tmx-rules-for-mods.md](../modding/tmx-rules-for-mods.md)); on TMNF/TMUF with Competition Patch, mods stay read-only.
