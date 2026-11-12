@@ -48,6 +48,12 @@ Class 0x0a02b000 (the car's input-bearing base; members 0x0a02b002..0x0a02b004),
 
 A second class, 0x0a05f000, has members of the same names at +0x88 (steer), +0x8c (gas), +0x90 (brake): not the car's. Values changing while driving were not observed yet (the car stood still during the reads); the offsets are from the table only.
 
+## String members: wide or 8-bit (reflection type)
+
+The member entry's first dword is the type. Type 0x29 is a wide string {u32 length, wchar_t*}: `CConstructionChallenge.ChallengeName` (+0x124, type 0x29) reads correctly as UTF-16 in the running game. `CSystemFidFile.FileName` (class 0x0b00a000, member 0x0b00a003, entry 0x00c08588, +0x58) has the same type 0x29, so a challenge info's file name (info +0x14 -> CSystemFidFile -> +0x58) is wide too. Read as 8-bit text it yields only the first letter, and no name ever matches a file looked for. Status: verified (table types, ChallengeName read in game); the FileName read itself is inferred from the type.
+
+`CConstructionChallengeInfo` (0x2400b000) members from the table: Password +0x6c (0x29), GoldTime +0x58, Kind +0x60, CopperPrice +0x64, CollectionId2 +0x74, CopperString +0x78 (type 0x25), PlayMode +0x84, LapRace +0x80, BestTime +0xb0.
+
 ## Code around the editor slot
 
 | What | Address | Status |
