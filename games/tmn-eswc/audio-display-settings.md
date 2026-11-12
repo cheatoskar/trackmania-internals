@@ -10,7 +10,7 @@ Exes (link-time VAs, image base 0x00400000):
 | Sunrise | `TmSunrise.exe` | `5cc8f0cf` | `e59dfc7eaa5314e85b2b0df6f40ef7ba01a23bd5a9525f84407f5dff301df4fe` |
 | Original | `TMORIGINAL.EXE` | `5d337477` | `75e129d769f4595ddde54a8ef484162915bc2bf998c1a2139cc963294fe8175e` |
 
-How established: Ghidra 12.1.2 decompilation (Sunrise, Original), capstone disassembly and byte-pattern search across the three exes, the games' reflection tables (member descriptors read from the exe), and an in-game test on ESWC. Status per row: `verified` = seen in code/data of that exe (or observed in game where noted), `inferred` = same code shape as a verified exe, not traced in this one.
+How established: Ghidra 12.1.2 decompilation (Sunrise, Original), capstone disassembly and byte-pattern search across the three exes, the games' reflection tables (member descriptors read from the exe), and an in-game test on ESWC (volumes). Status per row: `verified` = seen in code/data of that exe (or observed in game where noted), `inferred` = same code shape as a verified exe, not traced in this one.
 
 ## Where the values live
 
@@ -45,6 +45,18 @@ A reflection descriptor starts `{type, member id, 0, offset, name*, ...}` (type 
 | Per-frame port update: computes that volume for every playing buffer (and treats very low volumes, about -95 dB and below, as not audible) | callers 0x00954698, 0x00954835 | - | 0x005EE030 (vtable +0xB4) | verified (Original), inferred (ESWC) |
 | Buffer volume update: calls `IDirectSoundBuffer::SetVolume` only when the computed value differs from the cached one | 0x00958808 .. 0x0095883E | - | 0x0071A400 | verified |
 
+## The viewport's fullscreen switch
+
+| What | ESWC | Sunrise | Original | Status |
+|---|---|---|---|---|
+| `app+` viewport (`CHmsViewportDx9`) | +0x3C | +0x44 | +0x44 | verified (start code and helpers) |
+| Viewport vtable | 0x00AF5CD8 | 0x00A31B68 | 0x00A2DB28 | verified |
+| `viewport+0x260`: fullscreen now (the window procedure's `IsFullscreen` helper reads it: ESWC 0x004253F0, Sunrise 0x00411700, Original 0x00411730) | yes | yes | yes | verified |
+| vtable +0x9C `StartFullscreen()` (logs `[Dx9] StartFullscreen %dx%d in %db (%s)` and `-> Succeded` / `-> Fail`; returns 0 if already fullscreen; saves window style and rectangle, takes the mode at `viewport+0x5C` (`FullScreenModeIndex`), resets the device; on failure calls `StopFullscreen`) | 0x007D3F70 | 0x005E4D80 | 0x005E48E0 | verified (Sunrise decompiled; ESWC, Original by the log string and the same code) |
+| vtable +0xA0 `StopFullscreen()` (only if fullscreen: resets the device to windowed, restores window style and rectangle) | 0x007D41B0 | 0x005E5040 | 0x005E4BA0 | verified (Sunrise decompiled; others same code) |
+| Window procedure helpers "to fullscreen" / "to windowed" (make the viewport if missing, then jump to +0x9C / +0xA0) | 0x00425390 / 0x004253C0 | 0x004116A0 / 0x004116D0 | 0x004116D0 / 0x00411700 | verified |
+| Start: `if (config Display.FullScreen) { StopFullscreen(); while (!StartFullscreen()) try the next mode; }` in `CHmsViewport` init | - | 0x00438040 (calls at 0x00438C7B, 0x00438C2A, 0x00438CAA) | - | verified (Sunrise) |
+
 ## Start order (why a value written early is used by the game's own init)
 
 All three run the same application init: input port first, then the viewport, then the audio port.
@@ -61,6 +73,7 @@ So values written into the `CSystemConfig` from inside the first `DirectInput8Cr
 
 - **Music and sound volume, live:** write the two `CSystemConfig` floats and the two `CAudioPort` floats (what `ApplySystemConfig` does). The per-frame update picks the new value up. Observed on ESWC: a sound volume change is heard at once in a race; a music volume change made during a race was heard once the main-menu music played. Status: verified (ESWC, in game); Sunrise and Original inferred from the same code.
 - **Changing the volume on every frame while a slider is dragged makes ESWC stutter.** Every change makes the update set the DirectSound volume of every playing buffer again, and crossing the "not audible" threshold stops or restarts sounds. Applying at most about ten times a second, plus the final value, avoids it. Status: verified (ESWC, in game).
-- **Fullscreen:** there is no live path in the shipped games. The window procedure has a `ToggleFullscreen` command (logs `[GbxWin32App] ToggleFullscreen begins/ends`) that calls viewport vtable +0x9C (to fullscreen) / +0xA0 (to windowed), but it only runs for a `WM_COMMAND` id kept in the application object (`app+0x74` ESWC, `app+0x7C` Sunrise/Original), which the constructor sets to `0xFFFFFFFF` and nothing else writes. `WM_SETFOCUS` / `WM_KILLFOCUS` only log while fullscreen. Writing `FullScreen` in the config takes effect at the next start (if it is written before the viewport init, as above). Status: verified (window procedure ESWC 0x004258BD, Sunrise 0x0043D49D, Original 0x0043D67D; helpers Sunrise 0x00411700 IsFullscreen, 0x004116A0 / 0x004116D0).
+- **Fullscreen, live:** the viewport's own `StartFullscreen` / `StopFullscreen` (table below) switch while the game runs. Nothing in the shipped games calls them at run time: the window procedure's `ToggleFullscreen` command (logs `[GbxWin32App] ToggleFullscreen begins/ends`) only runs for a `WM_COMMAND` id kept in the application object (`app+0x74` ESWC, `app+0x7C` Sunrise/Original), which the constructor sets to `0xFFFFFFFF` and nothing else writes; `WM_SETFOCUS` / `WM_KILLFOCUS` only log while fullscreen. But the game's start calls the same two functions when the config says fullscreen (`StopFullscreen`, then `StartFullscreen`, retrying with other modes), and both reset the device through the game's own reset path (the one used after a lost device). A mod can call them on the game thread between two frames (where that command would run, e.g. from a message hook), not inside `BeginScene`/`EndScene` or a `Reset`. Status: verified (static); in-game test pending.
+- **Fullscreen at the next start:** write `FullScreen` in the config before the viewport init (see the start order). Status: verified (static).
 - **Persistence:** the game writes `Default.SystemConfig.Gbx` right after loading it at start (ESWC: `CSystemArchiveNod::Save` call at 0x00425010), not while it runs, so changes made in memory are lost at exit. Status: verified (ESWC call site), inferred (no other writer seen).
 - **Master volume:** none of the three games has one. The per-process Windows audio session (`IAudioSessionManager::GetSimpleAudioVolume(NULL, FALSE)` on the default render device) controls the game's whole output, since DirectSound plays in the process's default session. Status: verified (Windows API behaviour, tested in a test program).
