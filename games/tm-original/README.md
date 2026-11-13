@@ -52,3 +52,7 @@ Do not key on the PE timestamp alone: the readme of the patch mentions a broken 
 The patch readme asks users to change Windows Internet Options for the whole system: allow software with invalid signatures, turn off the certificate revocation check, turn on TLS 1.0. The same two transport changes that matter for HTTPS (TLS 1.0 allowed, revocation check off) can be made inside the game process only, as the ESWC login fix does ([../tmn-eswc/addresses.md](../tmn-eswc/addresses.md), "online"): add TLS 1.0 to the `SecureProtocols` value WinINet reads, and set `SECURITY_FLAG_IGNORE_REVOCATION` on the game's HTTPS requests through its `HttpOpenRequestA` import slot 0x00a162d4. Status: inferred (same mechanism as ESWC; not tested against the server). The "invalid signature" option is an Internet Explorer download/ActiveX setting and is probably not needed by the game (unverified).
 
 Rendering (material per draw, delayed draws, point lights; with ESWC and Sunrise): [../../rendering/2006-engine-materials-lights.md](../../rendering/2006-engine-materials-lights.md).
+
+## Music volume, sound volume, fullscreen
+
+Config fields, audio port, start order and how to change them, side by side with ESWC and Sunrise: [../tmn-eswc/audio-display-settings.md](../tmn-eswc/audio-display-settings.md).
