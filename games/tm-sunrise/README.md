@@ -24,3 +24,5 @@ Input engine (DirectInput enumeration, device list, binding tables, device loss)
 Race events (OnStartLine, OnFinishLine, OnCheckpoint, solo race end): [race-events.md](race-events.md). Saving the race replay without the dialog (Sunrise and Original side by side, with ESWC): [replay-save.md](replay-save.md).
 
 Source: own spike code (legacy-randomizer); matched with scripts/re/fnmatch.py (ESWC→Sunrise 1.00 for Build/RefreshFromDisk/SortByName).
+
+Rendering (material per draw, delayed draws, the 512x512 view into a texture, point lights; with ESWC and Original): [../../rendering/2006-engine-materials-lights.md](../../rendering/2006-engine-materials-lights.md).
