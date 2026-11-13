@@ -18,4 +18,6 @@ The header attribute `validable="0|1"` of an ESWC replay is computed by the game
 | Internet dedicated server | 0 (the file holds one ghost per participant plus the server account) | verified (4-ghost sample) |
 | `GetValidationReplay` from the server | one ghost without samples and no GBX header; TMX cannot read it | verified |
 
+A file that a copy tool reduced to the local player's ghost reads `validable="1"` even with RaceSettings `Net-TimeAttack`; see [../games/tmn-eswc/replay-tail.md](../games/tmn-eswc/replay-tail.md#why-these-three-files-say-validable1). The same page documents that online ghosts run about 3 s past the finish.
+
 A 2006 TMX forum note says online replays are "multiplayer format" and only Solo saves validate; that matches the observations.
