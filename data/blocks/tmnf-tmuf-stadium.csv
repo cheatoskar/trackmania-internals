@@ -1,0 +1,866 @@
+block,origin,maps_nadeo,placements_nadeo,maps_community,placements_community,ground_placements,air_placements,skinned_placements,distinct_flag_variants,first_exever,last_exever,status
+StadiumAirship,nadeo,77,116,7832,14126,11,14231,5735,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumBump1,nadeo,5,8,2144,4462,1849,2621,0,2,2.11.6,2.11.26,verified (Nadeo map)
+StadiumBump1Slope,nadeo,3,3,2373,3512,7,3508,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumBump1Tilt,nadeo,2,2,581,830,75,757,0,2,2.11.11,2.11.26,verified (Nadeo map)
+StadiumCheckpointRingV,nadeo,27,69,9538,23598,27,23640,7,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBase,nadeo,69,4964,24390,6363422,609580,5758806,765,46,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderCornerIn,nadeo,26,126,15986,132703,16664,116165,28509,6,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderCornerOut,nadeo,29,165,12278,264906,25359,239712,12156,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderDiagIn,nadeo,3,7,8085,71356,8861,62502,9254,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderDiagOut,nadeo,2,4,8592,199359,15351,184012,8849,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderGTCurve2In,nadeo,18,56,8046,21327,2824,18559,5030,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderGTCurve2Out,nadeo,18,80,4738,17860,2872,15068,1638,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderGTCurve3In,nadeo,1,1,4406,7729,697,7033,2074,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderGTCurve3Out,nadeo,7,18,2874,7054,1072,6000,1224,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderGTCurve4Out,nadeo,4,8,2403,5537,751,4794,1500,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerInLeftBottom,nadeo,4,6,3530,6236,2,6240,1195,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerInLeftTop,nadeo,2,9,2873,4774,3,4780,1229,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerInRightBottom,nadeo,4,6,3471,5950,5,5951,1218,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerInRightTop,nadeo,2,5,2893,4803,1,4807,1288,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerOutLeftTop,nadeo,5,6,2856,8652,12,8646,821,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerOutRightBottom,nadeo,2,2,1843,6521,7,6516,312,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeCornerOutRightTop,nadeo,3,3,2809,8549,9,8543,829,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeEndLeft,nadeo,10,19,6893,22521,17,22523,4810,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeEndRight,nadeo,12,21,6779,22054,8,22067,4710,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeGTCurve2InLeftBottom,nadeo,3,4,1480,1948,0,1952,505,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeGTCurve2InRightBottom,nadeo,3,6,1479,1885,3,1888,506,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeGTCurve2OutLeftBottom,nadeo,2,3,287,487,1,489,36,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeGTCurve2OutLeftTop,nadeo,4,12,1049,1467,1,1478,445,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeGTCurve2OutRightBottom,nadeo,1,3,239,371,0,374,31,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeGTCurve2OutRightTop,nadeo,6,12,1049,1406,3,1415,430,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeStartLeft,nadeo,19,46,8654,30400,4359,26087,4666,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeStartRight,nadeo,22,50,8581,29241,4195,25096,4552,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeStraightBottom,nadeo,3,25,4714,21614,21,21618,2479,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeStraightLeft,nadeo,13,47,5177,19830,15,19862,2927,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeStraightRight,nadeo,15,51,5177,20161,10,20202,2949,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderSlopeStraightTop,nadeo,8,64,6156,37978,22,38020,9034,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBorderStraight,nadeo,40,1305,20401,598325,77079,522551,80581,8,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBumpUp,nadeo,2,3,6529,23286,2486,20803,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitBumpUp2,nadeo,1,1,3365,9206,1059,8148,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitHole,nadeo,2,3,6756,51572,4483,47092,24,11,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitLoopStart,nadeo,12,129,14850,271775,28624,243280,56,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitPillar1,nadeo,16,82,12903,109419,12916,96585,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitPillar2,nadeo,4,4,5564,18871,2038,16837,1,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitPillar5,nadeo,1,2,2792,16402,1543,14861,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitPillar7,nadeo,2,2,3116,22235,3694,18543,0,2,2.11.9,2.11.26,verified (Nadeo map)
+StadiumCircuitRampBig,nadeo,10,18,16564,156543,19933,136628,17,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitRampSmall1x05,nadeo,4,5,9704,41150,4149,37006,8,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitRampSmall1x1,nadeo,4,9,11496,79598,7200,72407,36,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitSlopeEnd,nadeo,29,109,12785,178322,34,178397,15,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitSlopeStart,nadeo,41,285,16234,246379,38624,208040,17,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitSlopeStraight,nadeo,30,431,10092,234743,41,235133,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumCircuitTurbo,nadeo,11,53,11873,209109,31320,177842,8,12,2.11.3,2.11.26,verified (Nadeo map)
+StadiumControlCameraPub,nadeo,37,102,18369,107160,12621,94641,107235,25,2.11.3,2.11.26,verified (Nadeo map)
+StadiumControlLight,nadeo,21,123,9520,66701,8938,57886,3,9,2.11.3,2.11.26,verified (Nadeo map)
+StadiumControlLightBase,nadeo,57,249,15324,137214,15982,121481,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumControlRoadCamera,nadeo,131,3528,26847,1036391,203302,836617,1116,16,2.11.0,2.11.26,verified (Nadeo map)
+StadiumControlRoadGlass,nadeo,139,2848,28537,1191600,190783,1003665,872,16,2.11.0,2.11.26,verified (Nadeo map)
+StadiumControlRoadPub,nadeo,87,852,30052,458163,39140,419875,458512,20,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirt,nadeo,37,5813,10847,2131173,2075647,61339,8,30,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirtBorder,nadeo,38,3094,11847,985207,986086,2215,0,35,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirtClip,nadeo,18,99,8181,75438,20069,55468,0,13,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirtDeadendDoor,nadeo,15,24,3742,10919,10743,200,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirtDeadendSpot,nadeo,12,27,1619,12437,12303,161,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirtDeadendTent1,nadeo,15,29,3071,15098,14914,213,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumDirtHill,nadeo,36,7398,8881,1721730,1697977,31151,0,62,2.11.3,2.11.26,verified (Nadeo map)
+StadiumFabricCornerIn,nadeo,26,68,9435,33361,16378,17051,33408,2,2.11.0,2.11.26,verified (Nadeo map)
+StadiumFabricCornerOut,nadeo,12,22,8804,25832,14674,11180,25831,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumFabricCross1x1,nadeo,27,212,13097,385332,264,385280,5,36,2.11.0,2.11.26,verified (Nadeo map)
+StadiumFabricCross3x3,nadeo,2,4,2365,5715,5,5714,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumFabricCross3x3Screen,nadeo,4,4,951,1609,2,1611,1613,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumFabricPillarAir,nadeo,21,482,10219,191855,57138,135199,42,10,2.11.0,2.11.26,verified (Nadeo map)
+StadiumFabricPillarAirScreen,nadeo,1,2,3174,8999,39,8962,9000,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumFabricPillarCornerInAir,nadeo,14,88,6852,36880,15647,21321,2,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumFabricPillarCornerOut,nadeo,11,98,10241,248656,40998,207756,34,11,2.11.0,2.11.26,verified (Nadeo map)
+StadiumFabricStraight1x1,nadeo,32,355,14669,115797,64033,52119,115996,3,2.11.0,2.11.26,verified (Nadeo map)
+StadiumGrass,nadeo,7,121,487,41760,26918,14963,0,6,2.11.11,2.11.26,verified (Nadeo map)
+StadiumGrassCheckpoint,nadeo,20,31,8431,14560,14528,63,2,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumGrassClip,nadeo,91,464,28673,272669,38628,234505,2,8,2.11.0,2.11.26,verified (Nadeo map)
+StadiumHole,nadeo,25,33,6651,13738,1458,12313,0,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHolePillar,nadeo,57,160,20504,110260,21724,88696,6,27,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHolePillar2Front,nadeo,22,30,4262,8259,1874,6415,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHolePillar2Line,nadeo,14,19,4371,9356,1499,7876,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHolePillar3,nadeo,22,29,5867,10105,2627,7507,1,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHolePillarSlope,nadeo,34,55,9526,46955,43,46967,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHolePillarTilt,nadeo,33,50,8159,17596,3192,14454,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHoleSlope,nadeo,8,9,2777,4678,4,4683,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumHoleTilt,nadeo,7,7,1045,1573,171,1409,1,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumInflatableAdvert,nadeo,16,55,2189,9449,5,9499,9493,12,2.11.3,2.11.26,verified (Nadeo map)
+StadiumInflatableCactus,nadeo,60,408,5604,54141,54196,353,0,12,2.11.3,2.11.26,verified (Nadeo map)
+StadiumInflatableCastle,nadeo,36,86,6411,24305,23861,530,2,12,2.11.0,2.11.26,verified (Nadeo map)
+StadiumInflatableCastleBig,nadeo,31,50,5920,14683,14643,90,0,1,2.11.0,2.11.26,verified (Nadeo map)
+StadiumInflatableCastleDoor,nadeo,29,36,6041,12894,12810,120,1,3,2.11.0,2.11.26,verified (Nadeo map)
+StadiumInflatablePalmTree,nadeo,21,137,9828,86338,85072,1403,6,16,2.11.0,2.11.26,verified (Nadeo map)
+StadiumInflatablePillar,nadeo,72,11086,22546,5450628,818130,4643584,4218439,32,2.11.3,2.11.26,verified (Nadeo map)
+StadiumInflatableSnowTree,nadeo,49,390,8570,134652,133481,1561,1,14,2.11.3,2.11.26,verified (Nadeo map)
+StadiumInflatableSupport,nadeo,72,2685,22691,876430,1688,877427,654860,36,2.11.3,2.11.26,verified (Nadeo map)
+StadiumInflatableTube,nadeo,32,208,3669,26841,4893,22156,12138,16,2.11.3,2.11.26,verified (Nadeo map)
+StadiumLoopLeft,nadeo,13,31,1593,3118,1100,2049,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumLoopRight,nadeo,9,24,1451,2731,889,1866,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformBiSlope2End,nadeo,13,36,12673,105142,21,105157,6,5,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformBiSlope2Start,nadeo,13,72,9155,58860,51,58881,6,2,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformCheckpoint,nadeo,40,58,15301,59437,36,59459,10,3,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformCheckpointDown,nadeo,2,3,1493,2544,28,2519,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformCheckpointLeft,nadeo,7,10,2668,3190,2,3198,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformCheckpointRight,nadeo,7,11,2787,3306,2,3315,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformGTCurve2Wall1,nadeo,11,62,18519,127318,49,127331,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformGTCurve2Wall2,nadeo,18,60,4646,12172,4,12228,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformGTCurve2Wall4,nadeo,16,55,2899,10195,1,10249,5,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformGTCurve3Wall1,nadeo,6,13,9430,40938,19,40932,1,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformGTCurve3Wall2,nadeo,7,12,5168,11696,2,11706,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformGTCurve3Wall4,nadeo,10,21,2779,7765,1,7785,4,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformLoopEnd,nadeo,25,195,18215,333596,78,333713,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformLoopStart,nadeo,59,679,23645,297661,72037,226303,15,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformRoad,nadeo,27,483,15511,396563,288,396758,40,27,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformSlope2Straight,nadeo,14,176,7307,69698,39,69835,1,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformToRoad,nadeo,54,216,29066,266754,48440,218530,8,38,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformToRoad2,nadeo,39,81,20393,60766,18936,41911,4,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformToRoad2Mirror,nadeo,37,63,20718,61991,19354,42700,2,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformToRoadMain,nadeo,52,133,17897,75083,21,75195,18,2,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformTurbo,nadeo,22,66,4722,51395,17409,34052,4,9,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformTurboDown,nadeo,3,7,992,3314,4,3317,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformTurboLeft,nadeo,4,4,626,1845,2,1847,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformTurboRight,nadeo,3,4,624,1674,4,1674,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformTurboUp,nadeo,9,49,818,2195,4,2240,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformWall1,nadeo,42,220,14518,225983,541,225662,3,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformWall2,nadeo,30,181,9229,90259,28,90412,87,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformWall4,nadeo,33,291,5976,118779,8,119062,2,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumPlatformWallBorder,nadeo,64,10698,18481,2008429,3922,2015205,42,10,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPlatformWallPub2,nadeo,92,572,20237,235010,76,235506,235539,5,2.11.0,2.11.26,verified (Nadeo map)
+StadiumPool,nadeo,83,6801,15855,1399009,1394894,10916,0,33,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRamp,nadeo,52,100,14447,55624,13171,42553,1,21,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRampLow,nadeo,16,24,18865,69739,17428,52335,1,33,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirt,nadeo,21,163,6773,86126,56476,29813,0,11,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtCheckpoint,nadeo,21,41,4525,18293,18229,105,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtDiagonaleLeft,nadeo,4,4,2217,3662,3649,17,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtDiagonaleRight,nadeo,6,6,2511,4264,4244,26,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtFenceCorner,nadeo,9,16,4015,18354,18339,31,0,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtFenceStraight,nadeo,25,72,4378,19217,19233,56,0,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtGTCurve2,nadeo,15,27,3494,9303,9312,18,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtGTCurve3,nadeo,13,15,2518,4975,4983,7,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHigh,nadeo,10,82,6300,60807,59692,1197,6,25,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHighCheckpoint,nadeo,5,11,2152,3253,3218,46,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHighFenceCorner,nadeo,4,15,2988,9805,9784,36,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHighFenceStraight,nadeo,12,23,2509,7092,7023,92,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHighGTCurve3,nadeo,11,12,2034,3202,3195,19,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHighToRoad,nadeo,20,44,5063,14940,14582,402,2,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillSlope,nadeo,7,11,2813,6526,6386,151,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillSlope2,nadeo,25,56,3611,9507,9374,189,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillSlopeGT2,nadeo,9,13,2732,5939,5805,147,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillSlopeGT2Bis,nadeo,5,7,2737,5949,5829,127,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltCornerIn,nadeo,3,5,1617,3193,3156,42,4,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltCornerLeft,nadeo,8,11,1505,2244,2231,24,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltCornerOut,nadeo,1,1,945,2695,2634,62,40,5,2.11.11,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltCornerRight,nadeo,7,9,1525,2269,2256,22,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltStraight,nadeo,14,22,2464,8847,8751,118,31,8,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltToRoadLeft,nadeo,8,9,1772,2694,2675,28,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillTiltToRoadRight,nadeo,10,11,1740,2596,2587,20,7,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtHillWave,nadeo,2,3,603,1338,1292,49,0,6,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtToRoad,nadeo,28,70,6151,17839,17876,33,1,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtToRoadDirtHigh,nadeo,13,26,4033,9673,9626,73,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtToRoadDirtHigh2,nadeo,11,17,4442,10336,10324,29,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtToRoadDirtHighBridge,nadeo,10,10,2632,5942,5919,33,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtToRoadGrass,nadeo,9,17,653,1167,1160,24,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtTurbo,nadeo,1,2,1987,7737,7704,35,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtWave_x1,nadeo,6,13,1220,2150,2145,18,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadDirtWave_x2,nadeo,4,5,845,1524,1501,28,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMain,nadeo,176,2180,35789,803529,223575,582134,65,25,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainBiSlopeEnd,nadeo,87,221,15375,31721,6,31936,1,2,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainBiSlopeStart,nadeo,113,348,24351,72975,36590,36733,12,6,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainCheckpoint,nadeo,127,315,29098,88315,28693,59937,3,1,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainCheckpointDown,nadeo,14,18,4824,5995,0,6013,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainCheckpointLeft,nadeo,30,38,11384,18086,1848,16276,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainCheckpointRight,nadeo,36,59,11992,19434,1967,17526,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainCheckpointUp,nadeo,17,24,4606,5669,0,5693,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainFinishLine,nadeo,186,226,37806,82035,18996,63265,2,8,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainFW,nadeo,12,19,4325,10538,1736,8821,1,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTCurve2,nadeo,62,159,21401,77194,19858,57495,11,6,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTCurve3,nadeo,59,159,8468,18218,3773,14604,0,3,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTCurve4,nadeo,51,109,3464,5803,1751,4161,2,1,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTCurve5,nadeo,13,30,2919,6232,1847,4415,0,1,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag2x2,nadeo,41,52,10247,16519,5565,11006,0,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag2x2Mirror,nadeo,43,62,9837,15531,5091,10502,4,5,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag2x2Slope,nadeo,26,36,2854,3935,0,3971,0,1,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag2x2SlopeMirror,nadeo,24,35,2686,3652,1,3686,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag2x2Tilt,nadeo,7,9,4680,6540,0,6549,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag2x2TiltMirror,nadeo,3,3,4389,5983,2,5984,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag3x2,nadeo,35,53,2919,4155,1194,3014,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag3x2Mirror,nadeo,32,44,2912,4062,1121,2985,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag3x2Slope,nadeo,17,20,581,709,1,728,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag3x2SlopeMirror,nadeo,22,23,604,744,0,767,1,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag3x2Tilt,nadeo,2,2,1082,1434,2,1434,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag4x3,nadeo,4,4,696,917,302,619,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag4x3Mirror,nadeo,3,3,613,825,292,536,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag4x3Slope,nadeo,5,6,182,218,1,223,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainGTDiag4x3SlopeMirror,nadeo,3,3,133,155,0,158,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainSlopeBase,nadeo,54,118,17930,53322,20068,33372,9,6,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainSlopeBase2,nadeo,15,25,14452,50130,17123,33032,1,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainSlopeStraight,nadeo,80,287,14167,37187,6618,30856,1,5,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainSlopeUBottom,nadeo,27,46,8611,13266,4334,8978,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainSlopeUTop,nadeo,24,41,9401,15603,5,15639,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainStartFinishLine,nadeo,18,18,2097,2099,553,1564,2,2,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainStartLine,nadeo,185,185,36473,36606,7786,29005,4,2,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainTurbo,nadeo,119,399,18810,68668,21159,47908,9,10,2.11.0,2.11.26,verified (Nadeo map)
+StadiumRoadMainTurboDown,nadeo,12,39,2820,5026,2,5063,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainTurboLeft,nadeo,4,4,1401,2045,229,1820,0,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainTurboRight,nadeo,5,7,1521,2292,265,2034,3,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainTurboUp,nadeo,22,26,3018,5603,2,5627,1,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainYShapedCurve2,nadeo,3,23,1459,2094,634,1483,3,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainYShapedDiag2,nadeo,6,13,4006,6540,1813,4740,1,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadMainYShapedDiag2SlopeDown,nadeo,1,1,750,866,1,866,0,2,2.11.11,2.11.26,verified (Nadeo map)
+StadiumRoadMainYShapedDiag2SlopeUp,nadeo,2,3,789,938,1,940,0,1,2.11.11,2.11.26,verified (Nadeo map)
+StadiumRoadStretch,nadeo,40,70,9398,17244,4006,13308,0,6,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadStretchSlope,nadeo,29,46,2585,4410,6,4450,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltCorner,nadeo,20,27,12651,33123,8150,25000,2,9,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltCornerDownLeft,nadeo,30,52,15768,36490,13,36529,0,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltCornerDownRight,nadeo,29,48,15430,35048,13,35083,0,6,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltCornerUpLeft,nadeo,27,35,14459,29089,6982,22142,1,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltCornerUpRight,nadeo,24,38,14802,30245,7237,23046,3,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve2,nadeo,31,56,8877,15981,2986,13051,1,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve2DownLeft,nadeo,39,59,10251,17331,3,17387,2,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve2DownRight,nadeo,44,62,10333,17244,0,17306,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve2UpLeft,nadeo,23,30,2745,3405,901,2534,5,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve2UpRight,nadeo,22,31,2828,3530,915,2646,4,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve3,nadeo,7,11,2253,3491,428,3074,3,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltGTCurve4,nadeo,1,1,1151,2055,259,1797,1,1,2.11.10,2.11.26,verified (Nadeo map)
+StadiumRoadTiltStraight,nadeo,38,135,12012,32525,4151,28509,2,18,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition1Left,nadeo,8,9,5729,7449,1153,6305,0,6,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition1Right,nadeo,8,9,5697,7384,1133,6260,1,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition2CurveLeft,nadeo,15,18,7315,10171,1798,8391,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition2CurveRight,nadeo,10,15,7386,10334,1814,8535,5,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition2DiagLeft,nadeo,20,32,7808,10944,4748,6228,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition2DiagRight,nadeo,16,24,7882,10932,4646,6310,1,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition2Left,nadeo,25,37,12316,21738,3692,18083,2,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumRoadTiltTransition2Right,nadeo,26,40,12296,21530,3600,17970,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptA,nadeo,65,194,11127,34377,34155,416,0,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptArchRingEnd,nadeo,25,50,2963,5126,4724,452,0,3,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptArchRingEndMirror,nadeo,23,48,2825,4704,4513,239,0,3,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptArchRingStart,nadeo,19,25,2475,3889,3812,102,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptArchRingStartMirror,nadeo,18,24,2367,3699,3623,100,0,2,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptB,nadeo,38,114,4631,11249,11061,302,0,5,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptBridgePillar,nadeo,21,68,8680,45763,19597,26234,8,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgePillarMirror,nadeo,15,37,4951,15632,6129,9540,4,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSlopeEnd,nadeo,28,71,7918,23189,34,23226,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSlopeEndMirror,nadeo,27,71,7453,20894,32,20933,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSlopeStart,nadeo,6,10,9158,21976,15093,6893,0,5,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSlopeStartMirror,nadeo,6,11,8591,19359,12971,6399,0,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeStraight,nadeo,8,16,4264,16645,14,16647,0,3,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeStraightSmall,nadeo,27,62,7662,42412,92,42382,0,71,2.11.3,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSuspendSlope2,nadeo,18,32,1290,2314,2309,37,1,1,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSuspendSlope2Mirror,nadeo,15,28,612,27592,2004,25616,0,9,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSuspendSlopeEnd,nadeo,12,23,1241,2973,1928,1068,1,11,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptBridgeSuspendSlopeEndMirror,nadeo,12,24,1152,1816,1784,56,1,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumSculptC,nadeo,33,101,4177,11742,11611,232,4,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumStretchTilt,nadeo,4,4,2379,3040,4,3040,2,1,2.11.3,2.11.26,verified (Nadeo map)
+StadiumTube,nadeo,158,2068,20873,424224,58691,367601,5,12,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubePillar,nadeo,145,6972,20092,2019786,359855,1666903,35,6,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubePillarBranch,nadeo,84,689,13344,120985,27,121647,2,4,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubePillarCap,nadeo,119,1041,16723,216386,45859,171568,9,14,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubeRoad,nadeo,90,1181,19865,264526,9604,256103,100,19,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubeRoadCross,nadeo,79,664,21355,281494,60154,222004,110,12,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubeRoadDown,nadeo,77,825,27331,651925,67495,585255,349,15,2.11.3,2.11.26,verified (Nadeo map)
+StadiumTubeRoadLightSystem,nadeo,52,735,16135,309076,91,309720,19,9,2.11.0,2.11.26,verified (Nadeo map)
+StadiumTubeRoadSoundSystem,nadeo,10,41,8718,63134,24,63151,0,7,2.11.3,2.11.26,verified (Nadeo map)
+StadiumTubeRoadUp,nadeo,71,435,19985,302589,5709,297315,40,12,2.11.3,2.11.26,verified (Nadeo map)
+StadiumTubeV1,nadeo,135,1848,23751,603909,95959,509798,38,13,2.11.3,2.11.26,verified (Nadeo map)
+StadiumTubeV4,nadeo,72,476,6673,48684,10951,38209,7,9,2.11.3,2.11.26,verified (Nadeo map)
+StadiumTubeV8,nadeo,41,375,2757,20746,5488,15633,1,4,2.11.3,2.11.26,verified (Nadeo map)
+StadiumWater,nadeo,78,4424,8525,1599205,1504114,99515,1,33,2.11.0,2.11.26,verified (Nadeo map)
+StadiumWaterClip,nadeo,10,45,5629,32961,99,32907,0,3,2.11.3,2.11.26,verified (Nadeo map)
+AlpineAdvertising,community-only,0,0,1,2,2,0,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineCliffRoadLeft,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineCliffRoadRight,community-only,0,0,2,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallCastle,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallCastlePillar,community-only,0,0,1,8,1,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallCastlePillarCross,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallCastlePillarCrossPillar,community-only,0,0,1,4,1,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallCheckpoint,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallRoad,community-only,0,0,1,2,0,2,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallRoadPillar,community-only,0,0,1,4,1,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallSlopeBase,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallStraightPillar,community-only,0,0,1,6,3,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisSnowToToundraBiSlopeEnd,community-only,0,0,1,9,9,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisSnowToToundraBiSlopeStart,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisSnowToToundraSlopeBase2,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisSnowToToundraSlopeBase4Left,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisSnowToToundraSlopeBase4Right,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisToundraToToundraBiSlopeEnd,community-only,0,0,2,19,19,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineGreatWallTetrisToundraToToundraBridge,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineIceRamp,community-only,0,0,1,9,9,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineIceRoad,community-only,0,0,1,13,13,0,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineIceRoadExit,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineLakeSlope,community-only,0,0,1,5,5,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeCheckpoint,community-only,0,0,2,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeCornerDown,community-only,0,0,3,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeCornerUp,community-only,0,0,3,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeHWall,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeToRoadWood,community-only,0,0,3,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeVertical,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineMetalTubeVWall,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadChalet,community-only,0,0,3,35,0,35,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadChaletPillar,community-only,0,0,3,206,35,171,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadGTCurve3,community-only,0,0,2,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadMetalTube,community-only,0,0,3,31,0,31,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadPlateformAlpineRoadWood,community-only,0,0,1,6,0,6,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadTemple,community-only,0,0,1,5,0,5,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWood,community-only,0,0,2,4,0,4,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodBigSlope2x3,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodBiSlopeStart,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodCheckPoint,community-only,0,0,2,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodFinish,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodRamp1,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodTiltSlopeCornerLeft,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRoadWoodTiltSlopeCornerRight,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineRocks3,community-only,0,0,1,25,25,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineSignWarning,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineSnowCheckpoint,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineSnowRoad,community-only,0,0,1,19,19,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTemple,community-only,0,0,3,11,1,10,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTempleCross,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTemplePillar,community-only,0,0,3,34,9,25,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTrees3,community-only,0,0,1,8,8,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelBiSlopeEnd,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelBiSlopeStart,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelCheckPoint,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelEntry2,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelEntry3,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelExit,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelGTCurve3,community-only,0,0,1,6,0,6,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelRoad,community-only,0,0,1,22,0,22,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+AlpineTunnelRoadSlope,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayAdvertBuilding1Pillar,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeBiSlope2EndSupport,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeBiSlope2StartSupport,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeCheckpoint,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeGTCurve3,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeHole,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgePillar,community-only,0,0,1,7,0,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeRoad,community-only,0,0,1,13,0,13,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeRoadPillar,community-only,0,0,1,142,30,112,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeRoadSupport,community-only,0,0,1,42,5,37,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeSusp,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeSuspPillar,community-only,0,0,1,19,3,16,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeTransitionToRoad,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBridgeTurbo,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBuilding1,community-only,0,0,1,103,0,103,4,12,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBuilding1Pillar,community-only,0,0,1,1345,89,1256,16,96,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBuilding2,community-only,0,0,1,128,0,128,4,57,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBuilding2Pillar,community-only,0,0,1,776,112,664,12,91,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayBuildings,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayCargo,community-only,0,0,1,2,2,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayCargoContainer,community-only,0,0,1,8,8,0,1,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborBase1,community-only,0,0,1,5,5,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborCorner,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborDeadend,community-only,0,0,1,34,34,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborDeadendContainer,community-only,0,0,1,9,9,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborDeadendSlopeL,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborHawk,community-only,0,0,1,854,85,769,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborHawkPillar,community-only,0,0,1,3521,226,3295,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyHawk,community-only,0,0,1,18,18,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyHawk2,community-only,0,0,1,5,5,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyHawkLoop,community-only,0,0,1,22,22,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyHawkR,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyRamp,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyRamp2,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettySlope2R,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettySlopeL,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettySlopeR,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyStair,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyStraightA,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksHarborJettyStraightB,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksRoadContainer1,community-only,0,0,1,10,10,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksRoadContainer2,community-only,0,0,1,17,17,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksRoadContainer3,community-only,0,0,1,4,4,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayDocksRoadStraight,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayFlatsRoad,community-only,0,0,1,35,0,35,0,10,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayFlatsRoad2,community-only,0,0,1,305,0,305,5,16,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayFlatsRoad2Pillar,community-only,0,0,1,5317,228,5089,70,16,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayFlatsRoadPillar,community-only,0,0,1,797,40,757,0,16,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisCheckpoint,community-only,0,0,1,5,5,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisDecorA,community-only,0,0,1,32,32,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisDecorB,community-only,0,0,1,160,160,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisDecorC,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisDecorD,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisRamp,community-only,0,0,1,47,47,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisRampCorner,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisRampCornerIn,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisRampCross,community-only,0,0,1,875,875,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisStraightA,community-only,0,0,1,31,31,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisStraightB,community-only,0,0,1,69,69,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayParvisStraightC,community-only,0,0,1,57,57,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformBase,community-only,0,0,1,47,7,40,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformBasePillar,community-only,0,0,1,1101,112,989,0,8,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformBaseSupport,community-only,0,0,1,27,2,25,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformBiSlope2End,community-only,0,0,1,7,4,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformBiSlope2Start,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformBiSlope2Start2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformCheckpointBase,community-only,0,0,1,4,2,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformCheckpointLeft,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformFloodLight,community-only,0,0,1,7,0,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformFloodLightPillarReplace,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopAdvert,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopEnd,community-only,0,0,1,10,0,10,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopEnd2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopEnd4,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopSigns,community-only,0,0,1,26,1,25,25,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopStart4,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformLoopWall,community-only,0,0,1,30,0,30,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2,community-only,0,0,1,9,0,9,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2Corner,community-only,0,0,1,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2GTCurve2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2Support,community-only,0,0,1,11,0,11,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2Transition,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2TransitionBiSlopeStart,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2TransitionBiSlopeStartGTCurve2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2TransitionGTCurve2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSlope2TransitionMirror,community-only,0,0,1,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSupport,community-only,0,0,1,132,2,130,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformSupportFree,community-only,0,0,1,105,9,96,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformTurbo2,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayPlatformTurboLeft,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoad,community-only,0,0,1,14,7,7,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadCheckpoint,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadFinish,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadGTCurve3,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadPillar,community-only,0,0,2,22,5,17,0,9,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadPillarStraight,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadRail,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadRamp,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadSupport,community-only,0,0,2,13,5,8,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadSupportSlopeBase,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadSupportTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadToll,community-only,0,0,1,7,0,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadToll2,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadTransitionToPlatform,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayRoadTurbo2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayShopsEsplanadeDeadend,community-only,0,0,1,33,33,0,0,6,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelBiSlope2End,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelBiSlope2Start2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelCheckpoint,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelEntry,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelGTCurve3,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelRoad,community-only,0,0,1,18,0,18,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelSlope2,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+BayTunnelTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitFinishLine,community-only,0,0,1,2,2,0,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitRoad,community-only,0,0,1,20,20,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheBase1,community-only,0,0,1,3,3,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheCorner,community-only,0,0,1,6,6,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheDeadendWall,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheGT3x2Mirror,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastDecoYacht,community-only,0,0,1,2,2,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastStuntHawkRamp,community-only,0,0,1,3,0,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastVillage1,community-only,0,0,1,7,7,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastVillage2A,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastVillage2B,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+DirtSquareBlocktest,community-only,0,0,1,35,0,35,35,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve01_01,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve01_02,community-only,0,0,4,4,0,4,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve01_03,community-only,0,0,4,40,0,40,36,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve01_04,community-only,0,0,3,4,0,4,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve01_05,community-only,0,0,3,22,0,22,20,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve02_01,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve02_02,community-only,0,0,3,5,0,5,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve02_03,community-only,0,0,3,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve03_01,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve03_02,community-only,0,0,3,14,0,14,14,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve03_03,community-only,0,0,4,11,0,11,11,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve03_04,community-only,0,0,5,14,0,14,10,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Curve03_05,community-only,0,0,5,8,0,8,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope01_01,community-only,0,0,1,23,0,23,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope01_02,community-only,0,0,4,9,2,7,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope01_03,community-only,0,0,2,12,0,12,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope01_04,community-only,0,0,5,72,0,72,42,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope01_05,community-only,0,0,7,198,1,197,119,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope01_06,community-only,0,0,2,9,0,9,8,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope02_01,community-only,0,0,3,45,0,45,45,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope02_02,community-only,0,0,2,10,0,10,10,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope02_04,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope02_06,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope03_01,community-only,0,0,4,117,0,117,114,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope03_02,community-only,0,0,4,20,1,19,10,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope03_03,community-only,0,0,5,31,0,31,17,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope03_04,community-only,0,0,3,3,0,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope03_05,community-only,0,0,5,98,0,98,32,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_Slope03_06,community-only,0,0,3,21,0,21,18,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionA01_05,community-only,0,0,3,3,0,3,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionA02_03,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionA02_05,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionA03_02,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionA03_05,community-only,0,0,3,3,0,3,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionB01_05,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionB02_05,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionB03_05,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionC02_01,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionC03_01,community-only,0,0,4,4,0,4,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionC03_02,community-only,0,0,2,2,0,2,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionD01_01,community-only,0,0,3,3,0,3,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionD01_02,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionD02_01,community-only,0,0,2,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionD03_01,community-only,0,0,2,6,0,6,6,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR01_01,community-only,0,0,5,85,0,85,52,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR01_02,community-only,0,0,3,10,0,10,10,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR01_03,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR02_01,community-only,0,0,1,7,0,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR02_02,community-only,0,0,2,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR02_04,community-only,0,0,1,10,0,10,10,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR03_01,community-only,0,0,4,28,0,28,21,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+ESL_TransitionR03_02,community-only,0,0,2,13,0,13,5,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+FabricRamp4,community-only,0,0,1,1,0,1,1,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+FlatToQuarterPipe,community-only,0,0,1,1,0,1,1,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+FlatToQuarterPipeMirrored,community-only,0,0,1,2,0,2,2,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IceBlockSquaretest,community-only,0,0,1,23,0,23,23,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportCheckpoint,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportHangar,community-only,0,0,1,7,7,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportPlane,community-only,0,0,2,18,18,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportRoad,community-only,0,0,1,87,87,0,0,8,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportRoadGrass,community-only,0,0,3,55,55,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportTarmac,community-only,0,0,1,80,80,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAirportTransitionToHighWay,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAntenne,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandAntennePillar,community-only,0,0,1,6,2,4,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandBeachRocks,community-only,0,0,1,33,33,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandBeachTrees,community-only,0,0,1,25,25,0,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandChalutier,community-only,0,0,1,33,33,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandClubBeach,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandClubBeach2,community-only,0,0,1,5,5,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandClubKioskBeach,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandClubKioskSea,community-only,0,0,1,7,7,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandClubMarina,community-only,0,0,1,11,11,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCommitee,community-only,0,0,1,36,36,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisette,community-only,0,0,1,4,0,4,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteCheckpoint,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisettePillar,community-only,0,0,1,17,9,8,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSlopeBase,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteStraightPilar,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSupport,community-only,0,0,1,9,0,9,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteToHighway,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandDecorRock1,community-only,0,0,1,58,58,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandDecorVegetation1,community-only,0,0,2,69,69,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandFloodLight,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayHoleSides,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayPillar,community-only,0,0,1,8,4,4,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWaySupport,community-only,0,0,1,4,0,4,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHills6DecoRock,community-only,0,0,1,36,36,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHills6DecoTree,community-only,0,0,1,65,65,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHotel,community-only,0,0,2,93,1,92,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHotelPillar,community-only,0,0,2,1128,57,1071,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandJettyBeach2,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandJettyBeachL,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandJettyBeachR,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandJettySea,community-only,0,0,1,13,13,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformBiSlope2Start,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformBiSlopeEnd,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformCheckpoint,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformLoopGT4Start,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformRoad,community-only,0,0,1,88,10,78,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformRoadPillar,community-only,0,0,1,47,16,31,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformRoadSupport,community-only,0,0,1,42,8,34,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformTurbo,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWay,community-only,0,0,1,3,0,3,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayCheckpoint,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve2Pillar,community-only,0,0,1,3,1,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve3,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve3Pillar,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayHole,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayPillar,community-only,0,0,1,3,0,3,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWaySlopeBase,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayStraightPillar,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWaySupport,community-only,0,0,1,6,0,6,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayToCroisette,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayToPlatform,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSigns,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSignsLightRamp,community-only,0,0,1,4,1,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSignsLightRampPillar,community-only,0,0,1,11,3,8,9,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceAntenne1,community-only,0,0,1,3,3,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceAntenne2,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceBuilding,community-only,0,0,1,18,18,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceLaunch1,community-only,0,0,2,3,1,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceLaunch1Pillar,community-only,0,0,1,28,1,27,0,8,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceLaunch2,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceLaunch3,community-only,0,0,1,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceLaunch3Pillar,community-only,0,0,1,5,0,5,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpacePlateformLaunch1,community-only,0,0,1,3,1,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpacePlateformLaunch1Pillar,community-only,0,0,1,8,1,7,0,6,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelBiSlope2End,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelBiSlope2Start2,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCheckpoint,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularExitRamp,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularGTCurve2,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularGTCurve3,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularSlopeBaseCorner,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTransition,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTransitionToPlatform,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTurbo,community-only,0,0,1,7,0,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTurbo2,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularWallH,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularWallV,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelEntry1,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelEntry3,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelExitBiSlopeEnd,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelGTCurve2,community-only,0,0,1,5,0,5,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelGTCurve3,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelSlope2,community-only,0,0,1,12,0,12,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelSlope2Base,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelSlope2HoleBase,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelStraight,community-only,0,0,1,9,0,9,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelTurbo2,community-only,0,0,1,8,0,8,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Cobblestone,community-only,0,0,3,143,4,139,139,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Cobblestone16,community-only,0,0,2,190,0,190,186,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Dirt,community-only,0,0,2,9,5,4,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Dirt16,community-only,0,0,1,16,10,6,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Grass,community-only,0,0,3,859,690,169,459,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Grass16,community-only,0,0,1,511,109,402,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Leaves,community-only,0,0,2,1573,2,1571,34,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Leaves16,community-only,0,0,1,17585,3,17582,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Plank,community-only,0,0,3,241,72,169,131,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Plank16,community-only,0,0,3,480,118,362,315,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Sand,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Sand16,community-only,0,0,1,11,0,11,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Stone,community-only,0,0,3,284,88,196,153,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Stone16,community-only,0,0,1,84,21,63,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Wood,community-only,0,0,3,2378,148,2230,22,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+Minecraft_Wood16,community-only,0,0,2,2035,69,1966,32,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+NormalToSausageGround,community-only,0,0,2,4,2,2,4,1,2.11.16,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+PylonStadium,community-only,0,0,22,366,144,222,0,14,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleBiSlopeStart,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleBridge,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleBridgePillar,community-only,0,0,1,3,1,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleRampPillar,community-only,0,0,1,3,1,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleRampSpeedUp,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleStraightPillar,community-only,0,0,1,4,1,3,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleTowerPillar,community-only,0,0,2,13,3,10,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleTowerSpeedUp,community-only,0,0,2,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCastleTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyCheckPoint,community-only,0,0,3,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldCornerIn,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldCornerOut,community-only,0,0,1,8,8,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceAutoCenter,community-only,0,0,1,9,9,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceAutoCorner,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceAutoTShaped,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceBushCornerOut,community-only,0,0,1,11,11,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceBushStraight,community-only,0,0,1,18,18,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceBushStraightAdvert,community-only,0,0,1,1,1,0,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceCornerOut,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceDiag,community-only,0,0,2,7,7,0,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceRamp,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceStraight,community-only,0,0,1,54,54,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceTreeCornerOut,community-only,0,0,2,22,22,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldFenceTreeStraight,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldGrassCornerOut,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldGrassStraight3x3,community-only,0,0,1,2,2,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldStraight,community-only,0,0,1,14,14,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldTetrisDiagRoadLowToRoadHigh,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldTetrisDiagRoadLowToRoadHighMirror,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFieldTetrisStraightRoadMedium,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyFreeWheeling,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyGT1,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyGT8,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHighCheckpoint,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHighFinishSupport,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHighOverLowCrossGround,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHighToLow,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHill1SpeedUp,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHill2SpeedUp,community-only,0,0,1,7,7,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHill3SpeedUp,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHouseGround,community-only,0,0,1,9,9,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHouseGround2,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHouseGround3,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHouseGround4,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyHouseGround5,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyLowToMedium,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadCastle,community-only,0,0,1,23,3,20,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadCastlePillar,community-only,0,0,1,38,10,28,0,12,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadCastleSlope,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadHigh,community-only,0,0,2,14,14,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadHighCornerRockOutside,community-only,0,0,1,2,2,0,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadHighGT1,community-only,0,0,1,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadHighGT2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadHighStraightRock,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadSpeedUp,community-only,0,0,2,36,36,0,0,8,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadWoodPillar,community-only,0,0,1,7,5,2,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRoadWoodSupport,community-only,0,0,1,7,0,7,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRock,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRockDecor,community-only,0,0,1,17,17,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRockDecor2,community-only,0,0,1,10,10,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyRockMirror,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallySignLeftWay,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallySignRightWay,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallySignWarning,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallySquareTower,community-only,0,0,2,5,0,5,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallySquareTowerPillar,community-only,0,0,2,20,5,15,0,6,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyStartLine,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTreeGround1SpeedUp,community-only,0,0,3,41,41,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTreeGroundBig,community-only,0,0,2,20,20,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTrunc,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTruncMirror,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTunnelCheckpoint,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTunnelEntry,community-only,0,0,1,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTunnelGTCurve2,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTunnelRoad,community-only,0,0,1,8,0,8,0,2,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyTunnelRoadSlope,community-only,0,0,1,6,0,6,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RallyWindmill,community-only,0,0,2,7,7,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RoadCircuitTrapAir,community-only,0,0,2,5,0,5,5,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RoadCircuitTrapSlope,community-only,0,0,2,3,0,3,3,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RoadHole30Air,community-only,0,0,1,1,0,1,1,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+RoadTurboHoleAir,community-only,0,0,1,1,0,1,1,1,2.11.16,2.11.16,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SausageCornerGround,community-only,0,0,2,6,4,2,6,1,2.11.16,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SausageStraightGround,community-only,0,0,2,26,10,16,26,1,2.11.16,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedAdvertising,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBiSlopeEnd,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBiSlopeStart,community-only,0,0,2,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgeGTCurve4,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgePillarRock4,community-only,0,0,1,6,6,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgePillarSand6,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgePillarWater6,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgeRamp,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgeStraight,community-only,0,0,1,20,0,20,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedBridgeToRoad,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicBarrels,community-only,0,0,1,5,5,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicCheckpoint,community-only,0,0,2,5,1,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicContainers,community-only,0,0,1,40,40,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicDerrick,community-only,0,0,1,25,25,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicFinish,community-only,0,0,2,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicJump,community-only,0,0,2,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicMountain,community-only,0,0,2,16,16,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicPeak,community-only,0,0,2,11,11,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicReservoir,community-only,0,0,1,10,6,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicRocks,community-only,0,0,2,59,19,40,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicStartLine,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedClassicTurbo,community-only,0,0,2,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedFallenContainers,community-only,0,0,2,2,2,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedFreeSignLeft,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedFreeSignRight,community-only,0,0,2,4,1,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedFreeSignWarning,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedFreeSignWrongWay,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedFreeWheeling,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageCheckpoint,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageHatSlopeTop,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageHoleSlope,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGaragePillarSlope,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageRoad,community-only,0,0,2,55,23,32,0,3,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageSlope,community-only,0,0,1,51,0,51,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageSlopeGT2b,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageSlopeGT3,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageToRoadAir,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGarageTurbo,community-only,0,0,1,6,0,6,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedGtCurve3,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedLoopRight,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedPipelineRoad,community-only,0,0,1,27,27,0,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedPlankAir,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRiverRoadStraight,community-only,0,0,2,34,34,0,0,8,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRiverRoadToRoadGTCurve4InMirror,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRiverRoadToRoadLeft2x1,community-only,0,0,1,3,3,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRiverRoadToRoadRight2x1,community-only,0,0,2,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRiverTetrisStraightUp,community-only,0,0,1,5,5,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRiverTetrisStraightUpCorner,community-only,0,0,1,7,7,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRoad,community-only,0,0,3,38,14,24,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRoadLamp,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRoadStraightToGarage,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRocks2,community-only,0,0,2,24,24,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRocksArch,community-only,0,0,2,10,10,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRocksRoad,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedRockToRockToBridgeArch5,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedSaguarosGround,community-only,0,0,2,34,34,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedSandCheckpoint,community-only,0,0,1,4,4,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedSlope,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedSpinLeft,community-only,0,0,1,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedSpinRight,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTiltCornerAir,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTiltCornerInside,community-only,0,0,2,2,1,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTiltStraightAir,community-only,0,0,2,8,1,7,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTiltTransitionLeft,community-only,0,0,3,4,1,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTiltTransitionRight,community-only,0,0,2,3,1,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTiltTShaped,community-only,0,0,2,16,0,16,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedToll2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelRoad,community-only,0,0,1,7,0,7,0,4,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelRoadCheckpoint,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelRoadEntry1,community-only,0,0,1,53,53,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelRoadGTCurve3,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelRockToRockEntry1,community-only,0,0,1,38,38,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelSlope,community-only,0,0,1,4,0,4,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+SpeedTunnelTurbo,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCheckpointRingHRoad,community-only,0,0,1152,3084,8,3076,0,6,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderGTCurve4In,community-only,0,0,4148,8475,885,7590,2558,7,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagInLeftBottom,community-only,0,0,893,2054,0,2054,284,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagInLeftTop,community-only,0,0,1147,4293,3,4290,586,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagInRightBottom,community-only,0,0,803,1844,0,1844,299,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagInRightTop,community-only,0,0,1144,4097,2,4095,644,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagOutLeftBottom,community-only,0,0,1148,4746,10,4736,206,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagOutLeftTop,community-only,0,0,1622,7002,17,6985,585,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagOutRightBottom,community-only,0,0,1121,4514,7,4507,223,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeDiagOutRightTop,community-only,0,0,1634,6985,14,6971,582,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeGTCurve2InLeftTop,community-only,0,0,560,731,1,730,200,1,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitBorderSlopeGTCurve2InRightTop,community-only,0,0,529,645,0,645,192,1,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitPillar3,community-only,0,0,3832,15334,1844,13490,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitPillar6,community-only,0,0,1582,5945,671,5274,0,2,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitSlopeCornerInLeftBottom,community-only,0,0,1875,6637,15,6622,299,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitTurboDown,community-only,0,0,2543,13434,0,13434,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitTurboLeft,community-only,0,0,1554,8428,0,8428,0,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitTurboRight,community-only,0,0,1572,7616,3,7613,0,3,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumCircuitTurboUp,community-only,0,0,2101,9661,2,9659,0,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumPlatformCheckpointUp,community-only,0,0,876,972,15,957,0,1,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadDirtToRoadDirtHighCross,community-only,0,0,266,465,447,18,0,1,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainClip,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainGTDiag3x2TiltMirror,community-only,0,0,1048,1332,0,1332,0,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainTurboRoulette,community-only,0,0,1925,20567,4679,15888,1,4,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainTurboRouletteDown,community-only,0,0,297,1250,0,1250,0,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainTurboRouletteLeft,community-only,0,0,232,1024,54,970,0,3,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainTurboRouletteRight,community-only,0,0,213,989,51,938,0,3,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumRoadMainTurboRouletteUp,community-only,0,0,275,1407,15,1392,0,4,2.11.11,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+StadiumTubeRoadClip,community-only,0,0,2,2,0,2,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TrackManiaLogoM,community-only,0,0,3,3,0,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TrackManiaLogoT,community-only,0,0,4,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeCurve1x1,community-only,0,0,1,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeCurve2x2,community-only,0,0,3,7,0,7,7,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeCurve3x3,community-only,0,0,4,10,0,10,10,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeCurve4x4,community-only,0,0,2,6,0,6,6,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentBoostDown,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentDesToNormal,community-only,0,0,4,6,0,6,6,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentDesToNormalCurve2x2,community-only,0,0,2,6,0,6,6,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentDesToNormalCurve2x2Mirror,community-only,0,0,4,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentDesToNormalCurve3x3,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentDesToNormalCurve3x3Mirror,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentNormalToDes,community-only,0,0,4,8,0,8,8,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentNormalToDesCurve2x2,community-only,0,0,3,6,0,6,6,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentNormalToDesCurve2x2Mirror,community-only,0,0,3,6,0,6,6,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentNormalToDesCurve3x3,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentSimple,community-only,0,0,3,7,0,7,7,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeDescentSlopeOne,community-only,0,0,2,3,0,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeHalfpipeCurve3x3,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeHalfpipeNormal,community-only,0,0,4,23,0,23,23,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeHalfpipeSide,community-only,0,0,5,19,0,19,19,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeHalfpipeSideCurve2x2,community-only,0,0,3,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeHalfpipeToRoad,community-only,0,0,3,3,0,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeOtherCrossT,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeOtherCrossY,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeOtherSType2x3,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeOtherSType2x3Mirror,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeOtherSType2x4,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleBoost,community-only,0,0,5,23,0,23,23,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleBoostHalf,community-only,0,0,1,3,0,3,3,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleCP,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleFinish,community-only,0,0,3,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleFreewheeling,community-only,0,0,2,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleIce,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleMixBoostFreewheeling,community-only,0,0,2,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSimpleNormal,community-only,0,0,5,30,0,30,30,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialFromDirtD,community-only,0,0,1,2,2,0,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialInsiderD2,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialInsiderD3,community-only,0,0,2,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialOutsiderC1,community-only,0,0,2,20,0,20,20,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialOutsiderC2,community-only,0,0,2,22,0,22,22,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialSideToPillar,community-only,0,0,2,13,0,13,13,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSpecialToPillar,community-only,0,0,1,14,0,14,14,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchThroughDirt,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchToCircuit,community-only,0,0,1,2,0,2,2,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchToCircuitLong,community-only,0,0,2,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchToDirt,community-only,0,0,1,1,0,1,1,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchToRoad,community-only,0,0,4,8,0,8,8,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchToRotated,community-only,0,0,2,19,0,19,19,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+TubeSwitchToUpRamp2x2,community-only,0,0,3,4,0,4,4,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"

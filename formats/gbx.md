@@ -43,6 +43,8 @@ Source keys (own project sources): `tmxcopy` = [eswc-autosave](https://github.co
 
 ## Challenge / map (CGameCtnChallenge)
 
+Block names per game and environment (counts, flags, exe versions): [block-names.md](block-names.md).
+
 | Fact | Source | Status |
 |---|---|---|
 | Header XML has `nblaps="0"` for non-lap maps; UID = `mapInfo.id`; `MapUid` 22-27 chars base64url-like | nc; web | verified |

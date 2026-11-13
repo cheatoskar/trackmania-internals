@@ -1,0 +1,210 @@
+block,origin,maps_nadeo,placements_nadeo,maps_community,placements_community,ground_placements,air_placements,skinned_placements,distinct_flag_variants,first_exever,last_exever,status
+IslandAirportCheckpoint,nadeo,1,2,8,14,16,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandAirportHangar,nadeo,4,18,18,81,99,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandAirportPlane,nadeo,3,14,16,46,60,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandAirportRoad,nadeo,3,34,17,217,251,0,0,12,2.11.3,2.11.26,verified (Nadeo map)
+IslandAirportRoadGrass,nadeo,1,10,10,76,86,0,0,5,2.11.3,2.11.26,verified (Nadeo map)
+IslandAirportTarmac,nadeo,4,16,9,147,163,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandAirportTransitionToHighWay,nadeo,1,2,13,34,36,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandAntenne,nadeo,6,10,20,64,37,37,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandAntennePillar,nadeo,3,29,17,152,37,144,0,2,2.11.3,2.11.26,verified (Nadeo map)
+IslandBeach,nadeo,7,876,27,5283,6159,0,0,20,2.11.3,2.11.26,verified (Nadeo map)
+IslandBeachRocks,nadeo,5,39,15,141,180,0,0,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandBeachTrees,nadeo,3,32,16,368,400,0,0,5,2.11.3,2.11.26,verified (Nadeo map)
+IslandChalutier,nadeo,2,9,14,40,49,0,0,1,2.11.3,2.11.11,verified (Nadeo map)
+IslandClubBeach,nadeo,5,10,16,40,50,0,0,2,2.11.3,2.11.26,verified (Nadeo map)
+IslandClubBeach2,nadeo,6,20,12,35,55,0,0,2,2.11.3,2.11.26,verified (Nadeo map)
+IslandClubKioskBeach,nadeo,5,6,9,27,33,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandClubKioskSea,nadeo,5,32,10,27,59,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandClubMarina,nadeo,5,14,11,30,44,0,0,2,2.11.3,2.11.11,verified (Nadeo map)
+IslandCommitee,nadeo,4,7,11,50,57,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandDecorRock1,nadeo,6,23,22,153,176,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandDecorVegetation1,nadeo,6,44,22,189,233,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandGrass,nadeo,7,621,27,4111,4732,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandGrassClip,nadeo,3,5,20,199,15,189,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWay,nadeo,4,25,26,309,189,145,0,5,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayBiSlopeEnd,nadeo,1,3,15,22,11,14,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandHighWayBump3,nadeo,1,6,1,2,6,2,0,1,2.11.3,2.11.3,verified (Nadeo map)
+IslandHighWayCheckpoint,nadeo,4,5,19,42,28,19,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayFinish,nadeo,4,4,15,22,13,13,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayGTBranchLeft,nadeo,1,1,1,2,3,0,0,1,2.11.3,2.11.3,verified (Nadeo map)
+IslandHighWayGTBranchRight,nadeo,1,1,2,3,3,1,0,1,2.11.3,2.11.3,verified (Nadeo map)
+IslandHighWayGTCurve2,nadeo,1,2,9,20,9,13,0,1,2.11.3,2.11.25,verified (Nadeo map)
+IslandHighWayGTCurve3,nadeo,4,4,12,18,13,9,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayGTDiag,nadeo,1,1,10,11,7,5,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandHighWayGTDiagMirror,nadeo,1,2,12,15,11,6,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandHighWayHawkRamp,nadeo,1,4,11,50,30,24,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayHoleCenter,nadeo,1,2,5,5,1,6,0,1,2.11.3,2.11.25,verified (Nadeo map)
+IslandHighWayHoleSides,nadeo,1,1,6,9,3,7,0,1,2.11.3,2.11.25,verified (Nadeo map)
+IslandHighWayMonoBump3,nadeo,1,9,0,0,9,0,0,1,2.11.3,2.11.3,verified (Nadeo map)
+IslandHighWayMonoRamp,nadeo,1,1,5,9,7,3,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayPillar,nadeo,2,22,18,221,81,162,0,5,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayStartLine,nadeo,5,5,22,22,15,12,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWaySupport,nadeo,3,11,18,106,36,81,0,5,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayTiltGTCurve3,nadeo,2,3,3,4,4,3,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayTiltStraight,nadeo,2,3,7,12,7,8,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayTiltTransition,nadeo,2,3,9,9,8,4,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayTiltTransitionMirror,nadeo,2,3,8,8,6,5,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandHighWayTurbo,nadeo,5,14,17,35,41,8,0,1,2.11.3,2.11.25,verified (Nadeo map)
+IslandHighWayTurbo2,nadeo,1,1,3,5,2,4,0,1,2.11.3,2.11.3,verified (Nadeo map)
+IslandHills6,nadeo,6,631,24,4886,5517,0,0,24,2.11.3,2.11.26,verified (Nadeo map)
+IslandHills6DecoRock,nadeo,6,53,22,250,303,0,0,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandHills6DecoTree,nadeo,6,52,23,498,550,0,0,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandHills6HighWayBridgeGround,nadeo,1,2,13,31,33,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandHotel,nadeo,6,58,22,244,149,153,0,2,2.11.3,2.11.26,verified (Nadeo map)
+IslandHotelPillar,nadeo,5,31,22,810,153,688,0,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandJettyBeach2,nadeo,3,9,6,13,22,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandJettySea,nadeo,1,2,5,14,16,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandPlatformBiSlope2End,nadeo,1,4,12,59,3,60,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformBiSlope2Start,nadeo,2,28,17,132,72,88,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformCheckpoint,nadeo,1,1,17,38,8,31,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformFinishLine,nadeo,4,8,13,29,7,30,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformFloodLight,nadeo,3,17,17,224,5,236,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformGTSlope4,nadeo,1,2,6,12,3,11,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformGTSlope5,nadeo,1,2,3,8,0,10,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformLoopGT4CornerEnd,nadeo,1,2,6,25,0,27,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformLoopGT4CornerStart,nadeo,2,14,8,15,0,29,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformLoopGT4End,nadeo,1,11,10,125,0,136,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformLoopGT4Start,nadeo,3,100,14,217,22,295,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformLoopWall,nadeo,3,379,12,344,0,723,0,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformLoopWallCorner,nadeo,1,8,11,83,0,91,0,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformRoad,nadeo,4,153,22,1694,89,1758,0,10,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformRoadPillar,nadeo,4,448,18,3006,488,2966,0,6,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformRoadSupport,nadeo,4,40,18,508,60,488,0,10,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformSlope2TurboRight,nadeo,1,2,4,9,1,10,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformStartLine,nadeo,3,3,5,5,1,7,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformToSlope2,nadeo,1,1,9,12,4,9,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformToSlope2Mirror,nadeo,1,1,13,15,7,9,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformTurbo,nadeo,3,21,13,65,21,65,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandPlatformTurbo2,nadeo,1,31,10,84,16,99,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandSeaClip,nadeo,1,2,19,235,12,225,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandSeaSigns,nadeo,1,2,11,97,0,99,99,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandSeaSignsAdvert,nadeo,1,2,4,10,0,12,12,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandSeaSignsAdvertSupport,nadeo,1,3,5,11,1,13,14,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandSeaSignsLightRamp,nadeo,1,4,4,11,0,15,15,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandSeaSignsLightRampPillar,nadeo,2,61,9,143,28,176,185,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandSignsAdvert,nadeo,2,3,6,26,15,14,29,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandSignsAdvertSupport,nadeo,5,7,11,26,19,14,33,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandSignsLightRampPillar,nadeo,2,29,15,263,91,201,101,4,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceAntenne1,nadeo,4,5,11,15,20,0,0,2,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceAntenne2,nadeo,2,2,16,26,28,0,0,3,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceBuilding,nadeo,2,2,13,18,20,0,0,1,2.11.3,2.11.11,verified (Nadeo map)
+IslandSpaceLaunch1,nadeo,1,1,6,6,0,7,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceLaunch1Pillar,nadeo,1,14,6,49,7,56,0,8,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceLaunch2,nadeo,1,1,7,22,7,16,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceLaunch2Pillar,nadeo,1,11,7,77,16,72,0,8,2.11.3,2.11.26,verified (Nadeo map)
+IslandSpaceLaunch3,nadeo,3,3,8,9,10,2,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelBiSlope2End,nadeo,1,2,3,3,0,5,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandTunnelBiSlope2Start,nadeo,1,2,4,5,0,7,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandTunnelBiSlope2Start2,nadeo,1,2,10,12,0,14,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelCheckpoint,nadeo,1,1,10,10,0,11,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelEntry1,nadeo,2,4,15,35,39,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelEntry2,nadeo,1,1,11,35,36,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelExit,nadeo,1,2,2,21,23,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandTunnelExitBiSlopeEnd,nadeo,1,2,14,20,22,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelGTCurve3,nadeo,2,2,5,7,0,9,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandTunnelSlope2,nadeo,1,3,7,7,0,10,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandTunnelStraight,nadeo,2,6,11,23,0,29,0,1,2.11.3,2.11.26,verified (Nadeo map)
+IslandTunnelTurbo,nadeo,1,1,3,3,0,4,0,1,2.11.3,2.11.4,verified (Nadeo map)
+IslandCroisette,community-only,0,0,6,100,31,69,0,4,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisettePillar,community-only,0,0,3,7,7,0,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSlalomJump,community-only,0,0,1,2,1,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSlopeBase,community-only,0,0,2,6,6,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSlopeEnd,community-only,0,0,2,5,0,5,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSlopeStart,community-only,0,0,2,5,1,4,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteStraightPilar,community-only,0,0,2,13,9,4,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteSupport,community-only,0,0,3,21,14,7,0,3,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteToHighway,community-only,0,0,6,13,8,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandCroisetteTurbo,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandFloodLight,community-only,0,0,5,58,0,58,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayAdvertisement,community-only,0,0,9,24,3,21,24,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayBiSlopeStart,community-only,0,0,12,20,9,11,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayGTYShaped,community-only,0,0,5,9,6,3,7,1,2.11.3,2.11.25,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayMonoBump,community-only,0,0,2,3,1,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayMonoRamp2,community-only,0,0,6,7,4,3,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayRamp,community-only,0,0,1,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWaySlope,community-only,0,0,10,24,0,24,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWaySlopeBase,community-only,0,0,18,41,27,14,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWaySupportPillar,community-only,0,0,5,105,24,81,0,4,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayTiltCorner,community-only,0,0,2,3,3,0,0,1,2.11.3,2.11.25,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayTiltGTCurve2,community-only,0,0,2,3,1,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayTriRamp,community-only,0,0,3,24,0,24,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayTurboRoulette,community-only,0,0,2,7,7,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayUTurnSlopeLeft,community-only,0,0,4,4,2,2,0,1,2.11.3,2.11.25,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHighWayUTurnSlopeRight,community-only,0,0,3,3,2,1,0,1,2.11.3,2.11.25,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHills6HighwaySlopeGT3,community-only,0,0,6,6,6,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandHills6HighwaySlopeGT3Mirror,community-only,0,0,2,2,2,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandJettyBeachL,community-only,0,0,7,9,9,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandJettyBeachR,community-only,0,0,10,16,16,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformBasePillar,community-only,0,0,14,356,74,282,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformBiSlopeEnd,community-only,0,0,9,59,14,45,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformBiSlopeStart,community-only,0,0,11,54,11,43,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformCheckpointSlopeLeft,community-only,0,0,7,9,0,9,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformCheckpointSlopeRight,community-only,0,0,3,8,0,8,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformGTSlope2,community-only,0,0,8,25,8,17,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformGTSlope2b,community-only,0,0,3,18,3,15,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformGTSlope3,community-only,0,0,7,12,5,7,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformGTSlope3b,community-only,0,0,4,6,0,6,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformGTSlope4b,community-only,0,0,3,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformGTSlope5b,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope,community-only,0,0,5,25,0,25,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2,community-only,0,0,17,123,4,119,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2Support,community-only,0,0,15,73,1,72,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2Turbo2Down,community-only,0,0,2,8,0,8,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2Turbo2Left,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2Turbo2Right,community-only,0,0,3,10,0,10,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2Turbo2Up,community-only,0,0,3,8,0,8,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2TurboDown,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2TurboLeft,community-only,0,0,2,9,4,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlope2TurboUp,community-only,0,0,3,5,0,5,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandPlatformSlopeSupport,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandRoadWallTransitionTiltLeft,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandRoadWallTransitionTiltRight,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWay,community-only,0,0,8,39,1,38,0,5,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayBigSlopeXCrossBase,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayBiSlopeEnd,community-only,0,0,3,6,1,5,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayBiSlopePillar,community-only,0,0,2,200,11,189,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayBiSlopeStart,community-only,0,0,2,6,0,6,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayCheckpoint,community-only,0,0,4,4,2,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve2,community-only,0,0,7,12,5,7,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve2Pillar,community-only,0,0,5,74,7,67,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve3,community-only,0,0,3,7,0,7,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayGTCurve3Pillar,community-only,0,0,3,119,7,112,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayHole,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.11,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayHoleRamp,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayPillar,community-only,0,0,7,577,40,537,0,5,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayScrew360Mirror,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWaySlope,community-only,0,0,2,7,1,6,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWaySlopeBase,community-only,0,0,6,10,3,7,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayStraightPillar,community-only,0,0,5,141,13,128,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWaySupport,community-only,0,0,7,41,1,40,0,5,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayToHighWay,community-only,0,0,14,34,13,21,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayToPlatform,community-only,0,0,12,16,6,10,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayTurbo,community-only,0,0,4,4,1,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayTurbo2,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSeaWayTurboRoulette,community-only,0,0,1,3,0,3,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSigns,community-only,0,0,17,123,6,117,123,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSignsLightRamp,community-only,0,0,11,43,24,19,40,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpaceLaunch3Pillar,community-only,0,0,2,9,2,7,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpacePlateformLaunch1,community-only,0,0,5,15,0,15,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpacePlateformLaunch1Pillar,community-only,0,0,5,165,15,150,0,8,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpacePlateformLaunch2,community-only,0,0,1,1,0,1,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandSpacePlateformLaunch2Pillar,community-only,0,0,1,8,1,7,0,5,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircular,community-only,0,0,5,23,0,23,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularCheckpoint,community-only,0,0,4,4,0,4,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularExit,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularExitRamp,community-only,0,0,1,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularGTCurve2,community-only,0,0,5,8,0,8,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularGTCurve3,community-only,0,0,1,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularSlopeBaseCorner,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularSlopeBaseGTCurve2,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularSlopeBaseGTCurve2Mirror,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTransition,community-only,0,0,5,11,0,11,2,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTransitionToPlatform,community-only,0,0,5,8,8,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTurbo,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularTurbo2,community-only,0,0,1,4,0,4,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCircularWallV,community-only,0,0,4,5,0,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelCorner,community-only,0,0,6,12,0,12,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelEntry3,community-only,0,0,9,27,27,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelGTCurve2,community-only,0,0,4,7,0,7,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+IslandTunnelTurbo2,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
