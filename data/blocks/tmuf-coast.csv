@@ -1,0 +1,188 @@
+block,origin,maps_nadeo,placements_nadeo,maps_community,placements_community,ground_placements,air_placements,skinned_placements,distinct_flag_variants,first_exever,last_exever,status
+CoastCircuitBorderDiagIn,nadeo,1,2,7,27,29,0,0,2,2.11.3,2.11.3,verified (Nadeo map)
+CoastCircuitBorderGTCurve2Out,nadeo,1,2,6,8,10,0,10,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitBorderStraight,nadeo,1,1,17,130,131,0,0,5,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitBorderTransitionLeft,nadeo,1,3,13,40,43,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitBorderTransitionRight,nadeo,1,3,11,25,28,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitBorderTransitionSmallLeft,nadeo,1,1,14,39,40,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitBridgeGT4x4,nadeo,1,1,1,1,2,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastCircuitCheckpoint,nadeo,1,1,10,14,15,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitFinishLine,nadeo,1,1,5,5,6,0,6,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitHighBiSlope4,nadeo,1,2,0,0,2,0,0,1,2.11.4,2.11.4,verified (Nadeo map)
+CoastCircuitHighBiSlope4GTCurve4Mirror,nadeo,1,1,6,6,7,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitHighStraight,nadeo,1,1,1,1,2,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastCircuitLamp,nadeo,1,10,18,274,60,224,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitRoad,nadeo,2,317,18,191,508,0,43,8,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitRoadFinishLine,nadeo,2,12,3,3,15,0,15,1,2.11.3,2.11.3,verified (Nadeo map)
+CoastCircuitRoadRamp,nadeo,2,7,0,0,7,0,0,1,2.11.3,2.11.3,verified (Nadeo map)
+CoastCircuitRoadStartLine,nadeo,1,1,2,2,3,0,3,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitRoadTurbo,nadeo,1,8,2,3,11,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitRoadTurbo2,nadeo,1,16,1,1,17,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCircuitStartLine,nadeo,1,1,2,2,3,0,3,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastCircuitTransitionCliffBiSlope4UShaped,nadeo,1,1,1,1,2,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastCornicheCroisetteBase1,nadeo,1,3,3,6,9,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCornicheCroisetteWall,nadeo,1,11,4,19,30,0,0,2,2.11.3,2.11.26,verified (Nadeo map)
+CoastCornicheDeadendBridge,nadeo,1,2,13,26,28,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCornicheTransitionSlope,nadeo,1,2,12,18,20,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastCornicheTransitionSlopeMirror,nadeo,1,2,15,21,23,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastDecoBoats,nadeo,2,4,16,41,45,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastDecoFishBoat,nadeo,2,3,14,27,30,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastDecoMarina,nadeo,2,4,19,42,46,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastDecoSailing,nadeo,2,5,18,37,42,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastDirt,nadeo,7,979,23,5002,5981,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastDirtCliff,nadeo,7,894,22,4736,5630,0,0,34,2.11.3,2.11.26,verified (Nadeo map)
+CoastDirtClip,nadeo,2,23,19,113,110,26,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastPillarStraight,nadeo,1,63,7,93,37,119,0,4,2.11.3,2.11.3,verified (Nadeo map)
+CoastPineTrees,nadeo,4,19,18,146,165,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastPineTrees2,nadeo,3,18,14,130,148,0,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastPineTrees3,nadeo,6,45,19,185,230,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoad,nadeo,2,33,21,407,303,137,0,15,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadCheckpoint,nadeo,3,3,19,50,37,16,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadFinish,nadeo,3,3,12,14,11,6,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadGTBiSlope1Curve3Mirror,nadeo,1,1,11,12,11,2,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadGTCurve2,nadeo,1,1,10,20,10,11,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadGTCurve3,nadeo,2,2,5,6,5,3,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadGTDiag4Mirror,nadeo,2,3,6,7,7,3,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadHole,nadeo,1,1,9,21,10,12,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadHole2,nadeo,1,1,9,20,13,8,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadLoopLeft,nadeo,1,3,2,6,3,6,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadLoopRight,nadeo,1,1,5,10,3,8,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadPillar,nadeo,2,239,13,268,99,408,0,18,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadRamp1L,nadeo,1,1,3,5,3,3,0,1,2.11.3,2.11.3,verified (Nadeo map)
+CoastRoadRamp1R,nadeo,1,2,2,2,4,0,0,1,2.11.3,2.11.3,verified (Nadeo map)
+CoastRoadSlopeBase,nadeo,1,17,4,18,9,26,0,1,2.11.3,2.11.3,verified (Nadeo map)
+CoastRoadSlopeStraightAir,nadeo,1,1,6,11,0,12,0,2,2.11.3,2.11.3,verified (Nadeo map)
+CoastRoadSlopeStraightSupport,nadeo,1,3,4,5,0,8,0,2,2.11.3,2.11.3,verified (Nadeo map)
+CoastRoadStartLine,nadeo,5,5,14,14,8,11,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadSupportFull,nadeo,3,27,14,184,112,99,0,11,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadTransitionCircuit,nadeo,1,14,18,51,65,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadTurbo,nadeo,1,3,2,2,2,3,0,1,2.11.3,2.11.3,verified (Nadeo map)
+CoastRoadTurbo2,nadeo,1,2,1,1,3,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadWater,nadeo,1,1,7,49,0,50,0,13,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadWaterFinish,nadeo,1,1,4,4,0,5,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadWaterGTCurve2,nadeo,1,1,4,8,0,9,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadWaterGTDiag4,nadeo,1,2,3,3,0,5,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadWaterGTDiag4Mirror,nadeo,1,1,2,2,0,3,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadWaterPillar,nadeo,1,70,13,184,63,191,0,13,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadWaterRamp2,nadeo,1,1,2,4,0,5,0,1,2.11.3,2.11.4,verified (Nadeo map)
+CoastRoadWaterSupport,nadeo,1,7,14,91,35,63,0,10,2.11.3,2.11.26,verified (Nadeo map)
+CoastRoadWaterTransitionCliffAir,nadeo,1,1,8,21,0,22,0,3,2.11.3,2.11.4,verified (Nadeo map)
+CoastSlopeBaseSupport,nadeo,1,3,9,46,25,24,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastStuntCircuitRoad,nadeo,1,22,4,20,42,0,0,6,2.11.3,2.11.26,verified (Nadeo map)
+CoastStuntHawkRamp,nadeo,2,42,12,65,46,61,107,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastStuntHawkRampPillar,nadeo,2,588,6,38,61,565,598,2,2.11.3,2.11.26,verified (Nadeo map)
+CoastTunnelCheckpoint,nadeo,1,1,5,12,0,13,13,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastTunnelEntryGround,nadeo,1,2,18,69,71,0,71,2,2.11.3,2.11.26,verified (Nadeo map)
+CoastTunnelGTCurve2,nadeo,1,3,8,11,0,14,14,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastTunnelGTCurve3,nadeo,1,2,4,9,0,11,11,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastTunnelSlope4,nadeo,1,2,5,5,0,7,7,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastTunnelStraight,nadeo,1,4,13,44,0,48,48,8,2.11.3,2.11.26,verified (Nadeo map)
+CoastVillage1,nadeo,3,18,23,260,278,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastVillage2A,nadeo,3,16,22,102,118,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastVillage2B,nadeo,3,11,22,158,169,0,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastWaterCircuitLamp,nadeo,1,5,14,141,0,146,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastWaterCircuitLampPillar,nadeo,1,5,14,649,146,508,0,1,2.11.3,2.11.26,verified (Nadeo map)
+CoastWaterCliff,nadeo,7,1078,23,5279,6357,0,0,45,2.11.3,2.11.26,verified (Nadeo map)
+CoastAdvertRoad,community-only,0,0,7,8,4,4,8,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderCornerIn,community-only,0,0,6,12,12,0,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderCornerOut,community-only,0,0,7,25,25,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderCornerOutAdvert,community-only,0,0,1,1,1,0,1,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderDiagInFull,community-only,0,0,1,2,2,0,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderDiagOut,community-only,0,0,7,34,34,0,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderGTCurve2Full,community-only,0,0,5,7,7,0,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderGTCurve2In,community-only,0,0,5,8,8,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderGTCurve3Full,community-only,0,0,7,11,11,0,11,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderGTCurve3In,community-only,0,0,5,8,8,0,8,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderGTCurve3Out,community-only,0,0,9,15,15,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderRamp,community-only,0,0,5,6,6,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderRampMirror,community-only,0,0,5,5,5,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderStraightAdvert,community-only,0,0,5,13,13,0,13,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderStraightAdvertB,community-only,0,0,1,8,8,0,8,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderTransitionSmallRight,community-only,0,0,15,51,51,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderTurbo2Left,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderTurbo2Right,community-only,0,0,1,1,1,0,0,1,2.11.26,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderTurboLeft,community-only,0,0,2,2,2,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitBorderTurboRight,community-only,0,0,2,2,2,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitHighBiSlope2,community-only,0,0,8,13,13,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitHighBiSlope2GTCurve2,community-only,0,0,2,2,2,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitHighBiSlope4GTCurve4,community-only,0,0,6,6,6,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitHighCheckpoint,community-only,0,0,7,7,7,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitHighCross,community-only,0,0,3,3,3,0,3,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitHighGTCurve2,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitLampPillar,community-only,0,0,15,432,224,208,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitRoadCheckpoint,community-only,0,0,5,8,8,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitTransitionCliffBiSlope4,community-only,0,0,8,9,9,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCircuitTransitionCliffBiSlope4UShapedMirror,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheBase1,community-only,0,0,6,7,7,0,0,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheCorner,community-only,0,0,3,4,4,0,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheCroisette,community-only,0,0,1,2,2,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheCroisetteCorner,community-only,0,0,4,9,9,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheDeadend,community-only,0,0,10,39,39,0,0,10,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheDeadendWall,community-only,0,0,2,5,5,0,0,3,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheGT2,community-only,0,0,8,12,12,0,0,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheGT3x2,community-only,0,0,6,6,6,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheGT3x2Mirror,community-only,0,0,7,7,7,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheTransitionCorner,community-only,0,0,10,12,12,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheTransitionCornerMirror,community-only,0,0,6,9,9,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastCornicheTransitionTShaped,community-only,0,0,2,3,3,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastDecoYacht,community-only,0,0,19,29,29,0,6,2,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastFreeSignPillar,community-only,0,0,8,29,17,12,24,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastFreeSignsL,community-only,0,0,11,24,24,0,24,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastFreeSignsLMirror,community-only,0,0,9,14,14,0,14,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastFreeSignsT,community-only,0,0,9,20,3,17,20,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastFreeSignsWaterT,community-only,0,0,5,9,0,9,9,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastFreeSignWaterPillar,community-only,0,0,5,41,9,32,34,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBiSlopeEnd,community-only,0,0,10,15,7,8,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBiSlopeEndGTCurve2,community-only,0,0,3,3,2,1,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBiSlopeEndGTCurve2Mirror,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBiSlopeStart,community-only,0,0,11,15,11,4,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBiSlopeStartGTCurve2,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBiSlopeStartGTCurve2Mirror,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadBumper,community-only,0,0,4,4,2,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadCheckpointSupport,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadGTBiSlope1Curve3,community-only,0,0,9,13,12,1,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadGTDiag4,community-only,0,0,4,5,3,2,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadRamp2,community-only,0,0,4,11,5,6,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadRamp3L,community-only,0,0,3,3,0,3,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadRamp3R,community-only,0,0,2,2,1,1,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadSigns,community-only,0,0,2,3,2,1,3,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadTransitionCliffGround,community-only,0,0,11,21,21,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadTransitionCliffSlope3,community-only,0,0,7,13,13,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadTurboSupport,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterBiSlopeEnd,community-only,0,0,4,5,0,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterBiSlopeEndGTCurve2,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterBiSlopeEndGTCurve2Mirror,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterBiSlopeStart,community-only,0,0,7,10,0,10,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterBiSlopeStartGTCurve2Mirror,community-only,0,0,2,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterCheckpoint,community-only,0,0,4,6,0,6,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterCheckpointSupport,community-only,0,0,6,10,4,6,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterGTBiSlope1Curve3,community-only,0,0,3,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterGTBiSlope1Curve3Mirror,community-only,0,0,3,4,0,4,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterGTCurve3,community-only,0,0,3,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterHole,community-only,0,0,5,5,0,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterHole2,community-only,0,0,4,5,0,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterPillarStraight,community-only,0,0,6,57,20,37,3,3,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterRamp3L,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSigns,community-only,0,0,1,2,0,2,2,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSignsSupport,community-only,0,0,1,1,0,1,1,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2Base,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2BaseSupport,community-only,0,0,1,2,0,2,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2BiSlopeEnd,community-only,0,0,2,5,0,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2BiSlopeStart,community-only,0,0,4,7,0,7,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2Straight,community-only,0,0,1,4,0,4,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2StraightSupport,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlope2TurboDownSupport,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlopeBase,community-only,0,0,2,4,0,4,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlopeBaseSupport,community-only,0,0,2,3,0,3,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterSlopeStraightSupport,community-only,0,0,3,5,1,4,0,2,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterStartLine,community-only,0,0,5,5,0,5,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterTransitionCliffGround,community-only,0,0,10,22,22,0,0,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterTurboSupport,community-only,0,0,1,1,1,0,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterTwistedGT2x2,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterTwistedGT2x2Mirror,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastRoadWaterTwistedGT2x3Mirror,community-only,0,0,1,1,0,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastSeaClip,community-only,0,0,3,7,6,1,0,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastTunnelCorner,community-only,0,0,10,20,0,20,20,1,2.11.3,2.11.26,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastTunnelSlopeBase,community-only,0,0,1,4,0,4,4,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastTunnelTurbo,community-only,0,0,2,2,0,2,2,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
+CoastTunnelTurbo2,community-only,0,0,2,2,0,2,2,1,2.11.3,2.11.3,"community map only (may be a hidden game block placed with an editor extension, or a name written by an external tool)"
