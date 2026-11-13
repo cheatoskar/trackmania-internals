@@ -25,6 +25,7 @@ Unpublished (cited by name only): physics RE notes (`tm-physics-re`, `physics-mo
 |---|---|---|
 | [TMNF-C](https://github.com/adonis-singh/TMNF-C) by adonis-singh | MIT | TMNF physics addresses and annotations, Ghidra pipeline, tracer/golden-trace method, snapshot formats, x87 precision model (commit `eb6be04`) |
 | [ForeverValidator](https://github.com/Skycrafter-dev/ForeverValidator) | MIT | physics cross-checks (substeps, caps, car file values) |
+| [TM-AlgoCrack](https://github.com/TomashuTTTT7/TM-AlgoCrack) by Tomashu | GPL-3.0 | speedslide write-up and scripts (sliding drive, speed steps, side-friction curve, material multipliers), cross-checked in [physics/bugs](physics/bugs/README.md) |
 | [TrackManiaForeverOpenXR](https://github.com/jiink/TrackManiaForeverOpenXR) (TMFOXR) by jiink; device hand-over by [wial663](https://github.com/wial663) | MIT | VR mod, TMUF layouts, LAA patch, D3D9-to-OpenXR stereo method, projection handling |
 | [Linesight](https://github.com/Linesight-RL/linesight) | see repo | its `Python_Link.as` TMInterface plugin is the socket bridge TMNF-C's capture tools use (not included here) |
 | [TwinkieForever](https://github.com/TwinkieTweaks/TwinkieForever) (Twinkie) | MIT | published TMNF offsets reused by the Bingo plugin |
