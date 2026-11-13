@@ -21,6 +21,10 @@ Play-a-map-file path (same as ESWC, other offsets). Status: found statically, no
 
 Input engine (DirectInput enumeration, device list, binding tables, device loss): same code as ESWC, both columns in [../tmn-eswc/input.md](../tmn-eswc/input.md).
 
+Music volume, sound volume and fullscreen (config, audio port, start order): [../tmn-eswc/audio-display-settings.md](../tmn-eswc/audio-display-settings.md).
+
 Race events (OnStartLine, OnFinishLine, OnCheckpoint, solo race end): [race-events.md](race-events.md). Saving the race replay without the dialog (Sunrise and Original side by side, with ESWC): [replay-save.md](replay-save.md).
 
 Source: own spike code (legacy-randomizer); matched with scripts/re/fnmatch.py (ESWC→Sunrise 1.00 for Build/RefreshFromDisk/SortByName).
+
+Rendering (material per draw, delayed draws, the 512x512 view into a texture, point lights; with ESWC and Original): [../../rendering/2006-engine-materials-lights.md](../../rendering/2006-engine-materials-lights.md).
