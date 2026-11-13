@@ -38,7 +38,7 @@ Source keys (own project sources): `tmxcopy` = [eswc-autosave](https://github.co
 | Header XML (TMF/ESWC): `<header type="replay" exever=...><challenge uid=.../><times best=.. respawns=.. stuntscore=.. validable="0|1"/></header>`; no date in a replay | eswc-autosave autosave.cpp:374-403; web replay-header.ts | verified |
 | TMNF replay header: `mapInfo.id` = map UID, `time` ms, `playerLogin`, `playerNickname`; parsing the header takes ~8 ms | web replay-header.ts | verified |
 | GBX.NET 2.4.3 `ParseHeaderNode` never fills EventsDuration; `Time` can be null on some replays | own notes | verified |
-| Validable flag: [replay-validable-eswc.md](replay-validable-eswc.md) | | |
+| Validable flag: [replay-validable-eswc.md](replay-validable-eswc.md). Ghost samples run ~3 s past the finish, input list does not: [replay-tail](../games/tmn-eswc/replay-tail.md) | | |
 | Autosaves: ESWC `Autosaves/*.gbx` are class 2403F000 ghost files named `.Replay.gbx`, always validable=0, written only in Solo | own notes | verified |
 
 ## Challenge / map (CGameCtnChallenge)
