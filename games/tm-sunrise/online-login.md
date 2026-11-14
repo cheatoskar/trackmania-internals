@@ -10,7 +10,7 @@ Nadeo's Sunrise master server still answers. Only its names are gone. Checked on
 | site by Host header | `Host: game.trackmaniasunrise.com` -> `/home/scripts/game_Host_v1/...`, `Host: www.trackmaniasunrise.com` -> `/home/scripts/game_Host_v1_web/...` (`/online_game/getservers.php` without `ver` answers "Bad ver"); `/` gives a 403 naming the vhost. No SNI needed | direct requests | verified |
 | second error | with the names pointed at the box (hosts file) the game shows 12157 (`ERROR_INTERNET_SECURITY_CHANNEL_ERROR`): Windows 10/11 WinINet has TLS 1.0 off, as for ESWC | game | verified |
 | WinINet imports | `InternetCloseHandle` 0x00a1a2d4, `InternetConnectA` 0x00a1a2d8, `HttpOpenRequestA` 0x00a1a2dc (IAT slots, base 0x400000); each called straight through its slot | pefile, capstone | verified |
-| accounts | creating an online account still goes through the master with the game key, as in 2005 | game (asks for the player key) | verified |
+| accounts | creating an online account still goes through the master with the game key, as in 2005 | not tried yet | inferred |
 
 ## Two ways to get online again
 
