@@ -21,6 +21,10 @@ Play-a-map-file path (same as ESWC, other offsets). Status: found statically, no
 
 Input engine (DirectInput enumeration, device list, binding tables, device loss): same code as ESWC, both columns in [../tmn-eswc/input.md](../tmn-eswc/input.md).
 
+Input bindings: Sunrise and Original reset every binding at every start (game bug, with the fix): [input-bindings-reset.md](input-bindings-reset.md).
+
+Online login: the master server still runs, only its names are gone (error 12031 / 12157 and the fix): [online-login.md](online-login.md).
+
 Music volume, sound volume and fullscreen (config, audio port, start order): [../tmn-eswc/audio-display-settings.md](../tmn-eswc/audio-display-settings.md).
 
 Race events (OnStartLine, OnFinishLine, OnCheckpoint, solo race end): [race-events.md](race-events.md). Saving the race replay without the dialog (Sunrise and Original side by side, with ESWC): [replay-save.md](replay-save.md).
