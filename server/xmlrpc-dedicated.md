@@ -53,6 +53,9 @@ Source keys: `100-TMX-Server` and bare `*.cs` names = [100-TMX-Server](https://g
 | Replays: `SaveBestGhostsReplay(login, "<dir>/<file>.Replay.Gbx")` writes under `GameData/Tracks/Replays/`; server-saved replays are what TMX accepts | RandomizerGame.cs SendReplayLinkAsync; website docs (private) | verified |
 | Custom-block maps that crash every client show in logs as many joins with 0 checkpoints; handled with a live-reloaded skip list | mem:gameserver-analysis-2026-10-16 | verified |
 | `inunlimiter=0` on TMX is uploader-declared; an Unlimiter map slipped through and stalled the server 2h18m (2026-09-02) | website docs (private)/gbx-detection-plan.md | verified |
+| The server keeps a map under the first file path it saw. A copy written with `WriteFile` to another folder and read once with `GetChallengeInfo` was later reported by `GetCurrentChallengeInfo` as the running map's `FileName`, although the controller had inserted the same map under a different path. A controller that reads ids from file names must name such copies the same way | own LAN test 2026-11-14; 100-TMX-Server c:[fb688a9](https://github.com/cheatoskar/100-TMX-Server/commit/fb688a9) | verified (seen once) |
+| `GetChallengeInfo(file)` works on a file written with `WriteFile` that is not in the selection and returns the formatted `Name` (with `$` codes): the way to get coloured map names, which TMX's API doesn't have | 100-TMX-Server RandomizerGame.Hud.cs `LoadEventMapRawNamesInBackground` | verified (LAN) |
+| A map with only a finish (no CP blocks) reports `NbCheckpoints = 1` | `GetCurrentChallengeInfo`, LAN 2026-11-14 | verified |
 
 ## Config and command line
 
