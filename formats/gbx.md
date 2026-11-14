@@ -64,6 +64,7 @@ Block names per game and environment (counts, flags, exe versions): [block-names
 | Legacy header differences (`TMc.5`, `exever="0.1.7.5"`): XML name is URL-encoded (`%240f0...+...`), `authorscore` is not the author time, header chunk `0x24003002` has version 10 instead of 11, and the body has no chunk `0x03043029` (password hash + CRC, 20 bytes `PIKS` in TMUF-saved maps) | own analysis of one legacy and two TMUF maps | verified |
 | Body node-ref count: the u32 before the body size in the file header equals the highest node index in the body + 1 (12 in one map, nodes 0..11); a body that decodes exactly to the stored uncompressed size and ends on `0xFACADE01` is not truncated | own analysis | verified |
 | GBX LZO body: a literal-only LZO1X stream (first byte `n-3` or `0` + length bytes, then the literals, then `11 00 00`) is a valid body; a pure-Python decompressor was enough to read TMUF/TMNF maps without `python-lzo` | own analysis (round trip with own decompressor only, game not run) | inferred |
+| TMNF maps from TMX carry header chunk `0x03043002` in version 11 (45 bytes: version, u32 bool, bronze/silver/gold/author times, cost, lap flag, mode, ..., author score); the checkpoint count in that chunk only exists from version 13. Counting checkpoints needs the body: blocks whose name contains `Checkpoint` (GBX.NET 2.5.1 + GBX.NET.LZO, `map.GetBlocks()`), e.g. 10 for TMX 834604 | own check 2026-11-14 (60 maps) | verified |
 
 ## File names and encoding traps
 

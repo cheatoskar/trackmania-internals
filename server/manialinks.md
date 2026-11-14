@@ -82,6 +82,22 @@ Source keys: `RG` = [RandomizerGame.cs](https://github.com/cheatoskar/100-TMX-Se
 | An exception in one callback handler stopped all later callbacks (widgets, chat, finishes) until restart | an unhandled exception ends the library's dispatch loop | wrap every handler in try/catch | c:[f383685](https://github.com/cheatoskar/100-TMX-Server/commit/f383685) |
 | A checkpoint counter read "4/3" | `NbCheckpoints` and the checkpoint callback count the finish line | normalise once, clamp to the total, show nothing on maps without checkpoints | c:[c172b09](https://github.com/cheatoskar/100-TMX-Server/commit/c172b09) |
 
+## A Records Eyepiece style HUD (2026-11-14)
+
+What was learned building a full HUD (map panel, tile bar, top list, checkpoint bar, windows) for the same controller. Tested on a local LAN TMF server with a TMNF client over six feedback rounds, then deployed. `HUD` = [RandomizerGame.Hud.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/RandomizerGame.Hud.cs).
+
+| Fact | Source | Status |
+|---|---|---|
+| `<custom_ui><challenge_info visible="false"/></custom_ui>`, sent inside `<manialinks>` next to the pages, hides TMF's own map name/author box at the top right (it sat under a tile bar there) | HUD `BuildHudPage`; c:[aa67566](https://github.com/cheatoskar/100-TMX-Server/commit/aa67566) | verified (LAN) |
+| One call can carry several pages: `<manialinks><manialink id="a">..</manialink><manialink id="b"></manialink>..</manialinks>`. Used to send the whole HUD at once, and to open one window while emptying all other window ids, so windows never stack | HUD `ShowWindowAsync`; c:[ea87dfe](https://github.com/cheatoskar/100-TMX-Server/commit/ea87dfe) | verified (LAN) |
+| `bgcolor` alpha is one hex digit: 16 levels. A `bgcolor` quad always has square corners | HUD | verified |
+| Darkening a rounded `Bgs1InRace`/`NavButton` box: a `bgcolor` quad under it shows its square corners outside the rounding; a second identical `NavButton` quad on top adds no visible darkness; a cross of three rectangles (corners cut off) shows steps; six stacked inset layers at alpha `1` show rings | HUD history; c:[fb688a9](https://github.com/cheatoskar/100-TMX-Server/commit/fb688a9), c:[9aa8e3b](https://github.com/cheatoskar/100-TMX-Server/commit/9aa8e3b) | verified (LAN screenshots) |
+| What works: the controller's own web server renders the dark layer as a PNG in exactly the box's size (rounded rectangle, one pixel of anti-aliasing, ~1 KB) and the box gets one `<quad image="http://.../shade/<w>x<h>a<alpha>.png">` with `sizen` = box size. An image is stretched to `sizen`, so one image per size keeps the corners round; a client that can't fetch it just shows the plain box | [ShadeImage.cs](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/ShadeImage.cs); c:[d5e8b51](https://github.com/cheatoskar/100-TMX-Server/commit/d5e8b51) | verified (LAN) |
+| Records Eyepiece (XAseco plugin `plugin.records_eyepiece.php`, GPL-3) as a style reference: panel `Bgs1InRace`/`NavButton`, title bar `BgsPlayerCard`/`BgRacePlayerName`, highlighted row `BgsPlayerCard`/`BgCardSystem`, tile `BgsPlayerCard`/`ProgressBar` (darker than the panels), F7 toggle = an off-screen quad with `actionkey="3"` | plugin source | verified (source); F7 inferred (not tested on its own) |
+| Built-in icons that render on TMF: `MedalsBig` `MedalNadeo` (author medal), `MedalGold`; `Icons128x128_1` `Rankings`, `NewTrack`, `Challenge`, `LoadTrack`, `Advanced`, `Browse`, `Race`; `Icons64x64_1` `ArrowUp`, `ArrowDown`, `ArrowPrev`, `ArrowNext`, `Close` | HUD | verified (LAN) |
+| A label with `sizen` wider than its text still never wraps or clips by itself: cut long names to the box width (with the width estimate above) | HUD `Fit` | verified (LAN overflow) |
+| Manialinks cannot run a clock: a time shown in the HUD is the time of the last resend (here every 15 s) | HUD `ClockNow` | verified |
+
 ## Minimal example
 
 ```xml

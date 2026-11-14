@@ -57,6 +57,8 @@ Source keys: `SS` = [ServerSetup.cs](https://github.com/cheatoskar/100-TMX-Serve
 | The Windows build of the 2006 server cannot go online on current Windows (WinINet error 12157, TLS 1.0 master server); the Linux build can | [old-2006-server.md](old-2006-server.md) | verified |
 | Wine was only used for the game client (needs `d3dx9_31`), never for a server | own notes; [../gotchas.md](../gotchas.md) | verified |
 | Download the server zip from a fixed source and pin its SHA-256: it is fetched over plain HTTP and then executed | c:[05cbc5a](https://github.com/cheatoskar/100-TMX-Server/commit/05cbc5a) | verified |
+| Three instances (TMNF, TMUF, ESWC) on the same 1 GB VM, mostly idle (2026-11-14): controllers 62-103 MB RSS each, dedicated 11-22 MB, 390 MB used plus 271 MB in swap, load 0.2-0.4; at 3 players the TMF dedicated used 2-3 % CPU. Every further instance costs about 100-120 MB | own notes 2026-11-14 | verified |
+| Replay links served by file name over HTTP: names made of login and time to the second were guessable (one player-day = 86,400 names, no rate limit). Put random bits in the name (here 64) | 100-TMX-Server c:[ea87dfe](https://github.com/cheatoskar/100-TMX-Server/commit/ea87dfe) | verified (design flaw; no abuse seen) |
 
 ## Restarts and updates without kicking players
 

@@ -33,6 +33,8 @@ Source keys (the author's own projects; file names and line numbers kept for pro
 | Has-record check: `?id=<id>&fields=TrackId,WRReplay.ReplayId` -> `WRReplay` present | srv:439-464 | verified |
 | `ReplayAt`/`UploadedAt` have no timezone suffix but are UTC: append `Z` | web docs; hub | verified |
 | Result field `Environment` is 1-based (1 Snow .. 7 Stadium), while the TMUF filter `environment=` is 0-based (0 Snow, 1 Desert, 2 Rally, 3 Island, 4 Coast, 5 Bay, 6 Stadium) | srv [Presets/100tmx_tmuf_snow.toml](https://github.com/cheatoskar/100-TMX-Server/blob/main/RandomizerAnywhere/Presets/100tmx_tmuf_snow.toml); hub tmx.ts | verified (2026-11-07) |
+| No checkpoint count and no formatted name: `Checkpoints`, `CheckpointCount`, `NbCheckpoints`, `Laps`, `UnformattedName` -> 400 "Specified field '...' does not exist". `TrackName` carries no `$` codes; the coloured name is only in the map file | curl 2026-11-14 | verified |
+| `WRReplay.ReplayTime` = the TMX record time in ms (absent when the map has no record) | 100-TMX-Server TmxRules.cs `TrackDetails` | verified |
 
 ## Filters (and silent-ignore traps)
 
